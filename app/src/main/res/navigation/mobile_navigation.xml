@@ -7,14 +7,14 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.tripper.ui.home.HomeFragment"
+        android:name="com.tripper.ui.homepage.map.HomePageMapViewFragment"
         android:label="@string/title_map_view"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_homepage_map_view" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.tripper.ui.dashboard.DashboardFragment"
+        android:name="com.tripper.ui.homepage.list.HomePageListFragment"
         android:label="@string/title_list_view"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_homepage_list_view" />
 
 </navigation>

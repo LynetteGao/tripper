@@ -1,4 +1,4 @@
-package com.tripper.ui.dashboard;
+package com.tripper.ui.homepage.map;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.tripper.R;
 
-public class DashboardFragment extends Fragment {
+public class HomePageMapViewFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
+    private HomePageMapViewModel mapViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                ViewModelProviders.of(this).get(DashboardViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        mapViewModel =
+                ViewModelProviders.of(this).get(HomePageMapViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_homepage_map_view, container, false);
+        final TextView textView = root.findViewById(R.id.text_home);
+        mapViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
