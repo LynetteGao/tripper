@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateNewTrip">
+
+    <EditText
+        android:id="@+id/txtNewTripEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:focusable="false"
+        android:inputType="date"
+        android:onClick="onEndDateClicked"
+        app:layout_constraintStart_toStartOf="@+id/lblNewTripEndDate"
+        app:layout_constraintTop_toBottomOf="@+id/lblNewTripEndDate" />
+
+    <EditText
+        android:id="@+id/txtNewTripStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:focusable="false"
+        android:inputType="date"
+        android:onClick="onStartDateClicked"
+        app:layout_constraintStart_toStartOf="@+id/lblNewTripStartDate"
+        app:layout_constraintTop_toBottomOf="@+id/lblNewTripStartDate" />
+
+    <TextView
+        android:id="@+id/lblNewTripHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/new_trip_header"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/lblNewTripStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/start_date"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblNewTripHeader" />
+
+    <TextView
+        android:id="@+id/lblNewTripEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/end_date"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/txtNewTripStartDate"
+        app:layout_constraintTop_toBottomOf="@+id/txtNewTripStartDate" />
+
+    <TextView
+        android:id="@+id/lblDestination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/destination"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/txtNewTripEndDate"
+        app:layout_constraintTop_toBottomOf="@+id/txtNewTripEndDate" />
+
+    <EditText
+        android:id="@+id/txtNewTripDestination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/lblDestination"
+        app:layout_constraintTop_toBottomOf="@+id/lblDestination" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/create_trip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtNewTripDestination" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
