@@ -10,7 +10,7 @@ public class HomePageListViewModel extends ViewModel {
 
     public HomePageListViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        mText.setValue("Placeholder for list view");
     }
 
     public LiveData<String> getText() {
