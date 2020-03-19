@@ -10,7 +10,7 @@ public class HomePageMapViewModel extends ViewModel {
 
     public HomePageMapViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("Place holder for map view");
+        mText.setValue("Placeholder for map view");
     }
 
     public LiveData<String> getText() {
