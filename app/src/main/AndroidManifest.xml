@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CreateNewTrip"></activity>
+        <activity android:name=".TripOverview"></activity>
+        <activity android:name=".CreateNewTrip" />
         <activity
             android:name=".HomePage"
             android:label="@string/title_activity_home_page">
