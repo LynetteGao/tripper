@@ -1,5 +1,6 @@
 package com.tripper.db.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -23,6 +24,6 @@ public interface TripDao {
     public void updateTrip(Trip trip);
 
     @Query("select * from trip order by start_date desc")
-    List<Trip> getTripsDesc();
+    LiveData<List<Trip>> getTripsDesc();
 
 }
