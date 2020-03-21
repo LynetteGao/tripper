@@ -1,19 +1,33 @@
 package com.tripper.ui.homepage.list;
 
+import android.app.Application;
+
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomePageListViewModel extends ViewModel {
+import com.tripper.db.entities.Trip;
+import com.tripper.repositories.TripRepository;
+
+import java.util.List;
+
+public class HomePageListViewModel extends AndroidViewModel {
 
     private MutableLiveData<String> mText;
+    private TripRepository tripRepository;
+    private LiveData<List<Trip>> allTrips;
 
-    public HomePageListViewModel() {
+    public HomePageListViewModel(Application application) {
+        super(application);
+        tripRepository = new TripRepository(application);
+        allTrips = tripRepository.getTrips();
+
         mText = new MutableLiveData<>();
         mText.setValue("Placeholder for list view");
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<List<Trip>> getTrips() {
+        return allTrips;
     }
 }
