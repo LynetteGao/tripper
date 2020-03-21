@@ -55,68 +55,68 @@ public class DiaryActivity extends AppCompatActivity {
     }
 
     public class TimeLineAdapter extends RecyclerView.Adapter {
-        private static final int VIEW_TYPE_DEAL_FIRST_ITEM = 1;
-        private static final int VIEW_TYPE_DEAL_MIDDLE_ITEM = 2;
-        private static final int VIEW_TYPE_DEAL_LAST_ITEM = 3;
+        private static final int VIEW_TYPE_FIRST_ITEM = 1;
+        private static final int VIEW_TYPE_MIDDLE_ITEM = 2;
+        private static final int VIEW_TYPE_LAST_ITEM = 3;
 
         private Context mContext;
-        private ArrayList<TimeLineItem> mDealsList;
-        public TimeLineAdapter(Context context, ArrayList<TimeLineItem> mDealsListData) {
+        private ArrayList<TimeLineItem> mItemsList;
+        public TimeLineAdapter(Context context, ArrayList<TimeLineItem> mItemsListData) {
             mContext = context;
-            mDealsList = mDealsListData;
+            mItemsList = mItemsListData;
         }
         @Override
         public int getItemCount() {
-            return mDealsList.size();
+            return mItemsList.size();
         }
         @Override
         public int getItemViewType(int position) {
-            TimeLineItem item = mDealsList.get(position);
+            TimeLineItem item = mItemsList.get(position);
             if (item.getPosition() == 1) {
-                return VIEW_TYPE_DEAL_FIRST_ITEM;
+                return VIEW_TYPE_FIRST_ITEM;
             } else if(item.getPosition() == 2) {
-                return VIEW_TYPE_DEAL_MIDDLE_ITEM;
+                return VIEW_TYPE_MIDDLE_ITEM;
             } else {
-                return VIEW_TYPE_DEAL_LAST_ITEM;
+                return VIEW_TYPE_LAST_ITEM;
             }
         }
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view;
-            if (viewType == VIEW_TYPE_DEAL_FIRST_ITEM) {
+            if (viewType == VIEW_TYPE_FIRST_ITEM) {
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_card_type_start, parent, false);
-                return new FirstDealHolder(view);
-            } else if (viewType == VIEW_TYPE_DEAL_MIDDLE_ITEM) {
+                return new FirstItemHolder(view);
+            } else if (viewType == VIEW_TYPE_MIDDLE_ITEM) {
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_card_type_middle, parent, false);
-                return new MiddleDealHolder(view);
-            } else if(viewType == VIEW_TYPE_DEAL_LAST_ITEM) {
+                return new MiddleItemHolder(view);
+            } else if(viewType == VIEW_TYPE_LAST_ITEM) {
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_card_end, parent, false);
-                return new LastDealHolder(view);
+                return new LastItemHolder(view);
             }
             return null;
         }
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            TimeLineItem items = mDealsList.get(position);
+            TimeLineItem items = mItemsList.get(position);
             switch (holder.getItemViewType()) {
-                case VIEW_TYPE_DEAL_FIRST_ITEM:
-                    ((FirstDealHolder) holder).bind(items);
+                case VIEW_TYPE_FIRST_ITEM:
+                    ((FirstItemHolder) holder).bind(items);
                     break;
-                case VIEW_TYPE_DEAL_MIDDLE_ITEM:
-                    ((MiddleDealHolder) holder).bind(items);
+                case VIEW_TYPE_MIDDLE_ITEM:
+                    ((MiddleItemHolder) holder).bind(items);
                     break;
-                case VIEW_TYPE_DEAL_LAST_ITEM:
-                    ((LastDealHolder) holder).bind(items);
+                case VIEW_TYPE_LAST_ITEM:
+                    ((LastItemHolder) holder).bind(items);
                     break;
             }
         }
-        private class FirstDealHolder extends RecyclerView.ViewHolder {
+        private class FirstItemHolder extends RecyclerView.ViewHolder {
             TextView month, day, timeOfDay, location;
             CircleImageView image;
-            FirstDealHolder(View itemView) {
+            FirstItemHolder(View itemView) {
                 super(itemView);
                 month =  itemView.findViewById(R.id.month);
                 day =  itemView.findViewById(R.id.day);
@@ -131,10 +131,10 @@ public class DiaryActivity extends AppCompatActivity {
                 location.setText(item.location);
             }
         }
-        private class MiddleDealHolder extends RecyclerView.ViewHolder {
+        private class MiddleItemHolder extends RecyclerView.ViewHolder {
             TextView month, day, timeOfDay, location;
             CircleImageView image;
-            MiddleDealHolder(View itemView) {
+            MiddleItemHolder(View itemView) {
                 super(itemView);
                 month =  itemView.findViewById(R.id.month);
                 day =  itemView.findViewById(R.id.day);
@@ -150,10 +150,10 @@ public class DiaryActivity extends AppCompatActivity {
             }
         }
 
-        private class LastDealHolder extends RecyclerView.ViewHolder {
+        private class LastItemHolder extends RecyclerView.ViewHolder {
             TextView month, day, timeOfDay, location;
             CircleImageView image;
-            LastDealHolder(View itemView) {
+            LastItemHolder(View itemView) {
                 super(itemView);
                 month =  itemView.findViewById(R.id.month);
                 day =  itemView.findViewById(R.id.day);
