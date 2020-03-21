@@ -1,6 +1,5 @@
 package com.tripper;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,19 +50,17 @@ public class DiaryActivity extends AppCompatActivity {
         rv = findViewById(R.id.my_recycler_view);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         rv.setLayoutManager(mLayoutManager);
-        timeLineAdapter = new TimeLineAdapter(this,rvList);
+        timeLineAdapter = new TimeLineAdapter(this, rvList);
         rv.setAdapter(timeLineAdapter);
     }
 
-    public class TimeLineAdapter extends RecyclerView.Adapter {
+    public static class TimeLineAdapter extends RecyclerView.Adapter {
         private static final int VIEW_TYPE_FIRST_ITEM = 1;
         private static final int VIEW_TYPE_MIDDLE_ITEM = 2;
         private static final int VIEW_TYPE_LAST_ITEM = 3;
 
-        private Context mContext;
         private ArrayList<TimeLineItem> mItemsList;
-        public TimeLineAdapter(Context context, ArrayList<TimeLineItem> mItemsListData) {
-            mContext = context;
+        TimeLineAdapter(Context context, ArrayList<TimeLineItem> mItemsListData) {
             mItemsList = mItemsListData;
         }
         @Override
@@ -80,6 +78,7 @@ public class DiaryActivity extends AppCompatActivity {
                 return VIEW_TYPE_LAST_ITEM;
             }
         }
+        @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view;
@@ -113,7 +112,7 @@ public class DiaryActivity extends AppCompatActivity {
                     break;
             }
         }
-        private class FirstItemHolder extends RecyclerView.ViewHolder {
+        private static class FirstItemHolder extends RecyclerView.ViewHolder {
             TextView month, day, timeOfDay, location;
             CircleImageView image;
             FirstItemHolder(View itemView) {
@@ -131,7 +130,7 @@ public class DiaryActivity extends AppCompatActivity {
                 location.setText(item.location);
             }
         }
-        private class MiddleItemHolder extends RecyclerView.ViewHolder {
+        private static class MiddleItemHolder extends RecyclerView.ViewHolder {
             TextView month, day, timeOfDay, location;
             CircleImageView image;
             MiddleItemHolder(View itemView) {
@@ -150,7 +149,7 @@ public class DiaryActivity extends AppCompatActivity {
             }
         }
 
-        private class LastItemHolder extends RecyclerView.ViewHolder {
+        private static class LastItemHolder extends RecyclerView.ViewHolder {
             TextView month, day, timeOfDay, location;
             CircleImageView image;
             LastItemHolder(View itemView) {
