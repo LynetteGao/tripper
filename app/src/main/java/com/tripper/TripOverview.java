@@ -18,6 +18,7 @@ public class TripOverview extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_AppCompat_Light_DarkActionBar);
         setContentView(R.layout.activity_trip_overview);
 
         BottomNavigationView bottomNav = findViewById(R.id.tripoverview_bottom_navigation);
