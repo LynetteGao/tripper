@@ -1,15 +1,14 @@
 package com.tripper.db.entities;
 
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import com.tripper.db.converters.DateTypeConverter;
+import com.tripper.db.converters.CalendarTypeConverter;
 
-import java.util.Date;
+import java.util.Calendar;
 
 @Entity(tableName = "trip")
 public class Trip {
@@ -21,11 +20,11 @@ public class Trip {
     public String name;
 
     @ColumnInfo(name="start_date")
-    @TypeConverters({DateTypeConverter.class})
-    public Date startDate;
+    @TypeConverters({CalendarTypeConverter.class})
+    public Calendar startDate;
 
     @ColumnInfo(name="end_date")
-    @TypeConverters({DateTypeConverter.class})
-    public Date endDate;
+    @TypeConverters({CalendarTypeConverter.class})
+    public Calendar endDate;
 
 }

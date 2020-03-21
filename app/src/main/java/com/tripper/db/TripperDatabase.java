@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.tripper.db.converters.DateTypeConverter;
+import com.tripper.db.converters.CalendarTypeConverter;
 import com.tripper.db.dao.TripDao;
 import com.tripper.db.entities.Trip;
 
@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Trip.class}, version = 1, exportSchema = false)
-@TypeConverters({DateTypeConverter.class})
+@TypeConverters({CalendarTypeConverter.class})
 public abstract class TripperDatabase extends RoomDatabase {
     public abstract TripDao tripDao();
 
