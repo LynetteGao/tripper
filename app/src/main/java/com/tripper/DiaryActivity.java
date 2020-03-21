@@ -29,19 +29,19 @@ public class DiaryActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        TimeLineItem test1 = new TimeLineItem(1,R.drawable.img_test,"Central Park", "Morning","JAN","1");
+        TimeLineItem test1 = new TimeLineItem(1,R.drawable.central_park,"Central Park", "Morning","JAN","1");
         rvList.add(test1);
-        TimeLineItem test2 = new TimeLineItem(2,R.drawable.img_test,"Brooklyn Bridge", "Afternoon","JAN","2");
+        TimeLineItem test2 = new TimeLineItem(2,R.drawable.brooklyn_bridge,"Brooklyn Bridge", "Afternoon","JAN","2");
         rvList.add(test2);
-        TimeLineItem test3 = new TimeLineItem(2,R.drawable.img_test,"Yankee Stadium", "Evening", "JAN","3");
+        TimeLineItem test3 = new TimeLineItem(2,R.drawable.yankee_stadium,"Yankee Stadium", "Evening", "JAN","3");
         rvList.add(test3);
-        TimeLineItem test4 = new TimeLineItem(2,R.drawable.img_test,"Theater District", "Morning","JAN","4");
+        TimeLineItem test4 = new TimeLineItem(2,R.drawable.theater_district,"Theater District", "Morning","JAN","4");
         rvList.add(test4);
-        TimeLineItem test5 = new TimeLineItem(2,R.drawable.img_test,"Time Square", "Afternoon","JAN","5");
+        TimeLineItem test5 = new TimeLineItem(2,R.drawable.time_square,"Time Square", "Afternoon","JAN","5");
         rvList.add(test5);
-        TimeLineItem test6 = new TimeLineItem(2,R.drawable.img_test,"Chelsea Market", "Evening","JAN","6");
+        TimeLineItem test6 = new TimeLineItem(2,R.drawable.chelsea_market,"Chelsea Market", "Evening","JAN","6");
         rvList.add(test6);
-        TimeLineItem test7 = new TimeLineItem(3,R.drawable.img_test,"United Nations", "Morning","JAN","7");
+        TimeLineItem test7 = new TimeLineItem(3,R.drawable.united_nations,"United Nations", "Morning","JAN","7");
         rvList.add(test7);
         timeLineAdapter.notifyDataSetChanged();
     }
@@ -126,6 +126,7 @@ public class DiaryActivity extends AppCompatActivity {
             void bind(TimeLineItem item) {
                 month.setText(item.month);
                 day.setText(item.day);
+                image.setImageResource(item.imageName);
                 timeOfDay.setText(item.timeOfDay);
                 location.setText(item.location);
             }
@@ -144,6 +145,7 @@ public class DiaryActivity extends AppCompatActivity {
             void bind(TimeLineItem item) {
                 month.setText(item.month);
                 day.setText(item.day);
+                image.setImageResource(item.imageName);
                 timeOfDay.setText(item.timeOfDay);
                 location.setText(item.location);
             }
@@ -163,6 +165,7 @@ public class DiaryActivity extends AppCompatActivity {
             void bind(TimeLineItem item) {
                 month.setText(item.month);
                 day.setText(item.day);
+                image.setImageResource(item.imageName);
                 timeOfDay.setText(item.timeOfDay);
                 location.setText(item.location);
             }
