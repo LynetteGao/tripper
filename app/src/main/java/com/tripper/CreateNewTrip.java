@@ -1,6 +1,7 @@
 package com.tripper;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -13,6 +14,9 @@ import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.tripper.db.entities.Trip;
+import com.tripper.repositories.TripRepository;
+import com.tripper.viewmodels.TripViewModel;
 
 import java.util.Calendar;
 
@@ -27,6 +31,7 @@ public class CreateNewTrip extends AppCompatActivity {
     private TextInputLayout txtInputEndDate;
     private TextInputEditText txtEditDestination;
     private TextInputLayout txtInputDestination;
+    private TripViewModel tripViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,8 @@ public class CreateNewTrip extends AppCompatActivity {
         txtInputDestination = findViewById(R.id.txtInputDestination);
 
         Button btnCreateTrip = findViewById(R.id.btnCreateTrip);
+
+        tripViewModel = new ViewModelProvider(this).get(TripViewModel.class);
 
         txtEditStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +81,13 @@ public class CreateNewTrip extends AppCompatActivity {
                         txtInputEndDate.setError("End date must be later than start date");
                         return;
                     }
+
+                    Trip trip = new Trip();
+                    trip.name = txtEditDestination.getText().toString();
+                    trip.startDate = startDate;
+                    trip.endDate = endDate;
+                    tripViewModel.insert(trip);
+
                 }
                 else {
                     return;
