@@ -120,7 +120,7 @@ public class DiaryActivity extends AppCompatActivity {
                 super(itemView);
                 month =  itemView.findViewById(R.id.month);
                 day =  itemView.findViewById(R.id.day);
-                image = itemView.findViewById(R.id.dealProductImage);
+                image = itemView.findViewById(R.id.location_snapshot);
                 timeOfDay = itemView.findViewById(R.id.timeOfDay);
                 location = itemView.findViewById(R.id.location);
             }
@@ -138,7 +138,7 @@ public class DiaryActivity extends AppCompatActivity {
                 super(itemView);
                 month =  itemView.findViewById(R.id.month);
                 day =  itemView.findViewById(R.id.day);
-                image = itemView.findViewById(R.id.dealProductImage);
+                image = itemView.findViewById(R.id.location_snapshot);
                 timeOfDay = itemView.findViewById(R.id.timeOfDay);
                 location = itemView.findViewById(R.id.location);
             }
@@ -157,7 +157,7 @@ public class DiaryActivity extends AppCompatActivity {
                 super(itemView);
                 month =  itemView.findViewById(R.id.month);
                 day =  itemView.findViewById(R.id.day);
-                image = itemView.findViewById(R.id.dealProductImage);
+                image = itemView.findViewById(R.id.location_snapshot);
                 timeOfDay = itemView.findViewById(R.id.timeOfDay);
                 location = itemView.findViewById(R.id.location);
             }
