@@ -5,23 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 
-import com.facebook.login.Login;
-
-public class LoginPage extends AppCompatActivity {
+public class SignUp extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.Theme_AppCompat_DayNight_NoActionBar);
-        setContentView(R.layout.activity_login_page);
+        setContentView(R.layout.activity_sign_up);
     }
-    public void logIn(View view) {
-        Intent intent = new Intent(LoginPage.this,HomePage.class);
-        startActivity(intent);
-    }
-    public void signUp(View view) {
-        Intent intent = new Intent(this, SignUp.class);
+    public void register(View view) {
+        Intent intent = new Intent(this, HomePage.class);
+        EditText displayName = findViewById(R.id.displayName);
+        intent.putExtra("name", displayName.getText().toString());
         startActivity(intent);
     }
 }
