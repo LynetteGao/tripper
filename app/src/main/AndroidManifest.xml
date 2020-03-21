@@ -5,20 +5,20 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="Tripper"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Launcher">
-        <activity android:name=".LoginPage"
-        android:label="Tripper">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-        </activity>
+        android:theme="@style/AppTheme">
         <activity android:name=".CreateNewTrip"></activity>
-        <activity android:name=".HomePage"/>
+        <activity
+            android:name=".HomePage"
+            android:label="Tripper"> <!-- the name of the app icon takes on this value-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
