@@ -10,14 +10,12 @@ import com.tripper.repositories.TripRepository;
 
 import java.util.List;
 
-public class TripViewModel extends AndroidViewModel {
+public class CreateNewTripViewModel extends AndroidViewModel {
     private TripRepository tripRepository;
-    private LiveData<List<Trip>> trips;
 
-    public TripViewModel(Application application) {
+    public CreateNewTripViewModel(Application application) {
         super(application);
         tripRepository = new TripRepository(application);
-        trips = tripRepository.getTrips();
     }
 
     public void insert(Trip trip) {

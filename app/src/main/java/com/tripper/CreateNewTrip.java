@@ -5,8 +5,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -15,8 +13,7 @@ import android.widget.EditText;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.tripper.db.entities.Trip;
-import com.tripper.repositories.TripRepository;
-import com.tripper.viewmodels.TripViewModel;
+import com.tripper.viewmodels.CreateNewTripViewModel;
 
 import java.util.Calendar;
 
@@ -31,7 +28,7 @@ public class CreateNewTrip extends AppCompatActivity {
     private TextInputLayout txtInputEndDate;
     private TextInputEditText txtEditDestination;
     private TextInputLayout txtInputDestination;
-    private TripViewModel tripViewModel;
+    private CreateNewTripViewModel tripViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +44,7 @@ public class CreateNewTrip extends AppCompatActivity {
 
         Button btnCreateTrip = findViewById(R.id.btnCreateTrip);
 
-        tripViewModel = new ViewModelProvider(this).get(TripViewModel.class);
+        tripViewModel = new ViewModelProvider(this).get(CreateNewTripViewModel.class);
 
         txtEditStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
