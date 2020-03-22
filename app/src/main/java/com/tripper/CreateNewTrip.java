@@ -33,7 +33,6 @@ public class CreateNewTrip extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_create_new_trip);
 
         txtEditStartDate = findViewById(R.id.txtEditStartDate);
