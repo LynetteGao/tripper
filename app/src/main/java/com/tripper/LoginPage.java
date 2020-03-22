@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.facebook.login.Login;
 
 public class LoginPage extends AppCompatActivity {
 
