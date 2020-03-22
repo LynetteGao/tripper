@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Tripper</string>
+    
+    <string-array name="tagList">
+        <item>Sightseeing</item>
+        <item>Art</item>
+        <item>Sport</item>
+        <item>History</item>
+        <item>Leisure</item>
+        <item>Eateries</item>
+    </string-array>
 </resources>
