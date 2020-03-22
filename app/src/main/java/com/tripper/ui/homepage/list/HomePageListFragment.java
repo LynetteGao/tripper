@@ -10,24 +10,35 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.tripper.R;
+import com.tripper.db.entities.Trip;
+
+import java.util.List;
 
 public class HomePageListFragment extends Fragment {
 
-    private HomePageListViewModel dashboardViewModel;
+    private HomePageListViewModel homePageListViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                ViewModelProviders.of(this).get(HomePageListViewModel.class);
+        homePageListViewModel =
+                new ViewModelProvider(this).get(HomePageListViewModel.class);
         View root = inflater.inflate(R.layout.fragment_homepage_list_view, container, false);
         final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+
+        homePageListViewModel.getTrips().observe(getViewLifecycleOwner(), new Observer<List<Trip>>() {
             @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onChanged(@Nullable List<Trip> trips) {
+                if (trips.isEmpty()) {
+                    textView.setText(R.string.no_trip_data);
+                }
+                else {
+                    textView.setText(trips.get(0).name);
+                }
+
             }
         });
         return root;
