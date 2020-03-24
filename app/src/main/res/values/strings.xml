@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Tripper</string>
-    
     <string-array name="tagList">
         <item>Sightseeing</item>
         <item>Art</item>
@@ -9,4 +8,12 @@
         <item>Leisure</item>
         <item>Eateries</item>
     </string-array>
+    <string name="title_activity_home_page">HomePage</string>
+    <string name="title_map_view">Map View</string>
+    <string name="title_list_view">List View</string>
+    <string name="new_trip_header">Your next destination…</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="destination">Destination</string>
+    <string name="create_trip">Create My Trip</string>
 </resources>
