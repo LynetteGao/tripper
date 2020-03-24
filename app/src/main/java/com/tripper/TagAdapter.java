@@ -1,6 +1,8 @@
 package com.tripper;
 
+import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,9 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder> {
     private String[] data;
+    int[] images;
+    Context context;
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TagAdapter(String[] data) {
+    //public TagAdapter( String[] data){
+    public TagAdapter(Context ct, String[] data, int[] images) {
         this.data = data;
+        this.context = ct;
+        this.images = images;
     }
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -21,7 +28,7 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder> {
         // each data item is just a string in this case
         ImageView imageView1;
         TextView textView1;
-        public MyViewHolder(TextView v) {
+        public MyViewHolder(View v) {
             super(v);
             textView1 = v.findViewById(R.id.textView1);
             imageView1 = v.findViewById(R.id.imageView1);
@@ -32,8 +39,8 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder> {
     @Override
     public TagAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        TextView v = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_tagsuggestion, parent, false);
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.listitem1, parent, false);
         MyViewHolder vh = new MyViewHolder(v);
         return vh;
     }
@@ -44,6 +51,7 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder> {
         // - get element from dataset at this position
         // - replace the contents of the view with that element
         holder.textView1.setText(data[position]);
+        holder.imageView1.setImageResource(images[position]);
 
     }
 
