@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".tagsuggestion"></activity>
+        <activity android:name=".TagSuggestion"></activity>
         <activity android:name=".CreateNewTrip"></activity>
         <activity
             android:name=".HomePage"

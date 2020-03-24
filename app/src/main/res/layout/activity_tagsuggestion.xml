@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".tagsuggestion"
+    tools:context=".TagSuggestion"
     android:id="@+id/tagSuggestion">
 
 
@@ -18,12 +18,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView8"
-        app:layout_constraintTop_toTopOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@id/pickTagText"
+        app:layout_constraintTop_toTopOf="@+id/createTripText"
         app:layout_constraintVertical_bias="0.838" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/createTripText"
         android:layout_width="350dp"
         android:layout_height="50dp"
         android:background="#4CAF50"
@@ -39,7 +39,7 @@
 
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/pickTagText"
         android:layout_width="350dp"
         android:layout_height="50dp"
         android:gravity="center_horizontal|center_vertical"
@@ -50,7 +50,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.459"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/createTripText"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

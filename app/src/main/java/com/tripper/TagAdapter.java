@@ -26,12 +26,12 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder> {
     // you provide access to all the views for a data item in a view holder
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        ImageView imageView1;
-        TextView textView1;
+        ImageView tagImage;
+        TextView tagText;
         public MyViewHolder(View v) {
             super(v);
-            textView1 = v.findViewById(R.id.textView1);
-            imageView1 = v.findViewById(R.id.imageView1);
+            tagText = v.findViewById(R.id.tagText);
+            tagImage = v.findViewById(R.id.tagImage);
         }
     }
     // Create new views (invoked by the layout manager)
@@ -40,7 +40,7 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder> {
     public TagAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.listitem1, parent, false);
+                .inflate(R.layout.listitem, parent, false);
         MyViewHolder vh = new MyViewHolder(v);
         return vh;
     }
@@ -50,8 +50,8 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from dataset at this position
         // - replace the contents of the view with that element
-        holder.textView1.setText(data[position]);
-        holder.imageView1.setImageResource(images[position]);
+        holder.tagText.setText(data[position]);
+        holder.tagImage.setImageResource(images[position]);
 
     }
 

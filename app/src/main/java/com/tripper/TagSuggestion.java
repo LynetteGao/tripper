@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.os.Bundle;
 
-public class tagsuggestion extends AppCompatActivity {
+public class TagSuggestion extends AppCompatActivity {
     Context context;
     //String[] data;
     int[] images = {R.drawable.sightseeing, R.drawable.art, R.drawable.sport, R.drawable.history,
