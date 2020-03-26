@@ -17,6 +17,7 @@ public class HomePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_AppCompat_Light_DarkActionBar);
         setContentView(R.layout.activity_home_page);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -33,4 +34,11 @@ public class HomePage extends AppCompatActivity {
         Intent intent = new Intent(this, CreateNewTrip.class);
         startActivity(intent);
     }
+
+    //This method is used to test the TripOverview Page
+    public void onOverviewClick(View view){
+        Intent intent = new Intent(this,TripOverview.class);
+        startActivity(intent);
+    }
+
 }

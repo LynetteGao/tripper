@@ -6,28 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".CreateNewTrip">
 
-    <EditText
-        android:id="@+id/txtNewTripEndDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:focusable="false"
-        android:inputType="date"
-        android:onClick="onEndDateClicked"
-        app:layout_constraintStart_toStartOf="@+id/lblNewTripEndDate"
-        app:layout_constraintTop_toBottomOf="@+id/lblNewTripEndDate" />
-
-    <EditText
-        android:id="@+id/txtNewTripStartDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:focusable="false"
-        android:inputType="date"
-        android:onClick="onStartDateClicked"
-        app:layout_constraintStart_toStartOf="@+id/lblNewTripStartDate"
-        app:layout_constraintTop_toBottomOf="@+id/lblNewTripStartDate" />
-
     <TextView
         android:id="@+id/lblNewTripHeader"
         android:layout_width="wrap_content"
@@ -39,53 +17,62 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <TextView
-        android:id="@+id/lblNewTripStartDate"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtInputStartDate"
+        android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:text="@string/start_date"
-        android:textSize="12sp"
+        android:hint="@string/start_date"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblNewTripHeader" />
+        app:layout_constraintTop_toBottomOf="@+id/lblNewTripHeader">
 
-    <TextView
-        android:id="@+id/lblNewTripEndDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/end_date"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/txtNewTripStartDate"
-        app:layout_constraintTop_toBottomOf="@+id/txtNewTripStartDate" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtEditStartDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/lblDestination"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtInputEndDate"
+        android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:text="@string/destination"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/txtNewTripEndDate"
-        app:layout_constraintTop_toBottomOf="@+id/txtNewTripEndDate" />
+        android:layout_marginTop="8dp"
+        android:hint="@string/end_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtInputStartDate">
 
-    <EditText
-        android:id="@+id/txtNewTripDestination"
-        android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtEditEndDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtInputDestination"
+        android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="@+id/lblDestination"
-        app:layout_constraintTop_toBottomOf="@+id/lblDestination" />
+        android:layout_marginTop="8dp"
+        android:hint="@string/destination"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtInputEndDate">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtEditDestination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnCreateTrip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:text="@string/create_trip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtNewTripDestination" />
+        app:layout_constraintTop_toBottomOf="@+id/txtInputDestination" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
