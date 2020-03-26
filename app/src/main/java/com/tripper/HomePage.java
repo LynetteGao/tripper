@@ -41,4 +41,10 @@ public class HomePage extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //This method is used to test the TagSuggestion Page
+    public void onTagClick(View view){
+        Intent intent = new Intent(this,TagSuggestion.class);
+        startActivity(intent);
+    }
+
 }
