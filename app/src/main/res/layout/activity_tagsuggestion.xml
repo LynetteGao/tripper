@@ -18,39 +18,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pickTagText"
-        app:layout_constraintTop_toTopOf="@+id/createTripText"
         app:layout_constraintVertical_bias="0.838" />
 
-    <TextView
-        android:id="@+id/createTripText"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
-        android:background="#4CAF50"
-        android:gravity="center_vertical"
-        android:text="  Create Your Trip"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.459"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
-
-
-    <TextView
-        android:id="@+id/pickTagText"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="Pick your preferred tags!"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.459"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createTripText"
-        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
