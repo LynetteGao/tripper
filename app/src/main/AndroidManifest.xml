@@ -12,6 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Launcher">
+        <meta-data
+            android:name = "com.google.android.geo.API_KEY"
+            android:value = "AIzaSyDjWRb7f25H0ge7_q8E4BFfs7gasMKt-aA"/>
         <activity android:name=".SignUp"></activity>
         <activity android:name=".TripOverview"></activity>
         <activity

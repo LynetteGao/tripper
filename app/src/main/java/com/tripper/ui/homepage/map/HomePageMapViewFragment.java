@@ -23,13 +23,6 @@ public class HomePageMapViewFragment extends Fragment {
         mapViewModel =
                 ViewModelProviders.of(this).get(HomePageMapViewModel.class);
         View root = inflater.inflate(R.layout.fragment_homepage_map_view, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        mapViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
         return root;
     }
 }
