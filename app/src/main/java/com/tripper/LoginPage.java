@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.android.libraries.places.api.Places;
+
 
 public class LoginPage extends AppCompatActivity {
 
@@ -14,6 +16,10 @@ public class LoginPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTheme(R.style.Theme_AppCompat_DayNight_NoActionBar);
         setContentView(R.layout.activity_login_page);
+
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), getString(R.string.places_api_key));
+        }
     }
     public void logIn(View view) {
         Intent intent = new Intent(this,HomePage.class);
