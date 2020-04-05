@@ -33,8 +33,10 @@ public class Trip {
     @ColumnInfo(name="destination")
     public String destination;
 
-    @ColumnInfo(name="location")
-    @TypeConverters({LocationTypeConverter.class})
-    public Location location;
+    @ColumnInfo(name="location_lat")
+    public String locationLat;
+
+    @ColumnInfo(name="location_lon")
+    public  String locationLon;
 
 }

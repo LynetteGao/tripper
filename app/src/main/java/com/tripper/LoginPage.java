@@ -17,9 +17,7 @@ public class LoginPage extends AppCompatActivity {
         setTheme(R.style.Theme_AppCompat_DayNight_NoActionBar);
         setContentView(R.layout.activity_login_page);
 
-        if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), getString(R.string.places_api_key));
-        }
+
     }
     public void logIn(View view) {
         Intent intent = new Intent(this,HomePage.class);

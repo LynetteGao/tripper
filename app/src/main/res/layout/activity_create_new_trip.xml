@@ -21,16 +21,16 @@
         android:id="@+id/txtInputStartDate"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:hint="@string/start_date"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblNewTripHeader">
+        app:layout_constraintTop_toBottomOf="@+id/autocomplete_fragment">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtEditStartDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="false"/>
+            android:focusable="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -50,16 +50,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtInputDestination"
+        android:id="@+id/txtInputTripName"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="@string/destination"
+        android:hint="@string/trip_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtInputEndDate">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtEditDestination"
+            android:id="@+id/txtEditTripName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"/>
@@ -70,17 +70,18 @@
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/txtInputStartDate"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtInputDestination" />
+        app:layout_constraintTop_toBottomOf="@+id/lblNewTripHeader" />
 
     <Button
         android:id="@+id/btnCreateTrip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:text="@string/create_trip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/autocomplete_fragment" />
+        app:layout_constraintTop_toBottomOf="@+id/txtInputTripName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
