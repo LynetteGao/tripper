@@ -9,7 +9,7 @@ import com.tripper.db.converters.CalendarTypeConverter;
 
 import java.util.Calendar;
 
-@Entity
+@Entity(tableName = "day")
 public class Day {
     @PrimaryKey(autoGenerate = true)
     public int id;

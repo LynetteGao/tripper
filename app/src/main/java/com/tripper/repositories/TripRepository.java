@@ -17,7 +17,7 @@ public class TripRepository {
     public TripRepository(Application application) {
         TripperDatabase db = TripperDatabase.getDatabase(application);
         tripDao = db.tripDao();
-        trips = tripDao.getTripsDesc();
+        trips = tripDao.getLiveTripsDesc();
     }
 
     public LiveData<List<Trip>> getTrips() {
