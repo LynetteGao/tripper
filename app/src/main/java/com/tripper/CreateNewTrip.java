@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
@@ -36,6 +37,7 @@ public class CreateNewTrip extends AppCompatActivity {
     private TextInputLayout txtInputEndDate;
     private TextInputEditText txtEditTripName;
     private TextInputLayout txtInputTripName;
+    private TextView txtPlaceError;
     private CreateNewTripViewModel tripViewModel;
     private AutocompleteSupportFragment autocompleteSupportFragment;
     private Place tripPlace;
@@ -52,6 +54,7 @@ public class CreateNewTrip extends AppCompatActivity {
         txtInputEndDate = findViewById(R.id.txtInputEndDate);
         txtEditTripName = findViewById(R.id.txtEditTripName);
         txtInputTripName = findViewById(R.id.txtInputTripName);
+        txtPlaceError = findViewById(R.id.txtPlaceError);
 
         Button btnCreateTrip = findViewById(R.id.btnCreateTrip);
 
@@ -123,6 +126,7 @@ public class CreateNewTrip extends AppCompatActivity {
                 // TODO: Get info about the selected place.
                 tripPlace = place;
                 txtEditTripName.setText("Trip to " + tripPlace.getName());
+                txtPlaceError.setVisibility(View.INVISIBLE);
                 Log.i("place", "Place: " + tripPlace.getLatLng() + ", " + tripPlace.getId());
             }
 
@@ -150,6 +154,11 @@ public class CreateNewTrip extends AppCompatActivity {
         if (txtEditTripName.getText() == null || txtEditTripName.getText().toString().isEmpty()) {
             txtInputTripName.setError("Trip name is required");
             valid = false;
+        }
+
+        if (tripPlace == null) {
+            valid = false;
+            txtPlaceError.setVisibility(View.VISIBLE);
         }
 
         return valid;
