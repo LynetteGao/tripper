@@ -7,6 +7,8 @@
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="destination">Destination</string>
+    <string name="trip_name">Trip Name</string>
     <string name="create_trip">Create My Trip</string>
     <string name="no_trip_data">You don\'t have any trips yet!</string>
+    <string name="places_api_key">AIzaSyDjWRb7f25H0ge7_q8E4BFfs7gasMKt-aA</string>
 </resources>

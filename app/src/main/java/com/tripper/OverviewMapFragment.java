@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.maps.SupportMapFragment;
+
 
 /*This class is the representation of the Map Fragment on the trip overview*/
 public class OverviewMapFragment extends Fragment {
