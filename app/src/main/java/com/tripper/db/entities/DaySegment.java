@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "daysegment")
+@Entity(tableName = "day_segment")
 public class DaySegment {
     @PrimaryKey(autoGenerate = true)
     public int id;
