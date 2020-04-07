@@ -8,11 +8,12 @@ import com.tripper.db.entities.Trip;
 
 import java.util.List;
 
-public class TripWithDays {
+public class TripWithDaysAndDaySegments {
     @Embedded public Trip trip;
     @Relation(
+            entity = Day.class,
             parentColumn = "id",
             entityColumn = "trip_id"
     )
-    public List<Day> days;
+    public List<DayWithSegmentsAndEvents> days;
 }

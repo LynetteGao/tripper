@@ -14,7 +14,8 @@ import com.tripper.db.entities.DaySegment;
 import com.tripper.db.entities.Event;
 import com.tripper.db.entities.Trip;
 import com.tripper.db.relationships.DaySegmentWithEvents;
-import com.tripper.db.relationships.TripWithDays;
+import com.tripper.db.relationships.DayWithSegmentsAndEvents;
+import com.tripper.db.relationships.TripWithDaysAndDaySegments;
 
 import java.util.List;
 
@@ -90,15 +91,15 @@ public interface TripDao {
     // relationship methods
     @Transaction
     @Query("select * from trip")
-    public List<TripWithDays> getTripsWithDays();
+    public List<TripWithDaysAndDaySegments> getTripsWithDaysAndDaySegments();
 
     @Transaction
     @Query("select * from day_segment")
     public List<DaySegmentWithEvents> getDaySegmentsWithEvents();
 //
-//    @Transaction
-//    @Query("select * from day")
-//    public List<DayWithSegmentsAndEvents> getDaysWithSegmentsAndEvents();
+    @Transaction
+    @Query("select * from day")
+    public List<DayWithSegmentsAndEvents> getDaysWithSegmentsAndEvents();
 //
 //    @Transaction
 //    @Query("select * from trip")

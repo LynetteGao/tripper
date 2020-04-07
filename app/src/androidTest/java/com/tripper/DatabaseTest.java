@@ -2,7 +2,6 @@ package com.tripper;
 
 import android.content.Context;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -14,7 +13,8 @@ import com.tripper.db.entities.DaySegment;
 import com.tripper.db.entities.Event;
 import com.tripper.db.entities.Trip;
 import com.tripper.db.relationships.DaySegmentWithEvents;
-import com.tripper.db.relationships.TripWithDays;
+import com.tripper.db.relationships.DayWithSegmentsAndEvents;
+import com.tripper.db.relationships.TripWithDaysAndDaySegments;
 
 import org.junit.After;
 import org.junit.Before;
@@ -91,21 +91,6 @@ public class DatabaseTest {
 
 
     // test relationship classes
-    @Test
-    public void getTripWithDays() {
-        Trip trip = createTestTrip();
-        tripDao.insertTrip(trip);
-        trip = tripDao.getTripsDesc().get(0);
-
-        Day day = createTestDay();
-        day.tripId = trip.id;
-        tripDao.insertDay(day);
-
-        List<TripWithDays> tripWithDays = tripDao.getTripsWithDays();
-        assertNotNull(tripWithDays);
-        assertEquals(tripWithDays.get(0).trip.id, tripWithDays.get(0).days.get(0).tripId);
-
-    }
 
     @Test
     public void getDaySegmentWithEvents() {
@@ -120,6 +105,53 @@ public class DatabaseTest {
         List<DaySegmentWithEvents> daySegmentWithEvents = tripDao.getDaySegmentsWithEvents();
         assertEquals(daySegmentWithEvents.get(0).daySegment.id,
                 daySegmentWithEvents.get(0).events.get(0).segmentId);
+    }
+
+    @Test
+    public void getDayWithSegmentsAndEvents() {
+        Day day = createTestDay();
+        tripDao.insertDay(day);
+        day = tripDao.getDays().get(0);
+
+        DaySegment daySegment = createTestDaySegment();
+        daySegment.dayId = day.id;
+        tripDao.insertDaySegment(daySegment);
+        daySegment = tripDao.getDaySegments().get(0);
+
+        Event event = createTestEvent();
+        event.segmentId = daySegment.id;
+        tripDao.insertEvent(event);
+
+        List<DayWithSegmentsAndEvents> dayWithSegmentsAndEvents = tripDao.getDaysWithSegmentsAndEvents();
+        assertEquals(dayWithSegmentsAndEvents.get(0).day.id,
+                dayWithSegmentsAndEvents.get(0).daySegments.get(0).daySegment.dayId);
+
+    }
+
+    @Test
+    public void getTripWithDaysAndDaySegments() {
+        Trip trip = createTestTrip();
+        tripDao.insertTrip(trip);
+        trip = tripDao.getTripsDesc().get(0);
+
+        Day day = createTestDay();
+        day.tripId = trip.id;
+        tripDao.insertDay(day);
+        day = tripDao.getDays().get(0);
+
+        DaySegment daySegment = createTestDaySegment();
+        daySegment.dayId = day.id;
+        tripDao.insertDaySegment(daySegment);
+        daySegment = tripDao.getDaySegments().get(0);
+
+        Event event = createTestEvent();
+        event.segmentId = daySegment.id;
+        tripDao.insertEvent(event);
+
+        List<TripWithDaysAndDaySegments> tripWithDays = tripDao.getTripsWithDaysAndDaySegments();
+        assertNotNull(tripWithDays);
+        //assertEquals(tripWithDays.get(0).trip.id, tripWithDays.get(0).days.get(0).tripId);
+
     }
 
     // helper methods
