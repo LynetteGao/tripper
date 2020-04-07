@@ -31,11 +31,25 @@
             android:layout_toStartOf="@id/address"/>
 
         <TextView
-            android:id="@+id/event"
+            android:id="@+id/morning_event"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/day"
             android:text="Morning"
+            />
+        <TextView
+            android:id="@+id/afternoon_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/morning_event"
+            android:text="Afternoon"
+            />
+        <TextView
+            android:id="@+id/evening_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/afternoon_event"
+            android:text="Evening"
             />
 
 
