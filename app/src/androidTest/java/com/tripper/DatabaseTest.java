@@ -156,6 +156,30 @@ public class DatabaseTest {
 
     }
 
+    @Test
+    public void getTripWithDaysAndSegmentsById() {
+        Trip trip = createTestTrip();
+        tripDao.insertTrip(trip);
+        trip = tripDao.getTripsDesc().get(0);
+
+        Day day = createTestDay();
+        day.tripId = trip.id;
+        tripDao.insertDay(day);
+        day = tripDao.getDays().get(0);
+
+        DaySegment daySegment = createTestDaySegment();
+        daySegment.dayId = day.id;
+        tripDao.insertDaySegment(daySegment);
+        daySegment = tripDao.getDaySegments().get(0);
+
+        Event event = createTestEvent();
+        event.segmentId = daySegment.id;
+        tripDao.insertEvent(event);
+
+        TripWithDaysAndDaySegments tripWithDaysAndDaySegments = tripDao.getTripWithDaysAndDaySegmentsById(trip.id);
+        assertEquals(tripWithDaysAndDaySegments.trip.id, trip.id);
+    }
+
     // helper methods
     private Trip createTestTrip() {
         Trip trip = new Trip();

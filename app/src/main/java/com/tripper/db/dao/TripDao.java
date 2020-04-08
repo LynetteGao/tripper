@@ -100,6 +100,11 @@ public interface TripDao {
     @Transaction
     @Query("select * from day")
     public List<DayWithSegmentsAndEvents> getDaysWithSegmentsAndEvents();
+
+    @Transaction
+    @Query("select * from trip where id = :tripId")
+    public TripWithDaysAndDaySegments getTripWithDaysAndDaySegmentsById(int tripId);
+    
 //
 //    @Transaction
 //    @Query("select * from trip")
