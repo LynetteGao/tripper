@@ -5,7 +5,6 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.tripper.db.entities.Trip;
 import com.tripper.repositories.TripRepository;
@@ -21,7 +20,7 @@ public class HomePageListViewModel extends AndroidViewModel {
     public HomePageListViewModel(Application application) {
         super(application);
         tripRepository = new TripRepository(application);
-        allTrips = tripRepository.getTrips();
+        allTrips = tripRepository.getLiveTrips();
 
         mText = new MutableLiveData<>();
         mText.setValue("Placeholder for list view");

@@ -17,7 +17,7 @@ import com.tripper.db.entities.Trip;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Trip.class, Day.class, DaySegment.class, Event.class,}, version = 2, exportSchema = false)
+@Database(entities = {Trip.class, Day.class, DaySegment.class, Event.class,}, version = 3, exportSchema = false)
 @TypeConverters({CalendarTypeConverter.class})
 public abstract class TripperDatabase extends RoomDatabase {
     public abstract TripDao tripDao();

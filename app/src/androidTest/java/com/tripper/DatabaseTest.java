@@ -150,6 +150,8 @@ public class DatabaseTest {
 
         List<TripWithDaysAndDaySegments> tripWithDays = tripDao.getTripsWithDaysAndDaySegments();
         assertNotNull(tripWithDays);
+        assertEquals(tripWithDays.get(0).trip.id,
+                tripWithDays.get(0).days.get(0).day.tripId);
         //assertEquals(tripWithDays.get(0).trip.id, tripWithDays.get(0).days.get(0).tripId);
 
     }

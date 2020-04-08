@@ -17,14 +17,13 @@ public class TripRepository {
     public TripRepository(Application application) {
         TripperDatabase db = TripperDatabase.getDatabase(application);
         tripDao = db.tripDao();
-        trips = tripDao.getLiveTripsDesc();
     }
 
-    public LiveData<List<Trip>> getTrips() {
-        return trips;
+    public LiveData<List<Trip>> getLiveTrips() {
+        return tripDao.getLiveTripsDesc();
     }
 
-    public void insert(Trip trip) {
+    public void insertTrip(Trip trip) {
         TripperDatabase.databaseWriteExecutor.execute(() -> {
             tripDao.insertTrip(trip);
         });
