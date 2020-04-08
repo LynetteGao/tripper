@@ -45,6 +45,7 @@ public class HomePageMapViewFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 gMap = googleMap;
+                // clicking the info window should take you to trip overview
                 gMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
                     public void onInfoWindowClick(Marker marker) {
@@ -59,17 +60,18 @@ public class HomePageMapViewFragment extends Fragment {
             }
         });
 
-
         mapViewModel.getTrips().observe(getViewLifecycleOwner(), new Observer<List<Trip>>() {
             @Override
             public void onChanged(List<Trip> trips) {
                 if (!trips.isEmpty()) {
                     for (Trip trip : trips) {
+                        // create a map marker for each trip
+                        // TODO: different colors for upcoming, current, and past trips
                         LatLng latLng = new LatLng(Double.parseDouble(trip.locationLat), Double.parseDouble(trip.locationLon));
                         gMap.addMarker(new MarkerOptions()
                             .position(latLng)
                             .title(trip.name))
-                                .setTag(trip.id);
+                                .setTag(trip.id); // put the tripId in the marker so we can send it in an intent later
                     }
                 }
             }

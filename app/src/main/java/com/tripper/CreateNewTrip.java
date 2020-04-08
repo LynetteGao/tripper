@@ -123,7 +123,6 @@ public class CreateNewTrip extends AppCompatActivity {
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
                 tripPlace = place;
                 txtEditTripName.setText("Trip to " + tripPlace.getName());
                 txtPlaceError.setVisibility(View.INVISIBLE);
@@ -132,7 +131,6 @@ public class CreateNewTrip extends AppCompatActivity {
 
             @Override
             public void onError(Status status) {
-                // TODO: Handle the error.
                 txtEditTripName.setText("");
                 tripPlace = null;
                 Log.i("place", "An error occurred: " + status);
