@@ -88,7 +88,7 @@ public class DiaryActivity extends AppCompatActivity {
                 return new FirstItemHolder(view);
             } else if (viewType == VIEW_TYPE_MIDDLE_ITEM) {
                 view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_card_type_middle, parent, false);
+                        .inflate(R.layout.item_card_type_middle_left, parent, false);
                 return new MiddleItemHolder(view);
             } else if(viewType == VIEW_TYPE_LAST_ITEM) {
                 view = LayoutInflater.from(parent.getContext())
