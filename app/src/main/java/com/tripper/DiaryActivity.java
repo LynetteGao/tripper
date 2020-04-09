@@ -58,6 +58,7 @@ public class DiaryActivity extends AppCompatActivity {
         private static final int VIEW_TYPE_FIRST_ITEM = 1;
         private static final int VIEW_TYPE_MIDDLE_ITEM = 2;
         private static final int VIEW_TYPE_LAST_ITEM = 3;
+        private int middleItemCounter = 0;
 
         private ArrayList<TimeLineItem> mItemsList;
         TimeLineAdapter(Context context, ArrayList<TimeLineItem> mItemsListData) {
@@ -80,15 +81,22 @@ public class DiaryActivity extends AppCompatActivity {
         }
         @NonNull
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view;
             if (viewType == VIEW_TYPE_FIRST_ITEM) {
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_card_type_start, parent, false);
                 return new FirstItemHolder(view);
             } else if (viewType == VIEW_TYPE_MIDDLE_ITEM) {
-                view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_card_type_middle_left, parent, false);
+                if(middleItemCounter == 0){
+                    view = LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.item_card_type_middle_left, parent, false);
+                    middleItemCounter = 1;
+                }else{
+                    view = LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.item_card_type_middle_right, parent, false);
+                    middleItemCounter = 0;
+                }
                 return new MiddleItemHolder(view);
             } else if(viewType == VIEW_TYPE_LAST_ITEM) {
                 view = LayoutInflater.from(parent.getContext())
