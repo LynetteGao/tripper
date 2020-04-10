@@ -17,6 +17,7 @@ import com.tripper.db.entities.Trip;
 import com.tripper.EmptyRecyclerView;
 
 import java.util.List;
+import java.util.Objects;
 
 public class HomePageListFragment extends Fragment {
 
@@ -32,22 +33,15 @@ public class HomePageListFragment extends Fragment {
                 new ViewModelProvider(this).get(HomePageListViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_homepage_list_view, container, false);
-
-
         layoutManager = new LinearLayoutManager(getContext());
-
-
-
         trips = homePageListViewModel.getTrips();
-        adapter = new TripListAdapter(getContext());
+        adapter = new TripListAdapter(Objects.requireNonNull(getContext()));
+        trips.observe(getViewLifecycleOwner(), trips -> adapter.setData(trips));
 
-
-        recyclerView = (EmptyRecyclerView) root.findViewById(R.id.tripRecyclerView);
+        recyclerView = root.findViewById(R.id.tripRecyclerView);
         recyclerView.setLayoutManager(layoutManager);
-
         View emptyView = root.findViewById(R.id.txtNoTrips);
         recyclerView.setEmptyView(emptyView);
-        trips.observe(getViewLifecycleOwner(), trips -> adapter.setData(trips));
         recyclerView.setAdapter(adapter);
 
         return root;

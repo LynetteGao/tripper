@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Trip Name Placeholder"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
