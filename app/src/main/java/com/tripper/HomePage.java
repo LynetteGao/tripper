@@ -45,12 +45,6 @@ public class HomePage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //This method is used to test the TripOverview Page
-    public void onOverviewClick(View view){
-        Intent intent = new Intent(this,TripOverview.class);
-        startActivity(intent);
-    }
-
     private void getLocationPermission() {
         int permission = ActivityCompat.checkSelfPermission(this.getApplicationContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION);
