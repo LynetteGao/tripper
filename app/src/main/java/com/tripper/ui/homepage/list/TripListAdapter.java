@@ -87,6 +87,11 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripLi
                 txtStart.setText(startDate);
                 txtEnd.setText(endDate);
 
+                long dateDiff = trip.endDate.getTimeInMillis() - trip.startDate.getTimeInMillis();
+                int dayCount = (int) dateDiff / (24 * 60 * 60 * 1000) + 1;
+                String duration = String.format("Duration: %d days", dayCount);
+                txtDuration.setText(duration);
+
             }
         }
     }
