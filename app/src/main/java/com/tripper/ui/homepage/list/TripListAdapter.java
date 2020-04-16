@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DiffUtil;
@@ -66,6 +67,7 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripLi
 
     public static class TripListViewHolder extends RecyclerView.ViewHolder {
         private TextView txtTripName, txtStart, txtEnd, txtDuration;
+        private Toolbar toolbar;
         CardView cardView;
         public TripListViewHolder(View tripView) {
             super(tripView);
@@ -73,6 +75,8 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripLi
             txtStart = tripView.findViewById(R.id.txtStart);
             txtEnd = tripView.findViewById(R.id.txtEnd);
             txtDuration = tripView.findViewById(R.id.txtDuration);
+            toolbar = tripView.findViewById(R.id.trip_toolbar);
+            toolbar.inflateMenu(R.menu.trip_list_menu);
         }
 
         void bind(final Trip trip) {

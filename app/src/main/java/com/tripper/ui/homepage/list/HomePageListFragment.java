@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -33,6 +34,7 @@ public class HomePageListFragment extends Fragment {
                 new ViewModelProvider(this).get(HomePageListViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_homepage_list_view, container, false);
+
         layoutManager = new LinearLayoutManager(getContext());
         trips = homePageListViewModel.getTrips();
         adapter = new TripListAdapter(Objects.requireNonNull(getContext()));
