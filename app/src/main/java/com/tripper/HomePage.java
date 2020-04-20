@@ -47,4 +47,9 @@ public class HomePage extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //This method is used to test the LocationSuggestion Page
+    public void onLocationClick(View view){
+        Intent intent = new Intent(this,LocationSuggestion.class);
+        startActivity(intent);
+    }
 }

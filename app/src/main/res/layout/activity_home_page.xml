@@ -44,24 +44,36 @@
         app:srcCompat="@drawable/ic_add_white_24dp" />
 
     <Button
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
+        android:onClick="onOverviewClick"
         android:text="test the overview"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/nav_host_fragment"
-        android:onClick="onOverviewClick"/>
+        app:layout_constraintTop_toTopOf="@+id/nav_host_fragment" />
     <Button
-        android:id="@+id/button"
+    android:id="@+id/button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="test tag suggestion"
+    app:layout_constraintBottom_toBottomOf="@+id/nav_view"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/nav_host_fragment"
+    app:layout_constraintVertical_bias="0.185"
+    android:onClick="onTagClick"/>
+
+    <Button
+        android:id="@+id/locationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="test tag suggestion"
-        app:layout_constraintBottom_toBottomOf="@+id/nav_view"
+        android:onClick="onLocationClick"
+        android:text="test location suggestion"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/nav_host_fragment"
-        app:layout_constraintVertical_bias="0.185"
-        android:onClick="onTagClick"/>
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

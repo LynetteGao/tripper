@@ -15,6 +15,7 @@
         <activity android:name=".SignUp"></activity>
         <activity android:name=".TripOverview"></activity>
         <activity android:name=".TagSuggestion"></activity>
+        <activity android:name=".LocationSuggestion"></activity>
         <activity
             android:name=".LoginPage"
             android:label="Tripper">
