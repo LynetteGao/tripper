@@ -18,15 +18,18 @@ public class TripOverview extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.Theme_AppCompat_Light_DarkActionBar);
+        setTheme(R.style.AppTheme);  //custom theme for app
         setContentView(R.layout.activity_trip_overview);
 
         BottomNavigationView bottomNav = findViewById(R.id.tripoverview_bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(navListner);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
+        if (savedInstanceState == null) {
+            bottomNav.setSelectedItemId(R.id.nav_map);
+        }
     }
 
     //This method is to set up the bottom navigation function
-    private BottomNavigationView.OnNavigationItemSelectedListener navListner =
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener(){
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {

@@ -27,4 +27,13 @@ public class Trip {
     @TypeConverters({CalendarTypeConverter.class})
     public Calendar endDate;
 
+    @ColumnInfo(name="destination")
+    public String destination;
+
+    @ColumnInfo(name="location_lat")
+    public String locationLat;
+
+    @ColumnInfo(name="location_lon")
+    public  String locationLon;
+
 }
