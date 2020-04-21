@@ -37,7 +37,7 @@ public class HomePageListFragment extends Fragment {
 
         layoutManager = new LinearLayoutManager(getContext());
         trips = homePageListViewModel.getTrips();
-        adapter = new TripListAdapter(Objects.requireNonNull(getContext()));
+        adapter = new TripListAdapter(Objects.requireNonNull(getContext()), homePageListViewModel);
         trips.observe(getViewLifecycleOwner(), trips -> adapter.setData(trips));
 
         recyclerView = root.findViewById(R.id.tripRecyclerView);

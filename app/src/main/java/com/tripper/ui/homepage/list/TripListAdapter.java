@@ -2,6 +2,7 @@ package com.tripper.ui.homepage.list;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -23,12 +24,14 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripLi
     private List<Trip> data;
     private Context context;
     private LayoutInflater layoutInflater;
+    private HomePageListViewModel homePageListViewModel;
 
 
-    public TripListAdapter(Context context) {
+    public TripListAdapter(Context context, HomePageListViewModel homePageListViewModel) {
         this.data = new ArrayList<>();
         this.context = context;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.homePageListViewModel = homePageListViewModel;
     }
 
     @Override
@@ -44,6 +47,23 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripLi
     @Override
     public void onBindViewHolder(TripListViewHolder viewHolder, int position) {
         viewHolder.bind(data.get(position));
+        viewHolder.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menuDeleteTrip:
+                        homePageListViewModel.deleteTrip(data.get(position));
+                        data.remove(position);
+                        notifyDataSetChanged();
+                        break;
+                    case R.id.menuEditTrip:
+                        break;
+                    default:
+                        return false;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
