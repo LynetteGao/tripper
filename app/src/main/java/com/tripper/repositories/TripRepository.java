@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import com.tripper.db.TripperDatabase;
 import com.tripper.db.dao.TripDao;
 import com.tripper.db.entities.Trip;
+import com.tripper.db.relationships.TripWithDaysAndDaySegments;
 
 import java.util.List;
 
@@ -17,16 +18,19 @@ public class TripRepository {
     public TripRepository(Application application) {
         TripperDatabase db = TripperDatabase.getDatabase(application);
         tripDao = db.tripDao();
-        trips = tripDao.getTripsDesc();
     }
 
-    public LiveData<List<Trip>> getTrips() {
-        return trips;
+    public LiveData<List<Trip>> getLiveTrips() {
+        return tripDao.getLiveTripsDesc();
     }
 
-    public void insert(Trip trip) {
+    public void insertTrip(Trip trip) {
         TripperDatabase.databaseWriteExecutor.execute(() -> {
             tripDao.insertTrip(trip);
         });
+    }
+
+    public TripWithDaysAndDaySegments getTripWithDaysAndSegmentsById(int tripId) {
+        return tripDao.getTripWithDaysAndDaySegmentsById(tripId);
     }
 }

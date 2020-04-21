@@ -4,8 +4,6 @@ import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.tripper.db.entities.Trip;
 import com.tripper.repositories.TripRepository;
@@ -20,7 +18,7 @@ public class HomePageMapViewModel extends AndroidViewModel {
     public HomePageMapViewModel(Application application) {
         super(application);
         tripRepository = new TripRepository(application);
-        allTrips = tripRepository.getTrips();
+        allTrips = tripRepository.getLiveTrips();
 
     }
 
