@@ -1,12 +1,17 @@
 <resources>
     <string name="app_name">Tripper</string>
     <string-array name="tagList">
-        <item>Sightseeing</item>
-        <item>Art</item>
-        <item>Sport</item>
-        <item>History</item>
-        <item>Leisure</item>
-        <item>Eateries</item>
+    <item>Sightseeing</item>
+    <item>Art</item>
+    <item>Sport</item>
+    <item>History</item>
+    <item>Leisure</item>
+    <item>Eateries</item>
+</string-array>
+    <string-array name="locationList">
+        <item>Brittingham Boats</item>
+        <item>Madison Mc Call</item>
+        <item>Boulders Climbing</item>
     </string-array>
     <string name="title_activity_home_page">HomePage</string>
     <string name="title_map_view">Map View</string>
