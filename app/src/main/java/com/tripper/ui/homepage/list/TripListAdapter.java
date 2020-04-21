@@ -1,6 +1,7 @@
 package com.tripper.ui.homepage.list;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.tripper.R;
+import com.tripper.TripOverview;
 import com.tripper.db.entities.Trip;
 
 import java.util.ArrayList;
@@ -97,6 +99,7 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripLi
             txtDuration = tripView.findViewById(R.id.txtDuration);
             toolbar = tripView.findViewById(R.id.trip_toolbar);
             toolbar.inflateMenu(R.menu.trip_list_menu);
+            cardView = tripView.findViewById(R.id.tripCardView);
         }
 
         void bind(final Trip trip) {
@@ -112,6 +115,14 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripLi
                 String duration = String.format("Duration: %d days", dayCount);
                 txtDuration.setText(duration);
 
+                cardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(v.getContext(), TripOverview.class);
+                        intent.putExtra("tripId", trip.id);
+                        v.getContext().startActivity(intent);
+                    }
+                });
             }
         }
     }

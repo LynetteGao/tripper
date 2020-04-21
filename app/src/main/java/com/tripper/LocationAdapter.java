@@ -35,7 +35,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
             super(v);
             locationText = v.findViewById(R.id.locationText);
             locationImage = v.findViewById(R.id.locationImage);
-            locationCard = v.findViewById(R.id.cardView);
+            locationCard = v.findViewById(R.id.tripCardView);
 
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
