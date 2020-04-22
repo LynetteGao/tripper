@@ -12,6 +12,7 @@ import androidx.room.Update;
 import com.tripper.db.entities.Day;
 import com.tripper.db.entities.DaySegment;
 import com.tripper.db.entities.Event;
+import com.tripper.db.entities.Tag;
 import com.tripper.db.entities.Trip;
 import com.tripper.db.relationships.DaySegmentWithEvents;
 import com.tripper.db.relationships.DayWithSegmentsAndEvents;
@@ -59,6 +60,15 @@ public interface TripDao {
     @Update
     public void  updateEvent(Event event);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public void insertTag(Tag tag);
+
+    @Delete
+    public void deleteTag(Tag tag);
+
+    @Update
+    public void updateTag(Tag tag);
+
     // simple select queries
     @Query("select * from trip")
     public List<Trip> getTrips();
@@ -71,6 +81,9 @@ public interface TripDao {
 
     @Query("select * from event")
     public List<Event> getEvents();
+
+    @Query("select * from tag")
+    public List<Tag> getTags();
 
     // more complex data access methods
     @Query("select * from trip order by start_date desc")

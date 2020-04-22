@@ -11,6 +11,7 @@ import com.tripper.db.dao.TripDao;
 import com.tripper.db.entities.Day;
 import com.tripper.db.entities.DaySegment;
 import com.tripper.db.entities.Event;
+import com.tripper.db.entities.Tag;
 import com.tripper.db.entities.Trip;
 import com.tripper.db.relationships.DaySegmentWithEvents;
 import com.tripper.db.relationships.DayWithSegmentsAndEvents;
@@ -89,6 +90,14 @@ public class DatabaseTest {
 
     }
 
+    @Test
+    public void writeTag() {
+        Tag tag = createTestTag();
+        tripDao.insertTag(tag);
+
+        List<Tag> tags = tripDao.getTags();
+        assertEquals(tags.get(0).name, tag.name);
+    }
 
     // test relationship classes
 
@@ -215,6 +224,13 @@ public class DatabaseTest {
         event.locationLon = "0";
         event.name = "test event";
         return event;
+    }
+
+    private Tag createTestTag() {
+        Tag tag = new Tag();
+        tag.name = "testTag";
+        tag.icon = "testIcon";
+        return tag;
     }
 
 }
