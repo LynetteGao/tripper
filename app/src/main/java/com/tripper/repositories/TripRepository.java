@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import com.tripper.db.TripperDatabase;
 import com.tripper.db.dao.TripDao;
 import com.tripper.db.entities.Trip;
+import com.tripper.db.entities.TripTagCrossRef;
 import com.tripper.db.relationships.TripWithDaysAndDaySegments;
 
 import java.util.List;
@@ -37,6 +38,12 @@ public class TripRepository {
     public void deleteTrip(Trip trip) {
         TripperDatabase.databaseWriteExecutor.execute(() -> {
             tripDao.deleteTrip(trip);
+        });
+    }
+
+    public void insertTripTag(TripTagCrossRef tripTagCrossRef) {
+        TripperDatabase.databaseWriteExecutor.execute(() -> {
+            tripDao.insertTripTag(tripTagCrossRef);
         });
     }
 }

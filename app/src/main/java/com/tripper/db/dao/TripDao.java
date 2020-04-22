@@ -72,6 +72,9 @@ public interface TripDao {
     public void updateTag(Tag tag);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public void insertTags(List<Tag> tags);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insertTripTag(TripTagCrossRef tripTagCrossRef);
 
     @Delete

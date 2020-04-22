@@ -14,4 +14,9 @@ public class Tag {
 
     @ColumnInfo(name="icon")
     public String icon;
+
+    public Tag(String name, String icon) {
+        this.name = name;
+        this.icon = icon;
+    }
 }
