@@ -13,6 +13,7 @@ import com.tripper.db.entities.DaySegment;
 import com.tripper.db.entities.Event;
 import com.tripper.db.entities.Tag;
 import com.tripper.db.entities.Trip;
+import com.tripper.db.entities.TripTagCrossRef;
 import com.tripper.db.relationships.DaySegmentWithEvents;
 import com.tripper.db.relationships.DayWithSegmentsAndEvents;
 import com.tripper.db.relationships.TripWithDaysAndDaySegments;
@@ -187,6 +188,25 @@ public class DatabaseTest {
 
         TripWithDaysAndDaySegments tripWithDaysAndDaySegments = tripDao.getTripWithDaysAndDaySegmentsById(trip.id);
         assertEquals(tripWithDaysAndDaySegments.trip.id, trip.id);
+    }
+
+    @Test
+    public void getTripWithTagsById() {
+        Trip trip = createTestTrip();
+        Tag tag = createTestTag();
+        tripDao.insertTrip(trip);
+        tripDao.insertTag(tag);
+
+        trip = tripDao.getTrips().get(0);
+        tag = tripDao.getTags().get(0);
+
+        TripTagCrossRef tripTagCrossRef = new TripTagCrossRef(tag.id, trip.id);
+        tripDao.insertTripTag(tripTagCrossRef);
+
+        List<Tag> tags = tripDao.getTagsForTrip(trip.id);
+        assertEquals(tags.get(0).name, tag.name);
+
+
     }
 
     // helper methods

@@ -14,9 +14,11 @@ import com.tripper.db.entities.DaySegment;
 import com.tripper.db.entities.Event;
 import com.tripper.db.entities.Tag;
 import com.tripper.db.entities.Trip;
+import com.tripper.db.entities.TripTagCrossRef;
 import com.tripper.db.relationships.DaySegmentWithEvents;
 import com.tripper.db.relationships.DayWithSegmentsAndEvents;
 import com.tripper.db.relationships.TripWithDaysAndDaySegments;
+import com.tripper.db.relationships.TripWithTags;
 
 import java.util.List;
 
@@ -69,6 +71,15 @@ public interface TripDao {
     @Update
     public void updateTag(Tag tag);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public void insertTripTag(TripTagCrossRef tripTagCrossRef);
+
+    @Delete
+    public void deleteTripTag(TripTagCrossRef tripTagCrossRef);
+
+    @Update
+    public void updateTripTag(TripTagCrossRef tripTagCrossRef);
+
     // simple select queries
     @Query("select * from trip")
     public List<Trip> getTrips();
@@ -101,6 +112,9 @@ public interface TripDao {
     @Query("select * from day_segment where day_id = :dayId")
     public List<DaySegment> getDaySegmentsByDayId(int dayId);
 
+    @Query("select * from tag inner join trip_tag_join on tag.id=trip_tag_join.tagId where trip_tag_join.tripId = :tripId")
+    public List<Tag> getTagsForTrip(int tripId);
+
     // relationship methods
     @Transaction
     @Query("select * from trip")
@@ -117,6 +131,7 @@ public interface TripDao {
     @Transaction
     @Query("select * from trip where id = :tripId")
     public TripWithDaysAndDaySegments getTripWithDaysAndDaySegmentsById(int tripId);
+
     
 //
 //    @Transaction
