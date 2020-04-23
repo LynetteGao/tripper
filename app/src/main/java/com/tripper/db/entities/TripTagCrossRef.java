@@ -1,7 +1,6 @@
 package com.tripper.db.entities;
 
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 
 @Entity(tableName = "trip_tag_join",
         primaryKeys = {"tripId", "tagId"})
