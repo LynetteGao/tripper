@@ -48,7 +48,13 @@ public class TripRepository {
         });
     }
 
-    public Trip getMostRecentTrip() {
+    public void insertTripTags(List<TripTagCrossRef> tripTagCrossRefs) {
+        TripperDatabase.databaseWriteExecutor.execute(() -> {
+            tripDao.insertTripTags(tripTagCrossRefs);
+        });
+    }
+
+    public LiveData<Trip> getMostRecentTrip() {
         return tripDao.getMostRecentTrip();
     }
 

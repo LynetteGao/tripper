@@ -122,7 +122,7 @@ public interface TripDao {
     public List<Tag> getTagsForEvent(int eventId);
 
     @Query("select * from trip order by id desc limit 1")
-    public Trip getMostRecentTrip();
+    public LiveData<Trip> getMostRecentTrip();
 
     @Query("select * from tag")
     public LiveData<List<Tag>> getLiveTags();
@@ -144,7 +144,10 @@ public interface TripDao {
     @Query("select * from trip where id = :tripId")
     public TripWithDaysAndDaySegments getTripWithDaysAndDaySegmentsById(int tripId);
 
-    
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    public void insertTripTags(List<TripTagCrossRef> tripTagCrossRefs);
+
+
 //
 //    @Transaction
 //    @Query("select * from trip")

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.tripper.db.entities.Tag;
+import com.tripper.db.entities.Trip;
+import com.tripper.db.entities.TripTagCrossRef;
 import com.tripper.viewmodels.TagSuggestionViewModel;
 
 import java.util.ArrayList;
@@ -26,6 +29,8 @@ public class TagSuggestion extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private TagSuggestionViewModel tagSuggestionViewModel;
     private List<Tag> defaultTags;
+    private int tripId;
+
     Button select;
     int[] images = {R.drawable.sightseeing, R.drawable.art, R.drawable.sport, R.drawable.history,
             R.drawable.leisure, R.drawable.eateries};
@@ -35,6 +40,8 @@ public class TagSuggestion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tagsuggestion);
         tagSuggestionViewModel = new ViewModelProvider(this).get(TagSuggestionViewModel.class);
+        Intent intent = getIntent();
+        tripId = intent.getIntExtra("tripId", -1);
         defaultTags = tagSuggestionViewModel.getDefaultTags();
         createTagList();
         buildRecyclerView();
@@ -45,11 +52,15 @@ public class TagSuggestion extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                List<TripTagCrossRef> tagCrossRefs = new ArrayList<>();
                 for (int i = 0; i < tagItemArrayList.size(); i++) {
                     if (tagItemArrayList.get(i).isSelected()) {
                         Log.d("Selected TAG: ", tagItemArrayList.get(i).getTag().name);
+                        tagCrossRefs.add(new TripTagCrossRef(tagItemArrayList.get(i).getTag().id, tripId));
                     }
                 }
+
+                tagSuggestionViewModel.insertTripTags(tagCrossRefs);
             }
         });
     }

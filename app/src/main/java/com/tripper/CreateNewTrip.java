@@ -1,6 +1,8 @@
 package com.tripper;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
@@ -42,6 +44,7 @@ public class CreateNewTrip extends AppCompatActivity {
     private CreateNewTripViewModel tripViewModel;
     private AutocompleteSupportFragment autocompleteSupportFragment;
     private Place tripPlace;
+    private boolean newTripCreated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +59,10 @@ public class CreateNewTrip extends AppCompatActivity {
         txtEditTripName = findViewById(R.id.txtEditTripName);
         txtInputTripName = findViewById(R.id.txtInputTripName);
         txtPlaceError = findViewById(R.id.txtPlaceError);
-
         Button btnCreateTrip = findViewById(R.id.btnCreateTrip);
-
         tripViewModel = new ViewModelProvider(this).get(CreateNewTripViewModel.class);
+
+        newTripCreated = false;
 
         txtEditStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,13 +104,9 @@ public class CreateNewTrip extends AppCompatActivity {
                     trip.locationLat = Double.toString(tripPlace.getLatLng().latitude);
                     trip.locationLon = Double.toString(tripPlace.getLatLng().longitude);
                     trip.destination = tripPlace.getName();
+                    newTripCreated = true;
                     tripViewModel.insert(trip);
 
-                    Intent intent = new Intent(v.getContext(), TagSuggestion.class);
-                    v.getContext().startActivity(intent);
-                }
-                else {
-                    return;
                 }
             }
         });
@@ -137,6 +136,20 @@ public class CreateNewTrip extends AppCompatActivity {
                 txtEditTripName.setText("");
                 tripPlace = null;
                 Log.i("place", "An error occurred: " + status);
+            }
+        });
+
+        this.tripViewModel.getMostRecentTrip().observe(this, new Observer<Trip>() {
+            @Override
+            public void onChanged(Trip trip) {
+                if (newTripCreated) {
+                    Log.d("trip", Integer.toString(trip.id));
+                    Intent intent = new Intent(getApplicationContext(), TagSuggestion.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("tripId", trip.id);
+                    getApplicationContext().startActivity(intent);
+                }
+
             }
         });
 
