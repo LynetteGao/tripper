@@ -4,43 +4,48 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.tripper.R;
 import com.tripper.db.entities.Trip;
+import com.tripper.EmptyRecyclerView;
 
 import java.util.List;
+import java.util.Objects;
 
 public class HomePageListFragment extends Fragment {
 
     private HomePageListViewModel homePageListViewModel;
+    private EmptyRecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private TripListAdapter adapter;
+    private LiveData<List<Trip>> trips;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homePageListViewModel =
                 new ViewModelProvider(this).get(HomePageListViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_homepage_list_view, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
 
-        homePageListViewModel.getTrips().observe(getViewLifecycleOwner(), new Observer<List<Trip>>() {
-            @Override
-            public void onChanged(@Nullable List<Trip> trips) {
-                if (trips.isEmpty()) {
-                    textView.setText(R.string.no_trip_data);
-                }
-                else {
-                    textView.setText(trips.get(0).name);
-                }
+        layoutManager = new LinearLayoutManager(getContext());
+        trips = homePageListViewModel.getTrips();
+        adapter = new TripListAdapter(Objects.requireNonNull(getContext()), homePageListViewModel);
+        trips.observe(getViewLifecycleOwner(), trips -> adapter.setData(trips));
 
-            }
-        });
+        recyclerView = root.findViewById(R.id.tripRecyclerView);
+        recyclerView.setLayoutManager(layoutManager);
+        View emptyView = root.findViewById(R.id.txtNoTrips);
+        recyclerView.setEmptyView(emptyView);
+        recyclerView.setAdapter(adapter);
+
         return root;
     }
 }

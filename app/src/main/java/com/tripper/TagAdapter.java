@@ -35,7 +35,7 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder> {
             super(v);
             tagText = v.findViewById(R.id.tagText);
             tagImage = v.findViewById(R.id.tagImage);
-            tagCard = v.findViewById(R.id.cardView);
+            tagCard = v.findViewById(R.id.tripCardView);
 
             v.setOnClickListener(new View.OnClickListener() {
                 @Override

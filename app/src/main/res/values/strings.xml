@@ -24,4 +24,6 @@
     <string name="create_trip">Create My Trip</string>
     <string name="no_trip_data">You don\'t have any trips yet!</string>
     <string name="places_api_key">AIzaSyDjWRb7f25H0ge7_q8E4BFfs7gasMKt-aA</string>
+    <string name="edit">Edit</string>
+    <string name="delete_trip">Delete Trip</string>
 </resources>

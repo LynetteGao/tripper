@@ -33,4 +33,10 @@ public class TripRepository {
     public TripWithDaysAndDaySegments getTripWithDaysAndSegmentsById(int tripId) {
         return tripDao.getTripWithDaysAndDaySegmentsById(tripId);
     }
+
+    public void deleteTrip(Trip trip) {
+        TripperDatabase.databaseWriteExecutor.execute(() -> {
+            tripDao.deleteTrip(trip);
+        });
+    }
 }

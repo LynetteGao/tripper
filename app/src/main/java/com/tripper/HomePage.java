@@ -80,6 +80,7 @@ public class HomePage extends AppCompatActivity {
 //        //myBtn.setBackgroundColor();
 //    }
 
+
     private void getLocationPermission() {
         int permission = ActivityCompat.checkSelfPermission(this.getApplicationContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION);

@@ -29,4 +29,6 @@ public class HomePageListViewModel extends AndroidViewModel {
     public LiveData<List<Trip>> getTrips() {
         return allTrips;
     }
+
+    public void deleteTrip(Trip trip) { tripRepository.deleteTrip(trip); }
 }
