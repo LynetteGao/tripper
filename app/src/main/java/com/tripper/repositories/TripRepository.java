@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import com.tripper.db.TripperDatabase;
 import com.tripper.db.dao.TripDao;
+import com.tripper.db.entities.Tag;
 import com.tripper.db.entities.Trip;
 import com.tripper.db.entities.TripTagCrossRef;
 import com.tripper.db.relationships.TripWithDaysAndDaySegments;
@@ -45,5 +46,13 @@ public class TripRepository {
         TripperDatabase.databaseWriteExecutor.execute(() -> {
             tripDao.insertTripTag(tripTagCrossRef);
         });
+    }
+
+    public Trip getMostRecentTrip() {
+        return tripDao.getMostRecentTrip();
+    }
+
+    public List<Tag> getDefaultTags() {
+           return tripDao.getTags();
     }
 }

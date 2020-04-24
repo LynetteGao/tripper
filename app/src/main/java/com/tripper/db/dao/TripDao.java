@@ -121,6 +121,12 @@ public interface TripDao {
     @Query("select * from tag inner join event_tag_join on tag.id=event_tag_join.tagId where event_tag_join.eventId = :eventId")
     public List<Tag> getTagsForEvent(int eventId);
 
+    @Query("select * from trip order by id desc limit 1")
+    public Trip getMostRecentTrip();
+
+    @Query("select * from tag")
+    public LiveData<List<Tag>> getLiveTags();
+
     // relationship methods
     @Transaction
     @Query("select * from trip")

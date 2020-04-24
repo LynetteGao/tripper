@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -102,6 +103,8 @@ public class CreateNewTrip extends AppCompatActivity {
                     trip.destination = tripPlace.getName();
                     tripViewModel.insert(trip);
 
+                    Intent intent = new Intent(v.getContext(), TagSuggestion.class);
+                    v.getContext().startActivity(intent);
                 }
                 else {
                     return;

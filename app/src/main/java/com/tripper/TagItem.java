@@ -1,22 +1,17 @@
 package com.tripper;
 
+import com.tripper.db.entities.Tag;
+
 public class TagItem {
 
-    private int tagImage;
-    private String tagText;
-    private boolean isSelected = false;
+    private boolean isSelected;
+    private Tag tag;
+    private int imageResource;
 
-    public TagItem(int image, String text){
-        tagImage = image;
-        tagText = text;
-    }
-
-    public int getTagImage(){
-        return tagImage;
-    }
-
-    public String getTagText(){
-        return tagText;
+    public TagItem(Tag tag, int imageResource){
+        this.tag = tag;
+        this.imageResource = imageResource;
+        isSelected = false;
     }
 
     public boolean isSelected() {
@@ -26,5 +21,9 @@ public class TagItem {
     public void setSelected(boolean selected) {
         isSelected = selected;
     }
+
+    public Tag getTag() { return this.tag; }
+
+    public int getImageResource() { return this.imageResource; }
 
 }

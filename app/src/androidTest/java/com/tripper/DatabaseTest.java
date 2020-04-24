@@ -209,6 +209,18 @@ public class DatabaseTest {
 
     }
 
+    @Test
+    public void getMostRecentTrip() {
+        Trip trip1 = createTestTrip();
+        Trip trip2 = createTestTrip();
+        trip2.name = "test trip2";
+        tripDao.insertTrip(trip1);
+        tripDao.insertTrip(trip2);
+
+        Trip recTrip = tripDao.getMostRecentTrip();
+        assertEquals(trip2.name, recTrip.name);
+    }
+
     // helper methods
     private Trip createTestTrip() {
         Trip trip = new Trip();
@@ -247,9 +259,7 @@ public class DatabaseTest {
     }
 
     private Tag createTestTag() {
-        Tag tag = new Tag();
-        tag.name = "testTag";
-        tag.icon = "testIcon";
+        Tag tag = new Tag("testTag", "testIcon");
         return tag;
     }
 

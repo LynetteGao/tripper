@@ -8,10 +8,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.tripper.db.entities.Tag;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder> {
     private ArrayList<TagItem> tagItemArrayList;
+    private List<Tag> tags;
+
     private OnItemClickListener mListener;
     public interface OnItemClickListener{
         void onItemClick(int position);
@@ -67,8 +73,8 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder> {
         TagItem currentItem = tagItemArrayList.get(position);
         // - get element from dataset at this position
         // - replace the contents of the view with that element
-        holder.tagText.setText(currentItem.getTagText());
-        holder.tagImage.setImageResource(currentItem.getTagImage());
+        holder.tagText.setText(currentItem.getTag().name);
+        holder.tagImage.setImageResource(currentItem.getImageResource());
         holder.tagCard.setBackgroundColor(currentItem.isSelected() ? Color.GREEN : Color.WHITE);
         holder.tagCard.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -52,6 +52,7 @@ public abstract class TripperDatabase extends RoomDatabase {
                                     });
                                 }
                             })
+                            .allowMainThreadQueries()
                             .build();
                 }
             }
