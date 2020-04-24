@@ -61,6 +61,11 @@ public class TagSuggestion extends AppCompatActivity {
                 }
 
                 tagSuggestionViewModel.insertTripTags(tagCrossRefs);
+
+                Intent intent = new Intent(v.getContext(), LocationSuggestion.class);
+                intent.putExtra("tripId", tripId);
+                startActivity(intent);
+
             }
         });
     }
