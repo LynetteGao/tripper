@@ -13,9 +13,11 @@ import java.util.List;
 public class TripWithTags {
     @Embedded public Trip trip;
     @Relation(
-            parentColumn = "tripId",
-            entityColumn = "tagId",
-            associateBy = @Junction(TripTagCrossRef.class)
+            parentColumn = "id",
+            entityColumn = "id",
+            associateBy = @Junction(value = TripTagCrossRef.class,
+                parentColumn = "tripId",
+                entityColumn = "tagId")
     )
     public List<Tag> tags;
 }

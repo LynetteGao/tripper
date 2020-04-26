@@ -13,6 +13,7 @@ import com.tripper.db.entities.Tag;
 import com.tripper.db.entities.Trip;
 import com.tripper.db.entities.TripTagCrossRef;
 import com.tripper.db.relationships.TripWithDaysAndDaySegments;
+import com.tripper.db.relationships.TripWithTags;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -95,18 +96,8 @@ public class TripRepository {
         });
     }
 
-    private static class InsertTripTask extends AsyncTask<Trip, Void, Long> {
-        private TripDao dao;
-
-        InsertTripTask (TripDao dao) {
-            this.dao = dao;
-        }
-
-        @Override
-        protected Long doInBackground(final Trip... params) {
-            Long retVal = dao.insertTrip(params[0]);
-            return retVal;
-        }
+    public TripWithTags getTripWithTags(long tripId) {
+        return tripDao.getTripWithTags(tripId);
     }
 }
 

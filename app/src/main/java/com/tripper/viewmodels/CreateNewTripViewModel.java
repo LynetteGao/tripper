@@ -26,7 +26,4 @@ public class CreateNewTripViewModel extends AndroidViewModel {
 
     public void insertDaySegment(DaySegment daySegment) { tripRepository.insertDaySegment(daySegment); }
 
-    public LiveData<Trip> getMostRecentTrip() {
-        return tripRepository.getMostRecentTrip();
-    }
 }

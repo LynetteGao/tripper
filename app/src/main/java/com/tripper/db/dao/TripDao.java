@@ -151,4 +151,8 @@ public abstract class TripDao {
     @Query("select * from trip")
     public abstract List<TripWithDaysAndDaySegments> getTripsWithDaysAndSegmentsAndEvents();
 
+    @Transaction
+    @Query("select * from trip where id = :tripId")
+    public abstract TripWithTags getTripWithTags(long tripId);
+
 }

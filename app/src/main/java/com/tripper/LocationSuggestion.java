@@ -13,32 +13,45 @@ import android.widget.Button;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.tripper.db.entities.Tag;
+import com.tripper.db.relationships.TripWithDaysAndDaySegments;
+import com.tripper.db.relationships.TripWithTags;
+import com.tripper.viewmodels.LocationSuggestionViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class LocationSuggestion extends AppCompatActivity {
     private ArrayList<LocationItem> locationItemArrayList;
     private RecyclerView mRecyclerView;
     private LocationAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private int tripId;
+    private LocationSuggestionViewModel locationSuggestionViewModel;
+    private Long tripId;
     private AutocompleteSupportFragment autocompleteSupportFragment;
     Button select;
+
     int[] locImages = {R.drawable.brittinghamboats, R.drawable.madisonmccall, R.drawable.bouldersclimbing};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_suggestion);
+        locationSuggestionViewModel = new LocationSuggestionViewModel(getApplication());
         Intent intent = getIntent();
-        tripId = intent.getIntExtra("tripId", -1);
+        tripId = intent.getLongExtra("tripId", -1);
 
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), getString(R.string.places_api_key));
         }
+
+        TripWithTags tripWithTags = locationSuggestionViewModel.getTripWithTags(tripId);
 
         autocompleteSupportFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.locSuggestionAutoComplete);
@@ -48,7 +61,7 @@ public class LocationSuggestion extends AppCompatActivity {
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                Log.d("place", place.getName());
+                Log.d("place", Objects.requireNonNull(place.getName()));
             }
 
             @Override

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyViewHolder> {
+
     private ArrayList<LocationItem> locationItemArrayList;
     private OnItemClickListener mListener;
     public interface OnItemClickListener{
@@ -26,6 +27,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         View locationCard;
@@ -50,6 +52,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
             });
         }
     }
+
     // Create new views (invoked by the layout manager)
     @NonNull
     @Override
