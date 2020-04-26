@@ -5,10 +5,10 @@ import androidx.room.Entity;
 @Entity(tableName = "trip_tag_join",
         primaryKeys = {"tripId", "tagId"})
 public class TripTagCrossRef {
-    public final int tagId;
-    public final int tripId;
+    public final long tagId;
+    public final long tripId;
 
-    public TripTagCrossRef(final int tagId, final int tripId) {
+    public TripTagCrossRef(final long tagId, final long tripId) {
         this.tagId = tagId;
         this.tripId = tripId;
     }

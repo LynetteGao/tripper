@@ -1,7 +1,6 @@
 package com.tripper;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -23,11 +22,14 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.tripper.db.entities.Day;
+import com.tripper.db.entities.DaySegment;
 import com.tripper.db.entities.Trip;
 import com.tripper.viewmodels.CreateNewTripViewModel;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.concurrent.Callable;
 
 public class CreateNewTrip extends AppCompatActivity {
 
@@ -44,7 +46,6 @@ public class CreateNewTrip extends AppCompatActivity {
     private CreateNewTripViewModel tripViewModel;
     private AutocompleteSupportFragment autocompleteSupportFragment;
     private Place tripPlace;
-    private boolean newTripCreated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +62,6 @@ public class CreateNewTrip extends AppCompatActivity {
         txtPlaceError = findViewById(R.id.txtPlaceError);
         Button btnCreateTrip = findViewById(R.id.btnCreateTrip);
         tripViewModel = new ViewModelProvider(this).get(CreateNewTripViewModel.class);
-
-        newTripCreated = false;
 
         txtEditStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,9 +103,28 @@ public class CreateNewTrip extends AppCompatActivity {
                     trip.locationLat = Double.toString(tripPlace.getLatLng().latitude);
                     trip.locationLon = Double.toString(tripPlace.getLatLng().longitude);
                     trip.destination = tripPlace.getName();
-                    newTripCreated = true;
-                    tripViewModel.insert(trip);
+                    Long tripId = tripViewModel.insertTrip(trip);
 
+                    Calendar curDate = trip.startDate;
+                    while (curDate.getTimeInMillis() <= trip.endDate.getTimeInMillis()) {
+                        Day day = new Day();
+                        day.date = curDate;
+                        day.tripId = tripId;
+                        Long dayId = tripViewModel.insertDay(day);
+
+                        for (int i = 0; i < 3; i++) {
+                            DaySegment daySegment = new DaySegment();
+                            daySegment.dayId = dayId;
+                            daySegment.segment = i;
+                            tripViewModel.insertDaySegment(daySegment);
+                        }
+                        curDate.add(Calendar.DATE, 1);
+                    }
+
+                    Intent intent = new Intent(getApplicationContext(), TagSuggestion.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("tripId", tripId);
+                    getApplicationContext().startActivity(intent);
                 }
             }
         });
@@ -138,21 +156,6 @@ public class CreateNewTrip extends AppCompatActivity {
                 Log.i("place", "An error occurred: " + status);
             }
         });
-
-        this.tripViewModel.getMostRecentTrip().observe(this, new Observer<Trip>() {
-            @Override
-            public void onChanged(Trip trip) {
-                if (newTripCreated) {
-                    Log.d("trip", Integer.toString(trip.id));
-                    Intent intent = new Intent(getApplicationContext(), TagSuggestion.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("tripId", trip.id);
-                    getApplicationContext().startActivity(intent);
-                }
-
-            }
-        });
-
     }
 
     private boolean inputNotNull() {
