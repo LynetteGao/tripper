@@ -17,8 +17,10 @@ import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.maps.android.SphericalUtil;
+import com.tripper.db.entities.Event;
 import com.tripper.db.entities.Tag;
 import com.tripper.db.entities.Trip;
+import com.tripper.db.relationships.TripWithDaysAndDaySegments;
 import com.tripper.db.relationships.TripWithTags;
 import com.tripper.repositories.TripRepository;
 
@@ -35,5 +37,13 @@ public class LocationSuggestionViewModel extends AndroidViewModel {
 
     public TripWithTags getTripWithTags(long tripId) {
         return tripRepository.getTripWithTags(tripId);
+    }
+
+    public TripWithDaysAndDaySegments getTripWithDaysAndDaySegments(Long tripId) {
+        return tripRepository.getTripWithDaysAndSegmentsById(tripId);
+    }
+
+    public void insertEvent(Event event) {
+        tripRepository.insertEvent(event);
     }
 }

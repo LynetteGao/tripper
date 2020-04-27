@@ -1,13 +1,16 @@
 package com.tripper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,24 +26,29 @@ import com.google.maps.PhotoRequest;
 import com.google.maps.PlacesApi;
 import com.google.maps.model.PlacesSearchResponse;
 import com.google.maps.model.PlacesSearchResult;
+import com.tripper.db.entities.Event;
+import com.tripper.db.relationships.TripWithDaysAndDaySegments;
 import com.tripper.db.relationships.TripWithTags;
+import com.tripper.viewmodels.LocationSuggestionViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.DoubleBinaryOperator;
 
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.PredictionViewHolder> {
 
-    private List<AutocompletePrediction> predictions;
     private List<PlacesSearchResult> searchResults;
-    private TripWithTags trip;
+    private TripWithDaysAndDaySegments trip;
     private Context context;
+    private LocationSuggestionViewModel locationSuggestionViewModel;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public LocationAdapter(Context context, List<AutocompletePrediction> predictions, List<PlacesSearchResult> searchResults) {
+    public LocationAdapter(Context context, List<PlacesSearchResult> searchResults, TripWithDaysAndDaySegments trip, LocationSuggestionViewModel locationSuggestionViewModel) {
         this.context = context;
-        this.predictions = predictions;
         this.searchResults = searchResults;
+        this.trip = trip;
+        this.locationSuggestionViewModel = locationSuggestionViewModel;
     }
 
     // Create new views (invoked by the layout manager)
@@ -78,6 +86,25 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Predic
                });
            }
         });
+
+        holder.locationCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: this is temp code to get basic events working
+                Log.i("LocationClick", result.name);
+                Event event = new Event();
+                event.name = result.name;
+                event.locationLon = Double.toString(result.geometry.location.lng);
+                event.locationLat = Double.toString(result.geometry.location.lat);
+                event.tripId = trip.trip.id;
+                event.segmentId = trip.days.get(0).daySegments.get(0).daySegment.id;
+                locationSuggestionViewModel.insertEvent(event);
+                Intent intent = new Intent(context, TripOverview.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("tripId", trip.trip.id);
+                context.startActivity(intent);
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -92,7 +119,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Predic
 
     public static class PredictionViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        View locationCard;
+        CardView locationCard;
         ImageView locationImage;
         TextView locationText;
 

@@ -9,6 +9,7 @@ import com.tripper.db.TripperDatabase;
 import com.tripper.db.dao.TripDao;
 import com.tripper.db.entities.Day;
 import com.tripper.db.entities.DaySegment;
+import com.tripper.db.entities.Event;
 import com.tripper.db.entities.Tag;
 import com.tripper.db.entities.Trip;
 import com.tripper.db.entities.TripTagCrossRef;
@@ -47,7 +48,7 @@ public class TripRepository {
         return ret;
     }
 
-    public TripWithDaysAndDaySegments getTripWithDaysAndSegmentsById(int tripId) {
+    public TripWithDaysAndDaySegments getTripWithDaysAndSegmentsById(Long tripId) {
         return tripDao.getTripWithDaysAndDaySegmentsById(tripId);
     }
 
@@ -98,6 +99,12 @@ public class TripRepository {
 
     public TripWithTags getTripWithTags(long tripId) {
         return tripDao.getTripWithTags(tripId);
+    }
+
+    public void insertEvent(Event event) {
+        TripperDatabase.databaseWriteExecutor.execute(() -> {
+            tripDao.insertEvent(event);
+        });
     }
 }
 

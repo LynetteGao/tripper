@@ -142,7 +142,7 @@ public abstract class TripDao {
 
     @Transaction
     @Query("select * from trip where id = :tripId")
-    public abstract TripWithDaysAndDaySegments getTripWithDaysAndDaySegmentsById(int tripId);
+    public abstract TripWithDaysAndDaySegments getTripWithDaysAndDaySegmentsById(Long tripId);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public abstract void insertTripTags(List<TripTagCrossRef> tripTagCrossRefs);
