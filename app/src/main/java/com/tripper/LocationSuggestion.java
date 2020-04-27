@@ -12,21 +12,36 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.maps.GeoApiContext;
+import com.google.maps.PlacesApi;
+import com.google.maps.android.SphericalUtil;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.PlacesSearchResponse;
+import com.google.maps.model.RankBy;
 import com.tripper.db.entities.Tag;
 import com.tripper.db.relationships.TripWithDaysAndDaySegments;
 import com.tripper.db.relationships.TripWithTags;
 import com.tripper.viewmodels.LocationSuggestionViewModel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Retrofit;
 
 public class LocationSuggestion extends AppCompatActivity {
     private ArrayList<LocationItem> locationItemArrayList;
@@ -36,6 +51,7 @@ public class LocationSuggestion extends AppCompatActivity {
     private LocationSuggestionViewModel locationSuggestionViewModel;
     private Long tripId;
     private AutocompleteSupportFragment autocompleteSupportFragment;
+    private List<AutocompletePrediction> predictionList = new ArrayList<>();
     Button select;
 
     int[] locImages = {R.drawable.brittinghamboats, R.drawable.madisonmccall, R.drawable.bouldersclimbing};
@@ -50,8 +66,6 @@ public class LocationSuggestion extends AppCompatActivity {
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), getString(R.string.places_api_key));
         }
-
-        TripWithTags tripWithTags = locationSuggestionViewModel.getTripWithTags(tripId);
 
         autocompleteSupportFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.locSuggestionAutoComplete);
@@ -70,7 +84,7 @@ public class LocationSuggestion extends AppCompatActivity {
             }
         });
 
-        createLocationList();
+        //createLocationList();
         buildRecyclerView();
         select = (Button) findViewById(R.id.selectedLocBtn);
         select.setOnClickListener(new View.OnClickListener() {
@@ -93,14 +107,69 @@ public class LocationSuggestion extends AppCompatActivity {
         locationItemArrayList.add(new LocationItem(R.drawable.bouldersclimbing, "Boulders Climbing"));
     }
 
+    // call places api here to get suggestions
     public void buildRecyclerView() {
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new LocationAdapter(locationItemArrayList);
+        TripWithTags trip = locationSuggestionViewModel.getTripWithTags(tripId);
 
+        mAdapter = new LocationAdapter(getApplicationContext(), predictionList);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        List<Tag> tags = trip.tags;
+        LatLng center = new LatLng(Double.parseDouble(trip.trip.locationLat),
+                Double.parseDouble(trip.trip.locationLon));
+        com.google.maps.model.LatLng center1 = new com.google.maps.model.LatLng(Double.parseDouble(trip.trip.locationLat),
+                Double.parseDouble(trip.trip.locationLon));
+        PlacesSearchResponse testResp = getPlacesSearch(center1, "restaurant");
+        LatLng north = SphericalUtil.computeOffset(center, 5000, 0);
+        LatLng south = SphericalUtil.computeOffset(center, 5000, 180);
+
+        LatLngBounds bounds = LatLngBounds.builder()
+                .include(north)
+                .include(south)
+                .build();
+
+        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
+        PlacesClient placesClient = Places.createClient(getApplication().getApplicationContext());
+
+        for (Tag tag: tags) {
+            FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
+                    .setLocationBias(RectangularBounds.newInstance(bounds))
+                    .setOrigin(center)
+                    .setSessionToken(token)
+                    .setQuery(tag.name)
+                    .setTypeFilter(TypeFilter.ESTABLISHMENT)
+                    .build();
+
+            placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
+                for (AutocompletePrediction prediction: response.getAutocompletePredictions()) {
+                    Log.d("predict", prediction.getPlaceId());
+                    predictionList.add(prediction);
+                    mAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+    }
+
+    private PlacesSearchResponse getPlacesSearch(com.google.maps.model.LatLng center, String query) {
+        PlacesSearchResponse resp = new PlacesSearchResponse();
+        GeoApiContext context = new GeoApiContext.Builder()
+                .apiKey(getString(R.string.maps_api_key))
+                .build();
+        try {
+            resp = PlacesApi.nearbySearchQuery(context, center)
+                    .radius(5000)
+                    .rankby(RankBy.PROMINENCE)
+                    .keyword(query)
+                    .await();
+        } catch (ApiException | IOException | InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            return resp;
+        }
     }
 }
 
