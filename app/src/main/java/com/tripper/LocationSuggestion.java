@@ -25,10 +25,12 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.maps.GeoApiContext;
+import com.google.maps.PendingResult;
 import com.google.maps.PlacesApi;
 import com.google.maps.android.SphericalUtil;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.PlacesSearchResponse;
+import com.google.maps.model.PlacesSearchResult;
 import com.google.maps.model.RankBy;
 import com.tripper.db.entities.Tag;
 import com.tripper.db.relationships.TripWithDaysAndDaySegments;
@@ -52,6 +54,7 @@ public class LocationSuggestion extends AppCompatActivity {
     private Long tripId;
     private AutocompleteSupportFragment autocompleteSupportFragment;
     private List<AutocompletePrediction> predictionList = new ArrayList<>();
+    private List<PlacesSearchResult> searchResults = new ArrayList<>();
     Button select;
 
     int[] locImages = {R.drawable.brittinghamboats, R.drawable.madisonmccall, R.drawable.bouldersclimbing};
@@ -114,62 +117,46 @@ public class LocationSuggestion extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         TripWithTags trip = locationSuggestionViewModel.getTripWithTags(tripId);
 
-        mAdapter = new LocationAdapter(getApplicationContext(), predictionList);
+        mAdapter = new LocationAdapter(getApplicationContext(), predictionList, searchResults);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
         List<Tag> tags = trip.tags;
-        LatLng center = new LatLng(Double.parseDouble(trip.trip.locationLat),
+        com.google.maps.model.LatLng center = new com.google.maps.model.LatLng(Double.parseDouble(trip.trip.locationLat),
                 Double.parseDouble(trip.trip.locationLon));
-        com.google.maps.model.LatLng center1 = new com.google.maps.model.LatLng(Double.parseDouble(trip.trip.locationLat),
-                Double.parseDouble(trip.trip.locationLon));
-        PlacesSearchResponse testResp = getPlacesSearch(center1, "restaurant");
-        LatLng north = SphericalUtil.computeOffset(center, 5000, 0);
-        LatLng south = SphericalUtil.computeOffset(center, 5000, 180);
-
-        LatLngBounds bounds = LatLngBounds.builder()
-                .include(north)
-                .include(south)
-                .build();
-
-        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
-        PlacesClient placesClient = Places.createClient(getApplication().getApplicationContext());
-
         for (Tag tag: tags) {
-            FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
-                    .setLocationBias(RectangularBounds.newInstance(bounds))
-                    .setOrigin(center)
-                    .setSessionToken(token)
-                    .setQuery(tag.name)
-                    .setTypeFilter(TypeFilter.ESTABLISHMENT)
-                    .build();
-
-            placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
-                for (AutocompletePrediction prediction: response.getAutocompletePredictions()) {
-                    Log.d("predict", prediction.getPlaceId());
-                    predictionList.add(prediction);
-                    mAdapter.notifyDataSetChanged();
-                }
-            });
+            getPlacesSearch(center, tag.name);
         }
     }
 
-    private PlacesSearchResponse getPlacesSearch(com.google.maps.model.LatLng center, String query) {
+    private void getPlacesSearch(com.google.maps.model.LatLng center, String query) {
         PlacesSearchResponse resp = new PlacesSearchResponse();
         GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey(getString(R.string.maps_api_key))
                 .build();
-        try {
-            resp = PlacesApi.nearbySearchQuery(context, center)
-                    .radius(5000)
-                    .rankby(RankBy.PROMINENCE)
-                    .keyword(query)
-                    .await();
-        } catch (ApiException | IOException | InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            return resp;
-        }
+
+        PlacesApi.nearbySearchQuery(context, center)
+                .radius(5000)
+                .rankby(RankBy.PROMINENCE)
+                .keyword(query)
+                .setCallback(new PendingResult.Callback<PlacesSearchResponse>() {
+                    @Override
+                    public void onResult(PlacesSearchResponse result) {
+                        searchResults.addAll(Arrays.asList(result.results));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Throwable e) {
+                        e.printStackTrace();
+                    }
+                });
+
     }
 }
 

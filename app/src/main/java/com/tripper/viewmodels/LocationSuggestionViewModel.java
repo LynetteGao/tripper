@@ -33,39 +33,6 @@ public class LocationSuggestionViewModel extends AndroidViewModel {
         tripRepository = new TripRepository(application);
     }
 
-    public List<AutocompletePrediction> getSuggestedPlaces(TripWithTags trip) {
-        List<Tag> tags = trip.tags;
-        List<AutocompletePrediction> predictions = new ArrayList<>();
-        LatLng center = new LatLng(Double.parseDouble(trip.trip.locationLat),
-                Double.parseDouble(trip.trip.locationLon));
-        LatLng north = SphericalUtil.computeOffset(center, 5000, 0);
-        LatLng south = SphericalUtil.computeOffset(center, 5000, 180);
-
-        LatLngBounds bounds = LatLngBounds.builder()
-                .include(north)
-                .include(south)
-                .build();
-
-        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
-        PlacesClient placesClient = Places.createClient(getApplication().getApplicationContext());
-
-        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
-                .setLocationBias(RectangularBounds.newInstance(bounds))
-                .setOrigin(center)
-                .setSessionToken(token)
-                .setQuery(tags.get(0).name)
-                .build();
-
-        placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
-           for (AutocompletePrediction prediction: response.getAutocompletePredictions()) {
-               Log.d("predict", prediction.getPlaceId());
-               predictions.add(prediction);
-            }
-        });
-
-        return predictions;
-    }
-
     public TripWithTags getTripWithTags(long tripId) {
         return tripRepository.getTripWithTags(tripId);
     }
