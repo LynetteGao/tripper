@@ -16,6 +16,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -38,9 +40,9 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        // Add a marker in Sydney, Australia,
+        // Add a marker,
         // and move the map's camera to the same location.
-        // tester
+        // testing area below vv
         LatLng a = new LatLng(-35.016, 143.321);
         LatLng b = new LatLng(-34.747, 145.592);
         LatLng c =new LatLng(-34.364, 147.891);
@@ -56,7 +58,7 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
             .title("Tester " + i));
             i++;
         }
-        Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
+        Polygon polyline1 = googleMap.addPolygon(new PolygonOptions()
                 .clickable(true)
                 .add(
                         a,
