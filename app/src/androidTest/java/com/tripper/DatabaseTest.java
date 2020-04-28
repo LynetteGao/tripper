@@ -11,7 +11,9 @@ import com.tripper.db.dao.TripDao;
 import com.tripper.db.entities.Day;
 import com.tripper.db.entities.DaySegment;
 import com.tripper.db.entities.Event;
+import com.tripper.db.entities.Tag;
 import com.tripper.db.entities.Trip;
+import com.tripper.db.entities.TripTagCrossRef;
 import com.tripper.db.relationships.DaySegmentWithEvents;
 import com.tripper.db.relationships.DayWithSegmentsAndEvents;
 import com.tripper.db.relationships.TripWithDaysAndDaySegments;
@@ -89,6 +91,14 @@ public class DatabaseTest {
 
     }
 
+    @Test
+    public void writeTag() {
+        Tag tag = createTestTag();
+        tripDao.insertTag(tag);
+
+        List<Tag> tags = tripDao.getTags();
+        assertEquals(tags.get(0).name, tag.name);
+    }
 
     // test relationship classes
 
@@ -180,6 +190,37 @@ public class DatabaseTest {
         assertEquals(tripWithDaysAndDaySegments.trip.id, trip.id);
     }
 
+    @Test
+    public void getTripWithTagsById() {
+        Trip trip = createTestTrip();
+        Tag tag = createTestTag();
+        tripDao.insertTrip(trip);
+        tripDao.insertTag(tag);
+
+        trip = tripDao.getTrips().get(0);
+        tag = tripDao.getTags().get(0);
+
+        TripTagCrossRef tripTagCrossRef = new TripTagCrossRef(tag.id, trip.id);
+        tripDao.insertTripTag(tripTagCrossRef);
+
+        List<Tag> tags = tripDao.getTagsForTrip(trip.id);
+        assertEquals(tags.get(0).name, tag.name);
+
+
+    }
+
+    @Test
+    public void getMostRecentTrip() {
+        Trip trip1 = createTestTrip();
+        Trip trip2 = createTestTrip();
+        trip2.name = "test trip2";
+        tripDao.insertTrip(trip1);
+        tripDao.insertTrip(trip2);
+
+        Trip recTrip = tripDao.getMostRecentTrip();
+        assertEquals(trip2.name, recTrip.name);
+    }
+
     // helper methods
     private Trip createTestTrip() {
         Trip trip = new Trip();
@@ -215,6 +256,11 @@ public class DatabaseTest {
         event.locationLon = "0";
         event.name = "test event";
         return event;
+    }
+
+    private Tag createTestTag() {
+        Tag tag = new Tag("testTag", "testIcon");
+        return tag;
     }
 
 }

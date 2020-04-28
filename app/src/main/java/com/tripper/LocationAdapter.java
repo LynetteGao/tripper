@@ -1,80 +1,108 @@
 package com.tripper;
 
-import android.graphics.Color;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.PhotoMetadata;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPhotoRequest;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.maps.GeoApiContext;
+import com.google.maps.PhotoRequest;
+import com.google.maps.PlacesApi;
+import com.google.maps.model.PlacesSearchResponse;
+import com.google.maps.model.PlacesSearchResult;
+import com.tripper.db.entities.Event;
+import com.tripper.db.relationships.TripWithDaysAndDaySegments;
+import com.tripper.db.relationships.TripWithTags;
+import com.tripper.viewmodels.LocationSuggestionViewModel;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.DoubleBinaryOperator;
 
-public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyViewHolder> {
-    private ArrayList<LocationItem> locationItemArrayList;
-    private OnItemClickListener mListener;
-    public interface OnItemClickListener{
-        void onItemClick(int position);
-    }
-    public void setOnItemClickListener(OnItemClickListener listener){
-        mListener = listener;
-    }
+public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.PredictionViewHolder> {
+
+    private List<PlacesSearchResult> searchResults;
+    private TripWithDaysAndDaySegments trip;
+    private Context context;
+    private LocationSuggestionViewModel locationSuggestionViewModel;
+
     // Provide a suitable constructor (depends on the kind of dataset)
-    public LocationAdapter(ArrayList<LocationItem> locationList) {
-        locationItemArrayList = locationList;
+    public LocationAdapter(Context context, List<PlacesSearchResult> searchResults, TripWithDaysAndDaySegments trip, LocationSuggestionViewModel locationSuggestionViewModel) {
+        this.context = context;
+        this.searchResults = searchResults;
+        this.trip = trip;
+        this.locationSuggestionViewModel = locationSuggestionViewModel;
     }
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        View locationCard;
-        ImageView locationImage;
-        TextView locationText;
-        public MyViewHolder(View v, OnItemClickListener listener) {
-            super(v);
-            locationText = v.findViewById(R.id.locationText);
-            locationImage = v.findViewById(R.id.locationImage);
-            locationCard = v.findViewById(R.id.tripCardView);
 
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(listener != null) {
-                        int position = getAdapterPosition();
-                        if(position != RecyclerView.NO_POSITION){
-                            listener.onItemClick(position);
-                        }
-                    }
-                }
-            });
-        }
-    }
     // Create new views (invoked by the layout manager)
     @NonNull
     @Override
-    public LocationAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PredictionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.location_item, parent, false);
-        MyViewHolder vh = new MyViewHolder(v, mListener);
+        PredictionViewHolder vh = new PredictionViewHolder(v);
         return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        // - get element from dataset at this position
-        // - replace the contents of the view with that element
-        LocationItem currentItem = locationItemArrayList.get(position);
-        holder.locationText.setText(currentItem.getLocationText());
-        holder.locationImage.setImageResource(currentItem.getLocationImage());
-        holder.locationCard.setBackgroundColor(currentItem.isSelected() ? Color.GREEN : Color.WHITE);
+    public void onBindViewHolder(PredictionViewHolder holder, int position) {
+        PlacesSearchResult result = searchResults.get(position);
+        holder.locationText.setText(result.name);
+        PlacesClient placesClient = Places.createClient(this.context);
+
+        String placeId = result.placeId;
+        List<Place.Field> fields = Arrays.asList(Place.Field.PHOTO_METADATAS);
+        FetchPlaceRequest placeRequest = FetchPlaceRequest.newInstance(placeId, fields);
+
+        placesClient.fetchPlace(placeRequest).addOnSuccessListener((resp) -> {
+           Place place = resp.getPlace();
+           if (place.getPhotoMetadatas() != null) {
+               PhotoMetadata photoMetadata = place.getPhotoMetadatas().get(0);
+
+               FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
+                       .build();
+               placesClient.fetchPhoto(photoRequest).addOnSuccessListener((photoResp) -> {
+                   Bitmap bitmap = photoResp.getBitmap();
+                   holder.locationImage.setImageBitmap(bitmap);
+               });
+           }
+        });
+
         holder.locationCard.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                currentItem.setSelected(!currentItem.isSelected());
-                holder.locationCard.setBackgroundColor(currentItem.isSelected() ? Color.GREEN : Color.WHITE);
+            public void onClick(View v) {
+                //TODO: this is temp code to get basic events working
+                Log.i("LocationClick", result.name);
+                Event event = new Event();
+                event.name = result.name;
+                event.locationLon = Double.toString(result.geometry.location.lng);
+                event.locationLat = Double.toString(result.geometry.location.lat);
+                event.tripId = trip.trip.id;
+                event.segmentId = trip.days.get(0).daySegments.get(0).daySegment.id;
+                locationSuggestionViewModel.insertEvent(event);
+                Intent intent = new Intent(context, TripOverview.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("tripId", trip.trip.id);
+                context.startActivity(intent);
             }
         });
     }
@@ -82,7 +110,24 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return locationItemArrayList.size();
+        return searchResults.size();
     }
 
+    // Provide a reference to the views for each data item
+    // Complex data items may need more than one view per item, and
+    // you provide access to all the views for a data item in a view holder
+
+    public static class PredictionViewHolder extends RecyclerView.ViewHolder {
+        // each data item is just a string in this case
+        CardView locationCard;
+        ImageView locationImage;
+        TextView locationText;
+
+        public PredictionViewHolder(View v) {
+            super(v);
+            locationText = v.findViewById(R.id.locationText);
+            locationImage = v.findViewById(R.id.locationImage);
+            locationCard = v.findViewById(R.id.tripCardView);
+        }
+    }
 }

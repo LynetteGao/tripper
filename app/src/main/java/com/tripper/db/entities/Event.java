@@ -7,10 +7,10 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "event")
 public class Event {
     @PrimaryKey(autoGenerate = true)
-    public int id;
+    public long id;
 
     @ColumnInfo(name="trip_id")
-    public int tripId;
+    public long tripId;
 
     @ColumnInfo(name="name")
     public String name;
@@ -22,5 +22,5 @@ public class Event {
     public String locationLon;
 
     @ColumnInfo(name="segment_id")
-    public int segmentId;
+    public long segmentId;
 }
