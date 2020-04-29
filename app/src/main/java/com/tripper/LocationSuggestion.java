@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.LauncherActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,11 +54,10 @@ public class LocationSuggestion extends AppCompatActivity {
     private LocationSuggestionViewModel locationSuggestionViewModel;
     private Long tripId;
     private AutocompleteSupportFragment autocompleteSupportFragment;
-    private List<AutocompletePrediction> predictionList = new ArrayList<>();
     private List<PlacesSearchResult> searchResults = new ArrayList<>();
+    private List<LocationItem> locationItems = new ArrayList<>();
     Button select;
 
-    int[] locImages = {R.drawable.brittinghamboats, R.drawable.madisonmccall, R.drawable.bouldersclimbing};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,18 +96,11 @@ public class LocationSuggestion extends AppCompatActivity {
             public void onClick(View v) {
                 for (int i = 0; i < locationItemArrayList.size(); i++) {
                     if (locationItemArrayList.get(i).isSelected()) {
-                        Log.d("Selected Location: ", locationItemArrayList.get(i).getLocationText());
+                        Log.d("Selected Location: ", Integer.toString(i));
                     }
                 }
             }
         });
-    }
-
-    public void createLocationList() {
-        locationItemArrayList = new ArrayList<>();
-        locationItemArrayList.add(new LocationItem(R.drawable.brittinghamboats, "Brittingham Boats"));
-        locationItemArrayList.add(new LocationItem(R.drawable.madisonmccall, "Madison McCall"));
-        locationItemArrayList.add(new LocationItem(R.drawable.bouldersclimbing, "Boulders Climbing"));
     }
 
     // call places api here to get suggestions
@@ -118,7 +111,7 @@ public class LocationSuggestion extends AppCompatActivity {
         TripWithTags trip = locationSuggestionViewModel.getTripWithTags(tripId);
         TripWithDaysAndDaySegments tripWithDaysAndDaySegments = locationSuggestionViewModel.getTripWithDaysAndDaySegments(tripId);
 
-        mAdapter = new LocationAdapter(getApplicationContext(), searchResults, tripWithDaysAndDaySegments, locationSuggestionViewModel);
+        mAdapter = new LocationAdapter(getApplicationContext(), locationItems, tripWithDaysAndDaySegments, locationSuggestionViewModel);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -144,6 +137,9 @@ public class LocationSuggestion extends AppCompatActivity {
                     @Override
                     public void onResult(PlacesSearchResponse result) {
                         searchResults.addAll(Arrays.asList(result.results));
+                        for (PlacesSearchResult res : result.results) {
+                            locationItems.add(new LocationItem(res));
+                        }
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
