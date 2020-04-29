@@ -20,4 +20,7 @@ public class LocationItem {
         return isSelected;
     }
 
+    public void setSelected(boolean selected) {
+        this.isSelected = selected;
+    }
 }

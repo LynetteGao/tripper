@@ -33,6 +33,7 @@ import com.google.maps.errors.ApiException;
 import com.google.maps.model.PlacesSearchResponse;
 import com.google.maps.model.PlacesSearchResult;
 import com.google.maps.model.RankBy;
+import com.tripper.db.entities.Event;
 import com.tripper.db.entities.Tag;
 import com.tripper.db.relationships.TripWithDaysAndDaySegments;
 import com.tripper.db.relationships.TripWithTags;
@@ -56,6 +57,7 @@ public class LocationSuggestion extends AppCompatActivity {
     private AutocompleteSupportFragment autocompleteSupportFragment;
     private List<PlacesSearchResult> searchResults = new ArrayList<>();
     private List<LocationItem> locationItems = new ArrayList<>();
+    private TripWithDaysAndDaySegments tripWithDaysAndDaySegments;
     Button select;
 
     @Override
@@ -65,6 +67,7 @@ public class LocationSuggestion extends AppCompatActivity {
         locationSuggestionViewModel = new LocationSuggestionViewModel(getApplication());
         Intent intent = getIntent();
         tripId = intent.getLongExtra("tripId", -1);
+        tripWithDaysAndDaySegments = locationSuggestionViewModel.getTripWithDaysAndDaySegments(tripId);
 
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), getString(R.string.places_api_key));
@@ -94,9 +97,20 @@ public class LocationSuggestion extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                for (int i = 0; i < locationItemArrayList.size(); i++) {
-                    if (locationItemArrayList.get(i).isSelected()) {
-                        Log.d("Selected Location: ", Integer.toString(i));
+                for (LocationItem item : locationItems) {
+                    if (item.isSelected()) {
+                        PlacesSearchResult result = item.getPlacesSearchResult();
+                        Log.d("Selected Location: ", item.getPlacesSearchResult().name);
+                        Event event = new Event();
+                        event.name = result.name;
+                        event.locationLon = Double.toString(result.geometry.location.lng);
+                        event.locationLat = Double.toString(result.geometry.location.lat);
+                        event.tripId = tripWithDaysAndDaySegments.trip.id;
+                        event.segmentId = tripWithDaysAndDaySegments.days.get(0).daySegments.get(0).daySegment.id;
+                        locationSuggestionViewModel.insertEvent(event);
+                        Intent intent = new Intent(getApplicationContext(), TripOverview.class);
+                        intent.putExtra("tripId", tripWithDaysAndDaySegments.trip.id);
+                        startActivity(intent);
                     }
                 }
             }
@@ -109,9 +123,9 @@ public class LocationSuggestion extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         TripWithTags trip = locationSuggestionViewModel.getTripWithTags(tripId);
-        TripWithDaysAndDaySegments tripWithDaysAndDaySegments = locationSuggestionViewModel.getTripWithDaysAndDaySegments(tripId);
 
-        mAdapter = new LocationAdapter(getApplicationContext(), locationItems, tripWithDaysAndDaySegments, locationSuggestionViewModel);
+
+        mAdapter = new LocationAdapter(getApplicationContext(), locationItems, locationSuggestionViewModel);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 

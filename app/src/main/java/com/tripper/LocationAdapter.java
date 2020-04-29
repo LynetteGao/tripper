@@ -3,6 +3,7 @@ package com.tripper;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,15 +40,13 @@ import java.util.function.DoubleBinaryOperator;
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.PredictionViewHolder> {
 
     private List<LocationItem> locationItems;
-    private TripWithDaysAndDaySegments trip;
     private Context context;
     private LocationSuggestionViewModel locationSuggestionViewModel;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public LocationAdapter(Context context, List<LocationItem> locationItems, TripWithDaysAndDaySegments trip, LocationSuggestionViewModel locationSuggestionViewModel) {
+    public LocationAdapter(Context context, List<LocationItem> locationItems, LocationSuggestionViewModel locationSuggestionViewModel) {
         this.context = context;
         this.locationItems = locationItems;
-        this.trip = trip;
         this.locationSuggestionViewModel = locationSuggestionViewModel;
     }
 
@@ -65,7 +64,8 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Predic
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(PredictionViewHolder holder, int position) {
-        PlacesSearchResult result = locationItems.get(position).getPlacesSearchResult();
+        LocationItem item = locationItems.get(position);
+        PlacesSearchResult result = item.getPlacesSearchResult();
         holder.locationText.setText(result.name);
         PlacesClient placesClient = Places.createClient(this.context);
 
@@ -92,17 +92,10 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Predic
             public void onClick(View v) {
                 //TODO: this is temp code to get basic events working
                 Log.i("LocationClick", result.name);
-                Event event = new Event();
-                event.name = result.name;
-                event.locationLon = Double.toString(result.geometry.location.lng);
-                event.locationLat = Double.toString(result.geometry.location.lat);
-                event.tripId = trip.trip.id;
-                event.segmentId = trip.days.get(0).daySegments.get(0).daySegment.id;
-                locationSuggestionViewModel.insertEvent(event);
-                Intent intent = new Intent(context, TripOverview.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("tripId", trip.trip.id);
-                context.startActivity(intent);
+                item.setSelected(!item.isSelected());
+                holder.locationCard.setCardBackgroundColor(item.isSelected() ? Color.GREEN : Color.WHITE);
+
+
             }
         });
     }
