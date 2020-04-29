@@ -133,7 +133,8 @@ public class LocationSuggestion extends AppCompatActivity {
                         event.locationLon = Double.toString(result.geometry.location.lng);
                         event.locationLat = Double.toString(result.geometry.location.lat);
                         event.tripId = tripWithDaysAndDaySegments.trip.id;
-                        event.segmentId = tripWithDaysAndDaySegments.days.get(dayIndex).daySegments.get(segIndex).daySegment.id;
+                        event.segmentId = segId == -1 ? tripWithDaysAndDaySegments.days.get(dayIndex).
+                                daySegments.get(segIndex).daySegment.id : segId;
                         locationSuggestionViewModel.insertEvent(event);
                         segIndex++;
                     }
