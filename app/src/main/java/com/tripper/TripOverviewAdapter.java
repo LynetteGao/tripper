@@ -108,7 +108,7 @@ public class TripOverviewAdapter extends RecyclerView.Adapter<TripOverviewAdapte
 //                //TODO: this is temp code to get basic events working
                 long segId = segmentsAndEvents.get(0).daySegment.id;
                 Log.d(TAG, "onClick: "+segId);
-                Intent intent = new Intent(context, TagSuggestion.class);
+                Intent intent = new Intent(context, LocationSuggestion.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("segId",segId);
                 intent.putExtra("tripId",tripId);
@@ -133,7 +133,7 @@ public class TripOverviewAdapter extends RecyclerView.Adapter<TripOverviewAdapte
 //                //TODO: this is temp code to get basic events working
                 long segId = segmentsAndEvents.get(1).daySegment.id;
                 Log.d(TAG, "onClick: "+ segId);
-                Intent intent = new Intent(context, TagSuggestion.class);
+                Intent intent = new Intent(context, LocationSuggestion.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("segId",segId);
                 intent.putExtra("tripId",tripId);
@@ -146,7 +146,7 @@ public class TripOverviewAdapter extends RecyclerView.Adapter<TripOverviewAdapte
 //                //TODO: this is temp code to get basic events working
                 long segId = segmentsAndEvents.get(2).daySegment.id;
                 Log.d(TAG, "onClick: "+ segId);
-                Intent intent = new Intent(context, TagSuggestion.class);
+                Intent intent = new Intent(context, LocationSuggestion.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("segId",segId);
                 intent.putExtra("tripId",tripId);

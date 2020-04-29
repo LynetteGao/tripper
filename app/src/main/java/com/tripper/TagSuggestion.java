@@ -30,7 +30,6 @@ public class TagSuggestion extends AppCompatActivity {
     private TagSuggestionViewModel tagSuggestionViewModel;
     private List<Tag> defaultTags;
     private Long tripId;
-    private Long segId;
 
     Button select;
     int[] images = {R.drawable.sightseeing, R.drawable.art, R.drawable.sport, R.drawable.history,
@@ -43,7 +42,6 @@ public class TagSuggestion extends AppCompatActivity {
         tagSuggestionViewModel = new ViewModelProvider(this).get(TagSuggestionViewModel.class);
         Intent intent = getIntent();
         tripId = intent.getLongExtra("tripId", -1);
-        segId = intent.getLongExtra("segId",-1);
         defaultTags = tagSuggestionViewModel.getDefaultTags();
         createTagList();
         buildRecyclerView();
@@ -66,7 +64,6 @@ public class TagSuggestion extends AppCompatActivity {
 
                 Intent intent = new Intent(v.getContext(), LocationSuggestion.class);
                 intent.putExtra("tripId", tripId);
-                intent.putExtra("segId", segId);
                 startActivity(intent);
 
             }

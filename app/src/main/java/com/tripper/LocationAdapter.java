@@ -100,10 +100,10 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Predic
                 event.locationLon = Double.toString(result.geometry.location.lng);
                 event.locationLat = Double.toString(result.geometry.location.lat);
                 event.tripId = trip.trip.id;
-                if(segmentId==-1){
+                event.segmentId = segmentId;
+                if(event.segmentId==-1){
                     event.segmentId = trip.days.get(0).daySegments.get(0).daySegment.id;
                 }
-                event.segmentId = segmentId;
                 locationSuggestionViewModel.insertEvent(event);
                 Intent intent = new Intent(context, TripOverview.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
