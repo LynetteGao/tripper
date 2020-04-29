@@ -120,7 +120,7 @@ public class LocationSuggestion extends AppCompatActivity {
         TripWithTags trip = locationSuggestionViewModel.getTripWithTags(tripId);
         TripWithDaysAndDaySegments tripWithDaysAndDaySegments = locationSuggestionViewModel.getTripWithDaysAndDaySegments(tripId);
 
-        mAdapter = new LocationAdapter(getApplicationContext(), searchResults, tripWithDaysAndDaySegments, locationSuggestionViewModel);
+        mAdapter = new LocationAdapter(getApplicationContext(), searchResults, tripWithDaysAndDaySegments, locationSuggestionViewModel,this.segId);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 

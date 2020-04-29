@@ -42,13 +42,16 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Predic
     private TripWithDaysAndDaySegments trip;
     private Context context;
     private LocationSuggestionViewModel locationSuggestionViewModel;
+    private long segmentId;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public LocationAdapter(Context context, List<PlacesSearchResult> searchResults, TripWithDaysAndDaySegments trip, LocationSuggestionViewModel locationSuggestionViewModel) {
+    public LocationAdapter(Context context, List<PlacesSearchResult> searchResults, TripWithDaysAndDaySegments trip,
+                           LocationSuggestionViewModel locationSuggestionViewModel, long segId ) {
         this.context = context;
         this.searchResults = searchResults;
         this.trip = trip;
         this.locationSuggestionViewModel = locationSuggestionViewModel;
+        this.segmentId = segId;
     }
 
     // Create new views (invoked by the layout manager)
@@ -91,13 +94,16 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Predic
             @Override
             public void onClick(View v) {
                 //TODO: this is temp code to get basic events working
-                Log.i("LocationClick", result.name);
+                Log.i("LocationClick", String.valueOf(segmentId));
                 Event event = new Event();
                 event.name = result.name;
                 event.locationLon = Double.toString(result.geometry.location.lng);
                 event.locationLat = Double.toString(result.geometry.location.lat);
                 event.tripId = trip.trip.id;
-                event.segmentId = trip.days.get(0).daySegments.get(0).daySegment.id;
+                if(segmentId==-1){
+                    event.segmentId = trip.days.get(0).daySegments.get(0).daySegment.id;
+                }
+                event.segmentId = segmentId;
                 locationSuggestionViewModel.insertEvent(event);
                 Intent intent = new Intent(context, TripOverview.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

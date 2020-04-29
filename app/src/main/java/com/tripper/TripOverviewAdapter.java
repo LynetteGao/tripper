@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tripper.db.entities.Day;
 import com.tripper.db.entities.Event;
+import com.tripper.db.entities.Tag;
 import com.tripper.db.entities.Trip;
 import com.tripper.db.relationships.DaySegmentWithEvents;
 import com.tripper.db.relationships.DayWithSegmentsAndEvents;
@@ -39,7 +40,7 @@ public class TripOverviewAdapter extends RecyclerView.Adapter<TripOverviewAdapte
     //private HomePageListViewModel homePageListViewModel;
     private TripOverviewViewModel tripOverviewViewModel;
     private long tripId;
-    List<Address> addresses;
+    //List<Address> addresses;
 
 
     public TripOverviewAdapter(Context context, TripOverviewViewModel tripOverviewViewModel, TripWithDaysAndDaySegments trip_with_days) {
@@ -92,11 +93,11 @@ public class TripOverviewAdapter extends RecyclerView.Adapter<TripOverviewAdapte
         }
         if(segmentsAndEvents!=null& segmentsAndEvents.size()>=2 && segmentsAndEvents.get(1).events.size()>=1) {
             String aEvent = segmentsAndEvents.get(1).events.get(0).name;
-            holder.textViewMorning.setText("Afternoon: " + aEvent);
+            holder.textViewAfternoon.setText("Afternoon: " + aEvent);
         }
         if(segmentsAndEvents!=null& segmentsAndEvents.size()>=3 && segmentsAndEvents.get(2).events.size()>=1) {
             String eEvent = segmentsAndEvents.get(2).events.get(0).name;
-            holder.textViewMorning.setText("Evening: " + eEvent);
+            holder.textViewEvening.setText("Evening: " + eEvent);
         }
 
 
@@ -107,9 +108,9 @@ public class TripOverviewAdapter extends RecyclerView.Adapter<TripOverviewAdapte
 //                //TODO: this is temp code to get basic events working
                 long segId = segmentsAndEvents.get(0).daySegment.id;
                 Log.d(TAG, "onClick: "+segId);
-                Intent intent = new Intent(context, LocationSuggestion.class);
+                Intent intent = new Intent(context, TagSuggestion.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("segmentId",segId);
+                intent.putExtra("segId",segId);
                 intent.putExtra("tripId",tripId);
                 context.startActivity(intent);
 //                Event event = new Event();
@@ -132,9 +133,9 @@ public class TripOverviewAdapter extends RecyclerView.Adapter<TripOverviewAdapte
 //                //TODO: this is temp code to get basic events working
                 long segId = segmentsAndEvents.get(1).daySegment.id;
                 Log.d(TAG, "onClick: "+ segId);
-                Intent intent = new Intent(context, LocationSuggestion.class);
+                Intent intent = new Intent(context, TagSuggestion.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("segmentId",segId);
+                intent.putExtra("segId",segId);
                 intent.putExtra("tripId",tripId);
                 context.startActivity(intent);
             }
@@ -145,9 +146,9 @@ public class TripOverviewAdapter extends RecyclerView.Adapter<TripOverviewAdapte
 //                //TODO: this is temp code to get basic events working
                 long segId = segmentsAndEvents.get(2).daySegment.id;
                 Log.d(TAG, "onClick: "+ segId);
-                Intent intent = new Intent(context, LocationSuggestion.class);
+                Intent intent = new Intent(context, TagSuggestion.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("segmentId",segId);
+                intent.putExtra("segId",segId);
                 intent.putExtra("tripId",tripId);
                 context.startActivity(intent);
             }
