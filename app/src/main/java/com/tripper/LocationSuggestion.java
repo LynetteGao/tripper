@@ -52,6 +52,7 @@ public class LocationSuggestion extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private LocationSuggestionViewModel locationSuggestionViewModel;
     private Long tripId;
+    private Long segId;
     private AutocompleteSupportFragment autocompleteSupportFragment;
     private List<AutocompletePrediction> predictionList = new ArrayList<>();
     private List<PlacesSearchResult> searchResults = new ArrayList<>();
@@ -65,6 +66,7 @@ public class LocationSuggestion extends AppCompatActivity {
         locationSuggestionViewModel = new LocationSuggestionViewModel(getApplication());
         Intent intent = getIntent();
         tripId = intent.getLongExtra("tripId", -1);
+        segId = intent.getLongExtra("segId",-1);
 
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), getString(R.string.places_api_key));
@@ -118,7 +120,7 @@ public class LocationSuggestion extends AppCompatActivity {
         TripWithTags trip = locationSuggestionViewModel.getTripWithTags(tripId);
         TripWithDaysAndDaySegments tripWithDaysAndDaySegments = locationSuggestionViewModel.getTripWithDaysAndDaySegments(tripId);
 
-        mAdapter = new LocationAdapter(getApplicationContext(), searchResults, tripWithDaysAndDaySegments, locationSuggestionViewModel);
+        mAdapter = new LocationAdapter(getApplicationContext(), searchResults, tripWithDaysAndDaySegments, locationSuggestionViewModel,this.segId);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
