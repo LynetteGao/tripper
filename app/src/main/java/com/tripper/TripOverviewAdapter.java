@@ -81,23 +81,41 @@ public class TripOverviewAdapter extends RecyclerView.Adapter<TripOverviewAdapte
 //        String address = addresses.get(0).getAddressLine(0);
         holder.textViewAddress.setText(date);
 
-        holder.textViewMorning.setText("Morning:" );
+        holder.textViewMorning.setText("Morning" );
         holder.textViewAfternoon.setText("Afternoon");
         holder.textViewEvening.setText("Evening");
 
         List<DaySegmentWithEvents> segmentsAndEvents = day_item.get(position).daySegments;
         Log.d(TAG, "onBindViewHolder: ");
-        if( segmentsAndEvents!=null& segmentsAndEvents.size()>=1 && segmentsAndEvents.get(0).events.size()>=1 ) {
-            String mEvent = segmentsAndEvents.get(0).events.get(0).name;
-            holder.textViewMorning.setText("Morning: " + mEvent);
+
+        StringBuilder mbuilder = new StringBuilder();
+        mbuilder.append("Morning:");
+
+        if( segmentsAndEvents!=null& segmentsAndEvents.size()>=1) {
+            for (Event events : segmentsAndEvents.get(0).events) {
+                mbuilder.append(events.name + "\n");
+                holder.textViewMorning.setText(mbuilder.toString());
+            }
         }
-        if(segmentsAndEvents!=null& segmentsAndEvents.size()>=2 && segmentsAndEvents.get(1).events.size()>=1) {
-            String aEvent = segmentsAndEvents.get(1).events.get(0).name;
-            holder.textViewAfternoon.setText("Afternoon: " + aEvent);
+
+        StringBuilder abuilder = new StringBuilder();
+        abuilder.append("Afternoon:");
+
+        if( segmentsAndEvents!=null& segmentsAndEvents.size()>=2) {
+            for (Event events : segmentsAndEvents.get(1).events) {
+                abuilder.append(events.name + "\n");
+                holder.textViewAfternoon.setText(abuilder.toString());
+            }
         }
-        if(segmentsAndEvents!=null& segmentsAndEvents.size()>=3 && segmentsAndEvents.get(2).events.size()>=1) {
-            String eEvent = segmentsAndEvents.get(2).events.get(0).name;
-            holder.textViewEvening.setText("Evening: " + eEvent);
+
+        StringBuilder ebuilder = new StringBuilder();
+        ebuilder.append("Evening:");
+
+        if(segmentsAndEvents!=null& segmentsAndEvents.size()>=3) {
+            for (Event events : segmentsAndEvents.get(2).events) {
+                ebuilder.append(events.name + "\n");
+                holder.textViewEvening.setText(ebuilder.toString());
+            }
         }
 
 
