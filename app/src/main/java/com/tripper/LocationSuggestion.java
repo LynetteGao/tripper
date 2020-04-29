@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
+import com.google.android.libraries.places.api.model.LocationBias;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.model.TypeFilter;
@@ -25,6 +26,7 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.maps.FindPlaceFromTextRequest;
 import com.google.maps.GeoApiContext;
 import com.google.maps.PendingResult;
 import com.google.maps.PlacesApi;
@@ -73,15 +75,30 @@ public class LocationSuggestion extends AppCompatActivity {
             Places.initialize(getApplicationContext(), getString(R.string.places_api_key));
         }
 
+        LatLng tripLatLng = new LatLng(Double.parseDouble(tripWithDaysAndDaySegments.trip.locationLat),
+               Double.parseDouble(tripWithDaysAndDaySegments.trip.locationLon));
+        RectangularBounds bounds = toBounds(tripLatLng, 5000.0);
+
         autocompleteSupportFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.locSuggestionAutoComplete);
         autocompleteSupportFragment.setHint("Search");
-
+        autocompleteSupportFragment.setLocationBias(bounds);
+        autocompleteSupportFragment.setTypeFilter(TypeFilter.ESTABLISHMENT);
         autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 Log.d("place", Objects.requireNonNull(place.getName()));
+                Event event = new Event();
+                event.tripId = tripWithDaysAndDaySegments.trip.id;
+                event.segmentId = tripWithDaysAndDaySegments.days.get(0).daySegments.get(0).daySegment.id;
+                event.name = place.getName();
+                event.locationLon = Double.toString(place.getLatLng().longitude);
+                event.locationLat = Double.toString(place.getLatLng().latitude);
+                locationSuggestionViewModel.insertEvent(event);
+                Intent intent = new Intent(getApplicationContext(), TripOverview.class);
+                intent.putExtra("tripId", tripId);
+                startActivity(intent);
             }
 
             @Override
@@ -97,8 +114,16 @@ public class LocationSuggestion extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                int dayIndex = 0;
+                int segIndex = 0;
                 for (LocationItem item : locationItems) {
                     if (item.isSelected()) {
+                        if (segIndex >= 3) {
+                            segIndex = 0;
+                            dayIndex++;
+                        }
+                        if (dayIndex >= tripWithDaysAndDaySegments.days.size()) { dayIndex = 0; }
+
                         PlacesSearchResult result = item.getPlacesSearchResult();
                         Log.d("Selected Location: ", item.getPlacesSearchResult().name);
                         Event event = new Event();
@@ -106,13 +131,14 @@ public class LocationSuggestion extends AppCompatActivity {
                         event.locationLon = Double.toString(result.geometry.location.lng);
                         event.locationLat = Double.toString(result.geometry.location.lat);
                         event.tripId = tripWithDaysAndDaySegments.trip.id;
-                        event.segmentId = tripWithDaysAndDaySegments.days.get(0).daySegments.get(0).daySegment.id;
+                        event.segmentId = tripWithDaysAndDaySegments.days.get(dayIndex).daySegments.get(segIndex).daySegment.id;
                         locationSuggestionViewModel.insertEvent(event);
-                        Intent intent = new Intent(getApplicationContext(), TripOverview.class);
-                        intent.putExtra("tripId", tripWithDaysAndDaySegments.trip.id);
-                        startActivity(intent);
+                        segIndex++;
                     }
                 }
+                Intent intent = new Intent(getApplicationContext(), TripOverview.class);
+                intent.putExtra("tripId", tripWithDaysAndDaySegments.trip.id);
+                startActivity(intent);
             }
         });
     }
@@ -168,6 +194,13 @@ public class LocationSuggestion extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private RectangularBounds toBounds(LatLng center, double radiusInMeters) {
+        double distanceFromCenterToCorner = radiusInMeters * Math.sqrt(2.0);
+        LatLng swCorner = SphericalUtil.computeOffset(center, distanceFromCenterToCorner, 225.0);
+        LatLng neCorner = SphericalUtil.computeOffset(center, distanceFromCenterToCorner, 45.0);
+        return RectangularBounds.newInstance(swCorner, neCorner);
     }
 }
 
