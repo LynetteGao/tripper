@@ -41,6 +41,7 @@ public class TripOverview extends AppCompatActivity {
                             break;
                         case R.id.nav_plan:
                             selectedFragment = new OverviewPlanFragment();
+                            selectedFragment.setArguments(getIntent().getExtras());
                             break;
                         case R.id.nav_diary:
                             selectedFragment = new OverviewDiaryFragment();
