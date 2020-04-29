@@ -1,18 +1,21 @@
 package com.tripper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tripper.db.entities.Day;
+import com.tripper.db.entities.Event;
 import com.tripper.db.entities.Trip;
 import com.tripper.db.relationships.DaySegmentWithEvents;
 import com.tripper.db.relationships.DayWithSegmentsAndEvents;
@@ -35,6 +38,7 @@ public class TripOverviewAdapter extends RecyclerView.Adapter<TripOverviewAdapte
     //private LayoutInflater layoutInflater;
     //private HomePageListViewModel homePageListViewModel;
     private TripOverviewViewModel tripOverviewViewModel;
+    private long tripId;
     List<Address> addresses;
 
 
@@ -43,7 +47,8 @@ public class TripOverviewAdapter extends RecyclerView.Adapter<TripOverviewAdapte
         //this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.tripOverviewViewModel = tripOverviewViewModel;
         this.day_item = trip_with_days.days;
-        geocoder = new Geocoder(context, Locale.getDefault());
+        this.tripId = trip_with_days.trip.id;
+        //geocoder = new Geocoder(context, Locale.getDefault());
     }
 
 
@@ -95,9 +100,58 @@ public class TripOverviewAdapter extends RecyclerView.Adapter<TripOverviewAdapte
         }
 
 
-        //holder.textViewMorning.setText("Morning:" + mEvent);
+        //set up each button
+        holder.buttonAddMorningEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                //TODO: this is temp code to get basic events working
+                long segId = segmentsAndEvents.get(0).daySegment.id;
+                Log.d(TAG, "onClick: "+segId);
+                Intent intent = new Intent(context, LocationSuggestion.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("segmentId",segId);
+                intent.putExtra("tripId",tripId);
+                context.startActivity(intent);
+//                Event event = new Event();
+//                event.name = result.name;
+//                event.locationLon = Double.toString(result.geometry.location.lng);
+//                event.locationLat = Double.toString(result.geometry.location.lat);
+//                event.tripId = trip.trip.id;
+//                event.segmentId = trip.days.get(0).daySegments.get(0).daySegment.id;
+//                locationSuggestionViewModel.insertEvent(event);
+//                Intent intent = new Intent(context, TripOverview.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                intent.putExtra("tripId", trip.trip.id);
+//                context.startActivity(intent);
+            }
+        });
 
-
+        holder.buttonAddAfternoonEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                //TODO: this is temp code to get basic events working
+                long segId = segmentsAndEvents.get(1).daySegment.id;
+                Log.d(TAG, "onClick: "+ segId);
+                Intent intent = new Intent(context, LocationSuggestion.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("segmentId",segId);
+                intent.putExtra("tripId",tripId);
+                context.startActivity(intent);
+            }
+        });
+        holder.buttonAddEveningEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                //TODO: this is temp code to get basic events working
+                long segId = segmentsAndEvents.get(2).daySegment.id;
+                Log.d(TAG, "onClick: "+ segId);
+                Intent intent = new Intent(context, LocationSuggestion.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("segmentId",segId);
+                intent.putExtra("tripId",tripId);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -116,6 +170,10 @@ public class TripOverviewAdapter extends RecyclerView.Adapter<TripOverviewAdapte
         private TextView textViewMorning;
         private TextView textViewAfternoon;
         private TextView textViewEvening;
+        private ImageButton buttonAddMorningEvent;
+        private ImageButton buttonAddAfternoonEvent;
+        private ImageButton buttonAddEveningEvent;
+
 
         public TripHolder(View itemView) {
             super(itemView);
@@ -124,7 +182,9 @@ public class TripOverviewAdapter extends RecyclerView.Adapter<TripOverviewAdapte
             textViewMorning = itemView.findViewById(R.id.morning_event);
             textViewAfternoon = itemView.findViewById(R.id.afternoon_event);
             textViewEvening = itemView.findViewById(R.id.evening_event);
-
+            buttonAddMorningEvent = itemView.findViewById(R.id.add_morning_event);
+            buttonAddAfternoonEvent = itemView.findViewById(R.id.add_afternoon_event);
+            buttonAddEveningEvent = itemView.findViewById(R.id.add_evening_event);
         }
     }
 }
