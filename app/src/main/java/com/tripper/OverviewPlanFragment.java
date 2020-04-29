@@ -52,7 +52,7 @@ public class OverviewPlanFragment extends Fragment {
         TripOverviewAdapter adapter = new TripOverviewAdapter(Objects.requireNonNull(getContext()),overviewListViewModel,trip_with_days );
         mRecyclerView.setAdapter(adapter);
 
-        Day i = trip_with_days.days.get(0).day;
+        //Day i = trip_with_days.days.get(0).day;
         return view;
     }
 }
