@@ -255,7 +255,7 @@ public class DatabaseTest {
         diaryEntry.diaryId = diaryId;
         tripDao.insertDiaryEntry(diaryEntry);
 
-        List<DiaryWithEntries> diaries = tripDao.getDiaryWithEntries();
+        List<DiaryWithEntries> diaries = tripDao.getDiariesWithEntries();
         assertEquals(diaries.get(0).diary.id, diaryId);
         assertEquals(diaries.get(0).diaryEntries.get(0).diaryText, diaryEntry.diaryText);
     }
