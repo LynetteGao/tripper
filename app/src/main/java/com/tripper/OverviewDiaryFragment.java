@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,16 +17,19 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class DiaryActivity extends AppCompatActivity {
+/*This class is the Diary Fragment*/
+
+public class OverviewDiaryFragment extends Fragment {
     RecyclerView rv;
     TimeLineAdapter timeLineAdapter;
     ArrayList<TimeLineItem> rvList = new ArrayList<>();
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_diary);
-        initLayout();
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_diary,container,false);
+        initLayout(view);
         initData();
+        return view;
     }
 
     private void initData() {
@@ -46,11 +50,11 @@ public class DiaryActivity extends AppCompatActivity {
         timeLineAdapter.notifyDataSetChanged();
     }
 
-    private void initLayout() {
-        rv = findViewById(R.id.my_recycler_view);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+    private void initLayout(View view) {
+        rv = (RecyclerView)view.findViewById(R.id.my_recycler_view);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this.getActivity());
         rv.setLayoutManager(mLayoutManager);
-        timeLineAdapter = new TimeLineAdapter(this, rvList);
+        timeLineAdapter = new TimeLineAdapter(this.getActivity(), rvList);
         rv.setAdapter(timeLineAdapter);
     }
 
@@ -86,7 +90,7 @@ public class DiaryActivity extends AppCompatActivity {
             if (viewType == VIEW_TYPE_FIRST_ITEM) {
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_card_type_start, parent, false);
-                return new FirstItemHolder(view);
+                return new OverviewDiaryFragment.TimeLineAdapter.FirstItemHolder(view);
             } else if (viewType == VIEW_TYPE_MIDDLE_ITEM) {
                 if(middleItemCounter == 0){
                     view = LayoutInflater.from(parent.getContext())
@@ -97,11 +101,11 @@ public class DiaryActivity extends AppCompatActivity {
                             .inflate(R.layout.item_card_type_middle_right, parent, false);
                     middleItemCounter = 0;
                 }
-                return new MiddleItemHolder(view);
+                return new OverviewDiaryFragment.TimeLineAdapter.MiddleItemHolder(view);
             } else if(viewType == VIEW_TYPE_LAST_ITEM) {
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_card_end, parent, false);
-                return new LastItemHolder(view);
+                return new OverviewDiaryFragment.TimeLineAdapter.LastItemHolder(view);
             }
             return null;
         }
@@ -110,13 +114,13 @@ public class DiaryActivity extends AppCompatActivity {
             TimeLineItem items = mItemsList.get(position);
             switch (holder.getItemViewType()) {
                 case VIEW_TYPE_FIRST_ITEM:
-                    ((FirstItemHolder) holder).bind(items);
+                    ((OverviewDiaryFragment.TimeLineAdapter.FirstItemHolder) holder).bind(items);
                     break;
                 case VIEW_TYPE_MIDDLE_ITEM:
-                    ((MiddleItemHolder) holder).bind(items);
+                    ((OverviewDiaryFragment.TimeLineAdapter.MiddleItemHolder) holder).bind(items);
                     break;
                 case VIEW_TYPE_LAST_ITEM:
-                    ((LastItemHolder) holder).bind(items);
+                    ((OverviewDiaryFragment.TimeLineAdapter.LastItemHolder) holder).bind(items);
                     break;
             }
         }

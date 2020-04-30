@@ -1,5 +1,31 @@
 <resources>
     <string name="app_name">Tripper</string>
+    <string-array name="tagList">
+    <item>Sightseeing</item>
+    <item>Art</item>
+    <item>Sport</item>
+    <item>History</item>
+    <item>Leisure</item>
+    <item>Eateries</item>
+</string-array>
+    <string-array name="locationList">
+        <item>Brittingham Boats</item>
+        <item>Madison Mc Call</item>
+        <item>Boulders Climbing</item>
+    </string-array>
+    <string name="title_activity_home_page">HomePage</string>
+    <string name="title_map_view">Map View</string>
+    <string name="title_list_view">List View</string>
+    <string name="new_trip_header">Your next destination…</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="destination">Destination</string>
+    <string name="trip_name">Trip Name</string>
+    <string name="create_trip">Create My Trip</string>
+    <string name="no_trip_data">You don\'t have any trips yet!</string>
+    <string name="places_api_key">AIzaSyDjWRb7f25H0ge7_q8E4BFfs7gasMKt-aA</string>
+    <string name="edit">Edit</string>
+    <string name="delete_trip">Delete Trip</string>
     <string name="month_holder">MONTH</string>
     <string name="day_holder">DAY</string>
     <string name="image_content_description">connecting icon</string>
