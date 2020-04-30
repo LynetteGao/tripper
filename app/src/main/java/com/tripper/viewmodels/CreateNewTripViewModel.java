@@ -3,7 +3,6 @@ package com.tripper.viewmodels;
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
 import com.tripper.db.entities.Day;
 import com.tripper.db.entities.DaySegment;
@@ -22,7 +21,7 @@ public class CreateNewTripViewModel extends AndroidViewModel {
         return tripRepository.insertTrip(trip);
     }
 
-    public Long insertDay(Day day) { return tripRepository.insertDay(day); }
+    public Long insertDay(Day day) { return tripRepository.insertDaySync(day); }
 
     public void insertDaySegment(DaySegment daySegment) { tripRepository.insertDaySegment(daySegment); }
 
