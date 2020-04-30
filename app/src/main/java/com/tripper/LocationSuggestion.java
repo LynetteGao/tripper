@@ -93,7 +93,8 @@ public class LocationSuggestion extends AppCompatActivity {
                 Log.d("place", Objects.requireNonNull(place.getName()));
                 Event event = new Event();
                 event.tripId = tripWithDaysAndDaySegments.trip.id;
-                event.segmentId = tripWithDaysAndDaySegments.days.get(0).daySegments.get(0).daySegment.id;
+                event.segmentId = segId == -1 ? tripWithDaysAndDaySegments
+                        .days.get(0).daySegments.get(0).daySegment.id : segId;
                 event.name = place.getName();
                 event.locationLon = Double.toString(place.getLatLng().longitude);
                 event.locationLat = Double.toString(place.getLatLng().latitude);
