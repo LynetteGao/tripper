@@ -3,6 +3,7 @@ package com.tripper;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,20 +39,15 @@ import java.util.function.DoubleBinaryOperator;
 
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.PredictionViewHolder> {
 
-    private List<PlacesSearchResult> searchResults;
-    private TripWithDaysAndDaySegments trip;
+    private List<LocationItem> locationItems;
     private Context context;
     private LocationSuggestionViewModel locationSuggestionViewModel;
-    private long segmentId;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public LocationAdapter(Context context, List<PlacesSearchResult> searchResults, TripWithDaysAndDaySegments trip,
-                           LocationSuggestionViewModel locationSuggestionViewModel, long segId ) {
+    public LocationAdapter(Context context, List<LocationItem> locationItems, LocationSuggestionViewModel locationSuggestionViewModel) {
         this.context = context;
-        this.searchResults = searchResults;
-        this.trip = trip;
+        this.locationItems = locationItems;
         this.locationSuggestionViewModel = locationSuggestionViewModel;
-        this.segmentId = segId;
     }
 
     // Create new views (invoked by the layout manager)
@@ -68,7 +64,8 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Predic
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(PredictionViewHolder holder, int position) {
-        PlacesSearchResult result = searchResults.get(position);
+        LocationItem item = locationItems.get(position);
+        PlacesSearchResult result = item.getPlacesSearchResult();
         holder.locationText.setText(result.name);
         PlacesClient placesClient = Places.createClient(this.context);
 
@@ -94,21 +91,11 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Predic
             @Override
             public void onClick(View v) {
                 //TODO: this is temp code to get basic events working
-                Log.i("LocationClick", String.valueOf(segmentId));
-                Event event = new Event();
-                event.name = result.name;
-                event.locationLon = Double.toString(result.geometry.location.lng);
-                event.locationLat = Double.toString(result.geometry.location.lat);
-                event.tripId = trip.trip.id;
-                event.segmentId = segmentId;
-                if(event.segmentId==-1){
-                    event.segmentId = trip.days.get(0).daySegments.get(0).daySegment.id;
-                }
-                locationSuggestionViewModel.insertEvent(event);
-                Intent intent = new Intent(context, TripOverview.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("tripId", trip.trip.id);
-                context.startActivity(intent);
+                Log.i("LocationClick", result.name);
+                item.setSelected(!item.isSelected());
+                holder.locationCard.setCardBackgroundColor(item.isSelected() ? Color.GREEN : Color.WHITE);
+
+
             }
         });
     }
@@ -116,7 +103,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Predic
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return searchResults.size();
+        return locationItems.size();
     }
 
     // Provide a reference to the views for each data item
