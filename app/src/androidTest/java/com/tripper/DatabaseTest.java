@@ -11,12 +11,14 @@ import com.tripper.db.dao.TripDao;
 import com.tripper.db.entities.Day;
 import com.tripper.db.entities.DaySegment;
 import com.tripper.db.entities.Diary;
+import com.tripper.db.entities.DiaryEntry;
 import com.tripper.db.entities.Event;
 import com.tripper.db.entities.Tag;
 import com.tripper.db.entities.Trip;
 import com.tripper.db.entities.TripTagCrossRef;
 import com.tripper.db.relationships.DaySegmentWithEvents;
 import com.tripper.db.relationships.DayWithSegmentsAndEvents;
+import com.tripper.db.relationships.DiaryWithEntries;
 import com.tripper.db.relationships.TripWithDaysAndDaySegments;
 
 import org.junit.After;
@@ -108,6 +110,16 @@ public class DatabaseTest {
 
         List<Diary> diaries = tripDao.getDiaries();
         assertEquals(diaries.get(0).segmentId, diary.segmentId);
+    }
+
+    @Test
+    public void writeDiaryEntry() {
+        DiaryEntry diaryEntry = createTestDiaryEntry();
+        tripDao.insertDiaryEntry(diaryEntry);
+
+        List<DiaryEntry> diaryEntries = tripDao.getDiaryEntries();
+        assertEquals(diaryEntries.get(0).diaryText, diaryEntry.diaryText);
+
     }
 
 
@@ -233,7 +245,37 @@ public class DatabaseTest {
 //        assertEquals(trip2.name, recTrip.name);
     }
 
+    @Test
+    public void getDiaryWithEntries() {
 
+        Diary diary = createTestDiary();
+        long diaryId = tripDao.insertDiary(diary);
+
+        DiaryEntry diaryEntry = createTestDiaryEntry();
+        diaryEntry.diaryId = diaryId;
+        tripDao.insertDiaryEntry(diaryEntry);
+
+        List<DiaryWithEntries> diaries = tripDao.getDiaryWithEntries();
+        assertEquals(diaries.get(0).diary.id, diaryId);
+        assertEquals(diaries.get(0).diaryEntries.get(0).diaryText, diaryEntry.diaryText);
+    }
+
+    @Test
+    public void getDaySegmentsWithDiaries() {
+        DaySegment daySegment = createTestDaySegment();
+        long segmentId = tripDao.insertDaySegment(daySegment);
+
+        Diary diary = createTestDiary();
+        diary.segmentId = segmentId;
+        long diaryId = tripDao.insertDiary(diary);
+
+        DiaryEntry diaryEntry = createTestDiaryEntry();
+        diaryEntry.diaryId = diaryId;
+        long entryId = tripDao.insertDiaryEntry(diaryEntry);
+
+        List<DaySegmentWithEvents> daySegmentWithEvents = tripDao.getDaySegmentsWithEvents();
+        assertEquals(daySegmentWithEvents.get(0).diaryWithEntries.diary.id, diaryId);
+    }
 
     // helper methods
     private Trip createTestTrip() {
@@ -281,6 +323,13 @@ public class DatabaseTest {
         Diary diary = new Diary();
         diary.segmentId = 0;
         return diary;
+    }
+
+    private DiaryEntry createTestDiaryEntry() {
+        DiaryEntry diaryEntry = new DiaryEntry();
+        diaryEntry.diaryId = 1;
+        diaryEntry.diaryText = "this is a test entry";
+        return diaryEntry;
     }
 
 }

@@ -19,6 +19,7 @@ import com.tripper.db.entities.Trip;
 import com.tripper.db.entities.TripTagCrossRef;
 import com.tripper.db.relationships.DaySegmentWithEvents;
 import com.tripper.db.relationships.DayWithSegmentsAndEvents;
+import com.tripper.db.relationships.DiaryWithEntries;
 import com.tripper.db.relationships.TripWithDaysAndDaySegments;
 import com.tripper.db.relationships.TripWithTags;
 
@@ -182,5 +183,9 @@ public abstract class TripDao {
     @Transaction
     @Query("select * from trip where id = :tripId")
     public abstract TripWithTags getTripWithTags(long tripId);
+
+    @Transaction
+    @Query("select * from diary")
+    public abstract List<DiaryWithEntries> getDiaryWithEntries();
 
 }
