@@ -43,6 +43,7 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
         // Add a marker,
         // and move the map's camera to the same location.
         // testing area below vv
+        // how to read from db?
         LatLng a = new LatLng(-35.016, 143.321);
         LatLng b = new LatLng(-34.747, 145.592);
         LatLng c =new LatLng(-34.364, 147.891);
@@ -58,15 +59,6 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
             .title("Tester " + i));
             i++;
         }
-        Polygon polyline1 = googleMap.addPolygon(new PolygonOptions()
-                .clickable(true)
-                .add(
-                        a,
-                       b,
-                        c,
-                        d,
-                        e,
-                       f));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(a));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(a.latitude, a.longitude), 4));
     }
 }
