@@ -40,9 +40,9 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
     MapOverviewViewModel overViewListViewModel;
     List<DaySegmentWithEvents> segmentsAndEvents;
     // for the lat/lons, each segment has them in pairs. index i = lat, index i+1 = lon
-    List<Double> seg0;
-    List<Double> seg1;
-    List<Double> seg2;
+    List<Double> seg0 ;
+    List<Double> seg1 ;
+    List<Double> seg2 ;
 
 
 
@@ -68,8 +68,10 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
         for (int i = position; i < day_item.size(); i++) {  // for each day in trip
             List<DaySegmentWithEvents> segmentsAndEvents = day_item.get(position).daySegments; // for this day's segments
             for (Event event : segmentsAndEvents.get(0).events) {  // for each event in today's first segment
-                Log.i("Tag", "EVENT IS HERE. LAT = " + event.locationLat);
-                seg0.add(Double.parseDouble(event.locationLat));
+                Log.i("Tag", "EVENT IS HERE. LAT = " + event.locationLat + " AND THE PARSED VALUE IS HERE: " +
+                        "" + Double.parseDouble(event.locationLat));
+                Double lat = new Double(Double.parseDouble(event.locationLat));
+                seg0.add(lat);
                 seg0.add(Double.parseDouble(event.locationLon));
             }
             for (Event event : segmentsAndEvents.get(1).events) {  // for each event in today's second segment
