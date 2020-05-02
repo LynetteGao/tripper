@@ -36,6 +36,7 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
     private List<List<List<Double>>> master; // each index is a day
     private long tripId;
     int position = 0;
+    MapOverviewViewModel overViewListViewModel;
     List<DaySegmentWithEvents> segmentsAndEvents;
     // for the lat/lons, each segment has them in pairs. index i = lat, index i+1 = lon
     List<Double> seg0;
@@ -46,9 +47,9 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
 
     // construct db lists for days
     public OverviewMapFragment() {
-        long tripId = getArguments().getLong("tripId");
-        TripOverviewViewModel overViewListViewModel = new ViewModelProvider(this).get(TripOverviewViewModel.class);
-        TripWithDaysAndDaySegments trip_with_days = overviewListViewModel.getTripWithDaysAndSegment(tripId);
+
+       overViewListViewModel = new ViewModelProvider(this).get(MapOverviewViewModel.class);
+        TripWithDaysAndDaySegments trip_with_days = overViewListViewModel.getTripWithDaysAndSegment(tripId);
         this.day_item = trip_with_days.days;
         this.tripId = trip_with_days.trip.id;
     }
@@ -56,6 +57,7 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        long tripId = getArguments().getLong("tripId");
         return inflater.inflate(R.layout.fragment_overview_map, container, false);
     }
 
