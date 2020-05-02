@@ -26,4 +26,7 @@
     <string name="places_api_key">AIzaSyDjWRb7f25H0ge7_q8E4BFfs7gasMKt-aA</string>
     <string name="edit">Edit</string>
     <string name="delete_trip">Delete Trip</string>
+    <string name="month_holder">MONTH</string>
+    <string name="day_holder">DAY</string>
+    <string name="image_content_description">connecting icon</string>
 </resources>
