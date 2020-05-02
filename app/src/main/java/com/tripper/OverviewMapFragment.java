@@ -26,6 +26,7 @@ import com.tripper.db.relationships.DaySegmentWithEvents;
 import com.tripper.db.relationships.DayWithSegmentsAndEvents;
 import com.tripper.db.relationships.TripWithDaysAndDaySegments;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,16 +34,16 @@ import java.util.List;
 public class OverviewMapFragment extends Fragment implements OnMapReadyCallback {
 
     private List<DayWithSegmentsAndEvents> day_item;
-    private List<List<Double>> day;  // day list, each index is segment
-    private List<List<List<Double>>> master; // each index is a day
+    private List<List<Double>> day = new ArrayList<List<Double>>();  // day list, each index is segment
+    private List<List<List<Double>>> master = new ArrayList<List<List<Double>>>(); // each index is a day
     private long tripId;
     int position = 0;
     MapOverviewViewModel overViewListViewModel;
     List<DaySegmentWithEvents> segmentsAndEvents;
     // for the lat/lons, each segment has them in pairs. index i = lat, index i+1 = lon
-    List<Double> seg0 ;
-    List<Double> seg1 ;
-    List<Double> seg2 ;
+    List<Double> seg0 = new ArrayList<Double>();
+    List<Double> seg1 = new ArrayList<Double>();
+    List<Double> seg2 = new ArrayList<Double>();
 
 
 
@@ -68,10 +69,7 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
         for (int i = position; i < day_item.size(); i++) {  // for each day in trip
             List<DaySegmentWithEvents> segmentsAndEvents = day_item.get(position).daySegments; // for this day's segments
             for (Event event : segmentsAndEvents.get(0).events) {  // for each event in today's first segment
-                Log.i("Tag", "EVENT IS HERE. LAT = " + event.locationLat + " AND THE PARSED VALUE IS HERE: " +
-                        "" + Double.parseDouble(event.locationLat));
-                Double lat = new Double(Double.parseDouble(event.locationLat));
-                seg0.add(lat);
+                seg0.add(Double.parseDouble(event.locationLat));
                 seg0.add(Double.parseDouble(event.locationLon));
             }
             for (Event event : segmentsAndEvents.get(1).events) {  // for each event in today's second segment
