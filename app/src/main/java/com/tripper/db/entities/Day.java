@@ -12,14 +12,14 @@ import java.util.Calendar;
 @Entity(tableName = "day")
 public class Day {
     @PrimaryKey(autoGenerate = true)
-    public int id;
+    public long id;
 
     @ColumnInfo(name="date")
     @TypeConverters({CalendarTypeConverter.class})
     public Calendar date;
 
     @ColumnInfo(name="trip_id")
-    public int tripId;
+    public long tripId;
 
     @ColumnInfo(name="location_name")
     public String locationName;

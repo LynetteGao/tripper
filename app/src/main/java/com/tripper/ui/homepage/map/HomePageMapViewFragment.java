@@ -49,7 +49,7 @@ public class HomePageMapViewFragment extends Fragment {
                 gMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
                     public void onInfoWindowClick(Marker marker) {
-                        Integer tripId = (Integer) marker.getTag();
+                        Long tripId = (Long) marker.getTag();
                         Log.i("map marker", tripId.toString());
                         Intent intent = new Intent(getContext(), TripOverview.class);
                         intent.putExtra("tripId", tripId);

@@ -1,12 +1,12 @@
 package com.tripper.db.relationships;
 
-import androidx.room.Embedded;
-import androidx.room.Relation;
+        import androidx.room.Embedded;
+        import androidx.room.Relation;
 
-import com.tripper.db.entities.Day;
-import com.tripper.db.entities.Trip;
+        import com.tripper.db.entities.Day;
+        import com.tripper.db.entities.Trip;
 
-import java.util.List;
+        import java.util.List;
 
 public class TripWithDaysAndDaySegments {
     @Embedded public Trip trip;

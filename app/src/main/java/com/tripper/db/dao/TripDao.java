@@ -11,103 +11,184 @@ import androidx.room.Update;
 
 import com.tripper.db.entities.Day;
 import com.tripper.db.entities.DaySegment;
+import com.tripper.db.entities.Diary;
+import com.tripper.db.entities.DiaryEntry;
 import com.tripper.db.entities.Event;
+import com.tripper.db.entities.Tag;
 import com.tripper.db.entities.Trip;
+import com.tripper.db.entities.TripTagCrossRef;
 import com.tripper.db.relationships.DaySegmentWithEvents;
 import com.tripper.db.relationships.DayWithSegmentsAndEvents;
+import com.tripper.db.relationships.DiaryWithEntries;
 import com.tripper.db.relationships.TripWithDaysAndDaySegments;
+import com.tripper.db.relationships.TripWithTags;
 
 import java.util.List;
 
 @Dao
-public interface TripDao {
+public abstract class TripDao {
 
     // Simple insert, delete, update methods for tables
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertTrip(Trip trip);
+    public abstract long insertTrip(Trip trip);
 
     @Delete
-    public void deleteTrip(Trip trip);
+    public abstract void deleteTrip(Trip trip);
 
     @Update
-    public void updateTrip(Trip trip);
+    public abstract void updateTrip(Trip trip);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertDay(Day day);
+    public abstract long insertDay(Day day);
 
     @Delete
-    public void deleteDay(Day day);
+    public abstract void deleteDay(Day day);
 
     @Update
-    public void updateDay(Day day);
+    public abstract void updateDay(Day day);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertDaySegment(DaySegment daySegment);
+    public abstract long insertDaySegment(DaySegment daySegment);
 
     @Delete
-    public void deleteDaySegment(DaySegment daySegment);
+    public abstract void deleteDaySegment(DaySegment daySegment);
 
     @Update
-    public void updateDaySegment(DaySegment daySegment);
+    public abstract void updateDaySegment(DaySegment daySegment);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertEvent(Event event);
+    public abstract long insertEvent(Event event);
 
     @Delete
-    public void deleteEvent(Event event);
+    public abstract void deleteEvent(Event event);
 
     @Update
-    public void  updateEvent(Event event);
+    public  abstract void  updateEvent(Event event);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract long insertTag(Tag tag);
+
+    @Delete
+    public abstract void deleteTag(Tag tag);
+
+    @Update
+    public abstract void updateTag(Tag tag);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract long insertDiary(Diary diary);
+
+    @Delete
+    public abstract void deleteDiary(Diary diary);
+
+    @Update
+    public abstract void updateDiary(Diary diary);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract long insertDiaryEntry(DiaryEntry diaryEntry);
+
+    @Delete
+    public abstract void deleteDiaryEntry(DiaryEntry diaryEntry);
+
+    @Update
+    public abstract void updateDiaryEntry(DiaryEntry diaryEntry);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract List<Long> insertTags(List<Tag> tags);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract void insertTripTag(TripTagCrossRef tripTagCrossRef);
+
+    @Delete
+    public abstract void deleteTripTag(TripTagCrossRef tripTagCrossRef);
+
+    @Update
+    public abstract void updateTripTag(TripTagCrossRef tripTagCrossRef);
 
     // simple select queries
     @Query("select * from trip")
-    public List<Trip> getTrips();
+    public abstract List<Trip> getTrips();
 
     @Query("select * from day")
-    public List<Day> getDays();
+    public abstract List<Day> getDays();
 
     @Query("select * from day_segment")
-    public List<DaySegment> getDaySegments();
+    public abstract List<DaySegment> getDaySegments();
 
     @Query("select * from event")
-    public List<Event> getEvents();
+    public abstract List<Event> getEvents();
+
+    @Query("select * from tag")
+    public abstract List<Tag> getTags();
+
+    @Query("select * from diary")
+    public abstract List<Diary> getDiaries();
+
+    @Query("select * from diaryentry")
+    public abstract List<DiaryEntry> getDiaryEntries();
 
     // more complex data access methods
     @Query("select * from trip order by start_date desc")
-    public LiveData<List<Trip>> getLiveTripsDesc();
+    public abstract LiveData<List<Trip>> getLiveTripsDesc();
 
     @Query("select * from trip order by start_date desc")
-    public List<Trip> getTripsDesc();
+    public abstract List<Trip> getTripsDesc();
 
     @Query("select * from day where trip_id = :tripId")
-    public List<Day> getDaysByTripId(int tripId);
+    public abstract List<Day> getDaysByTripId(int tripId);
 
     @Query("select * from event where segment_id = :segmentId")
-    public List<Event> getEventsBySegmentId(int segmentId);
+    public abstract List<Event> getEventsBySegmentId(int segmentId);
 
     @Query("select * from day_segment where day_id = :dayId")
-    public List<DaySegment> getDaySegmentsByDayId(int dayId);
+    public abstract List<DaySegment> getDaySegmentsByDayId(int dayId);
+
+    @Query("select * from tag inner join trip_tag_join on tag.id=trip_tag_join.tagId where trip_tag_join.tripId = :tripId")
+    public abstract List<Tag> getTagsForTrip(int tripId);
+
+    @Query("select * from tag inner join event_tag_join on tag.id=event_tag_join.tagId where event_tag_join.eventId = :eventId")
+    public abstract List<Tag> getTagsForEvent(int eventId);
+
+    @Query("select * from trip order by id desc limit 1")
+    public abstract LiveData<Trip> getMostRecentTrip();
+
+    @Query("select * from tag")
+    public abstract LiveData<List<Tag>> getLiveTags();
+
+
 
     // relationship methods
     @Transaction
     @Query("select * from trip")
-    public List<TripWithDaysAndDaySegments> getTripsWithDaysAndDaySegments();
+    public abstract List<TripWithDaysAndDaySegments> getTripsWithDaysAndDaySegments();
 
     @Transaction
     @Query("select * from day_segment")
-    public List<DaySegmentWithEvents> getDaySegmentsWithEvents();
+    public abstract List<DaySegmentWithEvents> getDaySegmentsWithEvents();
 //
     @Transaction
     @Query("select * from day")
-    public List<DayWithSegmentsAndEvents> getDaysWithSegmentsAndEvents();
+    public abstract List<DayWithSegmentsAndEvents> getDaysWithSegmentsAndEvents();
 
     @Transaction
     @Query("select * from trip where id = :tripId")
-    public TripWithDaysAndDaySegments getTripWithDaysAndDaySegmentsById(int tripId);
-    
-//
-//    @Transaction
-//    @Query("select * from trip")
-//    public List<TripWithDaysAndSegmentsAndEvents> getTripsWithDaysAndSegmentsAndEvents();
+    public abstract TripWithDaysAndDaySegments getTripWithDaysAndDaySegmentsById(Long tripId);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    public abstract void insertTripTags(List<TripTagCrossRef> tripTagCrossRefs);
+
+    @Transaction
+    @Query("select * from trip")
+    public abstract List<TripWithDaysAndDaySegments> getTripsWithDaysAndSegmentsAndEvents();
+
+    @Transaction
+    @Query("select * from trip where id = :tripId")
+    public abstract TripWithTags getTripWithTags(long tripId);
+
+    @Transaction
+    @Query("select * from diary")
+    public abstract List<DiaryWithEntries> getDiariesWithEntries();
+
+    @Query("select * from diaryentry where diary_id = :diaryId")
+    public abstract LiveData<List<DiaryEntry>> getDiaryEntriesById(long diaryId);
 
 }

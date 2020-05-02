@@ -14,7 +14,7 @@ import java.util.Calendar;
 public class Trip {
 
     @PrimaryKey(autoGenerate = true)
-    public int id;
+    public long id;
 
     @ColumnInfo(name="name")
     public String name;

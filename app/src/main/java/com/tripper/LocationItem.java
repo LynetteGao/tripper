@@ -1,22 +1,19 @@
 package com.tripper;
 
+import com.google.maps.model.PlacesSearchResult;
+
 public class LocationItem {
 
-    private int locationImage;
-    private String locationText;
-    private boolean isSelected = false;
+    private boolean isSelected;
+    private PlacesSearchResult placesSearchResult;
 
-    public LocationItem(int image, String text){
-        locationImage = image;
-        locationText = text;
+    public LocationItem(PlacesSearchResult placesSearchResult){
+        this.placesSearchResult = placesSearchResult;
+        this.isSelected = false;
     }
 
-    public int getLocationImage(){
-        return locationImage;
-    }
-
-    public String getLocationText(){
-        return locationText;
+    public PlacesSearchResult getPlacesSearchResult() {
+        return this.placesSearchResult;
     }
 
     public boolean isSelected() {
@@ -24,7 +21,6 @@ public class LocationItem {
     }
 
     public void setSelected(boolean selected) {
-        isSelected = selected;
+        this.isSelected = selected;
     }
-
 }
