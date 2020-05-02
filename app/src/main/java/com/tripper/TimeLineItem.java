@@ -14,4 +14,9 @@ public class TimeLineItem {
         this.month = month;
         this.day = day;
     }
+
+    @Override
+    public String toString(){
+        return location + " " + timeOfDay + " " + month + " " + day;
+    }
 }

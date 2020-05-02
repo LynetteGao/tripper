@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="270dp">
+    android:layout_height="320dp">
 
     <ImageView
         android:id="@+id/imageView4"
@@ -89,6 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="@string/month_holder"
+            android:textAllCaps="true"
             android:textColor="#757575" />
 
         <TextView
@@ -102,16 +103,15 @@
 
     <TextView
         android:id="@+id/location"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
+        android:inputType="textMultiLine"
+        android:maxLines="3"
+        android:scrollHorizontally="false"
+        android:gravity="center"
         android:text=""
         android:textColor="@color/colorPrimary"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/location_snapshot"
