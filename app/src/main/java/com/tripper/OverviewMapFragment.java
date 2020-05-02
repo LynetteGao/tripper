@@ -45,26 +45,22 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
 
 
 
-    // construct db lists for days
-    public OverviewMapFragment() {
-
-       overViewListViewModel = new ViewModelProvider(this).get(MapOverviewViewModel.class);
-        TripWithDaysAndDaySegments trip_with_days = overViewListViewModel.getTripWithDaysAndSegment(tripId);
-        this.day_item = trip_with_days.days;
-        this.tripId = trip_with_days.trip.id;
-    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        long tripId = getArguments().getLong("tripId");
+         tripId = getArguments().getLong("tripId");
         return inflater.inflate(R.layout.fragment_overview_map, container, false);
+
     }
 
     @Override
     public void onViewCreated( View view, Bundle savedInstanceState){
         super.onViewCreated(view,savedInstanceState);
-
+        overViewListViewModel = new ViewModelProvider(this).get(MapOverviewViewModel.class);
+        TripWithDaysAndDaySegments trip_with_days = overViewListViewModel.getTripWithDaysAndSegment(tripId);
+        this.day_item = trip_with_days.days;
+        this.tripId = trip_with_days.trip.id;
         SupportMapFragment fragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.gMapFrag);
         fragment.getMapAsync(this);
         // construct db list for a single day
@@ -78,7 +74,7 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
                 seg1.add(Double.parseDouble(event.locationLat));
                 seg1.add(Double.parseDouble(event.locationLon));
             }
-            for (Event event : segmentsAndEvents.get(2).events) {  // for each event in today's first segment
+            for (Event event : segmentsAndEvents.get(2).events) {  // for each event in today's third segment
                 seg2.add(Double.parseDouble(event.locationLat));
                 seg2.add(Double.parseDouble(event.locationLon));
             }
