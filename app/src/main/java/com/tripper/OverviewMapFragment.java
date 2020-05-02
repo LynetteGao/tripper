@@ -2,6 +2,7 @@ package com.tripper;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,7 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
         for (int i = position; i < day_item.size(); i++) {  // for each day in trip
             List<DaySegmentWithEvents> segmentsAndEvents = day_item.get(position).daySegments; // for this day's segments
             for (Event event : segmentsAndEvents.get(0).events) {  // for each event in today's first segment
+                Log.i("Tag", "EVENT IS HERE. LAT = " + event.locationLat);
                 seg0.add(Double.parseDouble(event.locationLat));
                 seg0.add(Double.parseDouble(event.locationLon));
             }
