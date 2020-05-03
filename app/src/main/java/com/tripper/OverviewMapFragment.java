@@ -16,7 +16,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.tripper.db.entities.Day;
@@ -34,16 +36,14 @@ import java.util.List;
 public class OverviewMapFragment extends Fragment implements OnMapReadyCallback {
 
     private List<DayWithSegmentsAndEvents> day_item;
-    private List<List<Double>> day = new ArrayList<List<Double>>();  // day list, each index is segment
     private List<List<List<Double>>> master = new ArrayList<List<List<Double>>>(); // each index is a day
     private long tripId;
     int position = 0;
     MapOverviewViewModel overViewListViewModel;
     List<DaySegmentWithEvents> segmentsAndEvents;
     // for the lat/lons, each segment has them in pairs. index i = lat, index i+1 = lon
-    List<Double> seg0 = new ArrayList<Double>();
-    List<Double> seg1 = new ArrayList<Double>();
-    List<Double> seg2 = new ArrayList<Double>();
+    List<String> names = new ArrayList<String>();
+    LatLng firstPosition = null;
 
 
 
@@ -67,28 +67,32 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
         fragment.getMapAsync(this);
         // construct db list for a single day
         for (int i = position; i < day_item.size(); i++) {  // for each day in trip
+            List<Double> seg0 = new ArrayList<Double>();
+            List<Double> seg1 = new ArrayList<Double>();
+            List<Double> seg2 = new ArrayList<Double>();
+            List<List<Double>> day = new ArrayList<List<Double>>();  // day list, each index is segment
             List<DaySegmentWithEvents> segmentsAndEvents = day_item.get(position).daySegments; // for this day's segments
             for (Event event : segmentsAndEvents.get(0).events) {  // for each event in today's first segment
                 seg0.add(Double.parseDouble(event.locationLat));
                 seg0.add(Double.parseDouble(event.locationLon));
+                names.add(event.name);
             }
             for (Event event : segmentsAndEvents.get(1).events) {  // for each event in today's second segment
                 seg1.add(Double.parseDouble(event.locationLat));
                 seg1.add(Double.parseDouble(event.locationLon));
+                names.add(event.name);
             }
             for (Event event : segmentsAndEvents.get(2).events) {  // for each event in today's third segment
                 seg2.add(Double.parseDouble(event.locationLat));
                 seg2.add(Double.parseDouble(event.locationLon));
+                names.add(event.name);
             }
             // now we have lists of each event in each segment.
             day.add(seg0);
             day.add(seg1);
             day.add(seg2);
             master.add(day);
-            seg0.clear();
-            seg1.clear();
-            seg2.clear();
-        }
+    }
     }
 
     @Override
@@ -96,15 +100,25 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
         // Add a marker,
         // and move the map's camera to the same location.
         // testing area below vv
-
-//        int i = 0;
-//        while( i < list.length) {
-//            // can use to create multiple markers based on reading from DB
-//            googleMap.addMarker(new MarkerOptions()
-//            .position(list[i])
-//            .title("Tester " + i));
-//            i++;
-//        }
-//        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(a.latitude, a.longitude), 4));
+        int namecount = 0;
+        for(int day = 0; day < master.size(); day++) {
+            for( int segment = 0; segment < master.get(day).size(); segment++) { // for each segment of that day
+                for(int event = 0; event < master.get(day).get(segment).size(); event++) {  // for each event of that segment
+                    // remember, event index are pairs of lat/lons
+                    // different colors for different days
+                    LatLng position = new LatLng(master.get(day).get(segment).get(event), master.get(day).get(segment).get(event+1));
+                    if (firstPosition == null) {
+                        firstPosition = position;
+                    }
+                    event++;
+                    googleMap.addMarker(new MarkerOptions()
+                            .position(position)
+                            .title(names.get(namecount))
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                    namecount++;
+                }
+            }
+        }
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstPosition, 12));
     }
 }
