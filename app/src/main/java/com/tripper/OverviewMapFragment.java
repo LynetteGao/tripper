@@ -38,7 +38,6 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
     private List<DayWithSegmentsAndEvents> day_item;
     private List<List<List<Double>>> master = new ArrayList<List<List<Double>>>(); // each index is a day
     private long tripId;
-    int position = 0;
     MapOverviewViewModel overViewListViewModel;
     List<DaySegmentWithEvents> segmentsAndEvents;
     // for the lat/lons, each segment has them in pairs. index i = lat, index i+1 = lon
@@ -66,12 +65,12 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
         SupportMapFragment fragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.gMapFrag);
         fragment.getMapAsync(this);
         // construct db list for a single day
-        for (int i = position; i < day_item.size(); i++) {  // for each day in trip
+        for (int i = 0; i < day_item.size(); i++) {  // for each day in trip
             List<Double> seg0 = new ArrayList<Double>();
             List<Double> seg1 = new ArrayList<Double>();
             List<Double> seg2 = new ArrayList<Double>();
             List<List<Double>> day = new ArrayList<List<Double>>();  // day list, each index is segment
-            List<DaySegmentWithEvents> segmentsAndEvents = day_item.get(position).daySegments; // for this day's segments
+            List<DaySegmentWithEvents> segmentsAndEvents = day_item.get(i).daySegments; // for this day's segments
             for (Event event : segmentsAndEvents.get(0).events) {  // for each event in today's first segment
                 seg0.add(Double.parseDouble(event.locationLat));
                 seg0.add(Double.parseDouble(event.locationLon));
@@ -103,6 +102,7 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
         int namecount = 0;
         for(int day = 0; day < master.size(); day++) {
             for( int segment = 0; segment < master.get(day).size(); segment++) { // for each segment of that day
+                Log.i("tag", "Day: " + day + " Segments: " + master.get(day).size());
                 for(int event = 0; event < master.get(day).get(segment).size(); event++) {  // for each event of that segment
                     // remember, event index are pairs of lat/lons
                     // different colors for different days
@@ -111,6 +111,7 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
                         firstPosition = position;
                     }
                     event++;
+                    Log.i("adding", "Adding Marker at: " + position.latitude + " , " + position.longitude);
                     googleMap.addMarker(new MarkerOptions()
                             .position(position)
                             .title(names.get(namecount))
