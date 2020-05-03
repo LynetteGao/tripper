@@ -115,7 +115,7 @@ public class OverviewMapFragment extends Fragment implements OnMapReadyCallback 
                     googleMap.addMarker(new MarkerOptions()
                             .position(position)
                             .title(names.get(namecount))
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                            .icon(BitmapDescriptorFactory.defaultMarker(day*30)));
                     namecount++;
                 }
             }
