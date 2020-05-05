@@ -39,7 +39,7 @@ public class OverviewDiaryFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_diary,container,false);
+        View view = inflater.inflate(R.layout.activity_diary, container, false);
         long tripId = getArguments().getLong("tripId");
         initLayout(view);
         initData(tripId);
@@ -50,9 +50,9 @@ public class OverviewDiaryFragment extends Fragment {
         overviewListViewModel = new ViewModelProvider(this).get(TripOverviewViewModel.class);
         TripWithDaysAndDaySegments trip_with_days = overviewListViewModel.getTripWithDaysAndSegment(tripId);
         List<DayWithSegmentsAndEvents> items = trip_with_days.days;
-        ArrayList<TimeLineItem> test = new ArrayList<TimeLineItem>();
+        ArrayList<TimeLineItem> timeline = new ArrayList<TimeLineItem>();
 
-        for(DayWithSegmentsAndEvents item : items){
+        for (DayWithSegmentsAndEvents item : items) {
             String location, timeOfDay, month, day;
             List<DaySegmentWithEvents> segmentsAndEvents = item.daySegments;
 
@@ -61,52 +61,48 @@ public class OverviewDiaryFragment extends Fragment {
             sdf = new SimpleDateFormat("dd");
             day = sdf.format(item.day.date.getTime());
 
-            if( segmentsAndEvents!=null& segmentsAndEvents.size()>=1) {
-                if(segmentsAndEvents.get(0).events.size() > 0){
+            if (segmentsAndEvents != null && segmentsAndEvents.size() >= 1) {
+                if (segmentsAndEvents.get(0).events != null && segmentsAndEvents.get(0).events.size() > 0) {
                     location = segmentsAndEvents.get(0).events.size() + " event(s)";
                     timeOfDay = "Morning";
-                    test.add(new TimeLineItem(R.drawable.central_park, location, timeOfDay, month, day));
-                }
+                    ArrayList<String> events = new ArrayList<String>();
 
-//                for (Event event : segmentsAndEvents.get(0).events) {
-//                    location = event.name;
-//                    timeOfDay = "Morning";
-//
-//                    test.add(new TimeLineItem(R.drawable.central_park, location, timeOfDay, month, day));
-//                }
+                    for (Event event : segmentsAndEvents.get(0).events) {
+                        events.add(event.name);
+                    }
+
+                    timeline.add(new TimeLineItem(R.drawable.central_park, location, timeOfDay, month, day, events));
+                }
             }
-            if( segmentsAndEvents!=null& segmentsAndEvents.size()>=2) {
-                if(segmentsAndEvents.get(1).events.size() > 0){
+            if (segmentsAndEvents != null && segmentsAndEvents.size() >= 2) {
+                if (segmentsAndEvents.get(1).events != null && segmentsAndEvents.get(1).events.size() > 0) {
                     location = segmentsAndEvents.get(1).events.size() + " event(s)";
                     timeOfDay = "Afternoon";
-                    test.add(new TimeLineItem(R.drawable.brooklyn_bridge, location, timeOfDay, month, day));
+                    ArrayList<String> events = new ArrayList<String>();
+
+                    for (Event event : segmentsAndEvents.get(1).events) {
+                        events.add(event.name);
+                    }
+
+                    timeline.add(new TimeLineItem(R.drawable.brooklyn_bridge, location, timeOfDay, month, day, events));
                 }
-//                for (Event event : segmentsAndEvents.get(1).events) {
-//                    location = event.name;
-//                    timeOfDay = "Afternoon";
-//
-//                    test.add(new TimeLineItem(R.drawable.central_park, location, timeOfDay, month, day));
-//                }
             }
-            if(segmentsAndEvents!=null& segmentsAndEvents.size()>=3) {
-                if(segmentsAndEvents.get(2).events.size() > 0){
+            if (segmentsAndEvents != null && segmentsAndEvents.size() >= 3) {
+                if (segmentsAndEvents.get(2).events != null && segmentsAndEvents.get(2).events.size() > 0) {
                     location = segmentsAndEvents.get(2).events.size() + " event(s)";
                     timeOfDay = "Evening";
-                    test.add(new TimeLineItem(R.drawable.chelsea_market, location, timeOfDay, month, day));
+                    ArrayList<String> events = new ArrayList<String>();
+
+                    for (Event event : segmentsAndEvents.get(2).events) {
+                        events.add(event.name);
+                    }
+
+                    timeline.add(new TimeLineItem(R.drawable.theater_district, location, timeOfDay, month, day, events));
                 }
-//                for (Event event : segmentsAndEvents.get(2).events) {
-//                    location = event.name;
-//                    timeOfDay = "Evening";
-//
-//                    test.add(new TimeLineItem(R.drawable.central_park, location, timeOfDay, month, day));
-//                }
             }
         }
 
-        for(TimeLineItem item: test){
-//            Log.i("ITEMS: ", item.toString());
-            rvList.add(item);
-        }
+        rvList.addAll(timeline);
 
 //        TimeLineItem test1 = new TimeLineItem(R.drawable.central_park,"Central Park", "Morning","JAN","1");
 //        rvList.add(test1);
@@ -126,7 +122,7 @@ public class OverviewDiaryFragment extends Fragment {
     }
 
     private void initLayout(View view) {
-        rv = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+        rv = view.findViewById(R.id.my_recycler_view);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this.getActivity());
         rv.setLayoutManager(mLayoutManager);
         timeLineAdapter = new TimeLineAdapter(this.getActivity(), rvList);

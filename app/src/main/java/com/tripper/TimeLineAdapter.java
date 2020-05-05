@@ -1,6 +1,7 @@
 package com.tripper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,18 +76,32 @@ public class TimeLineAdapter extends RecyclerView.Adapter {
     }
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int index) {
-        TimeLineItem items = mItemsList.get(index);
+        TimeLineItem item = mItemsList.get(index);
         switch (holder.getItemViewType()) {
 //            case VIEW_TYPE_FIRST_ITEM:
 //                ((TimeLineAdapter.FirstItemHolder) holder).bind(items);
 //                break;
             case VIEW_TYPE_MIDDLE_ITEM:
-                ((TimeLineAdapter.MiddleItemHolder) holder).bind(items);
+                ((TimeLineAdapter.MiddleItemHolder) holder).bind(item);
                 break;
 //            case VIEW_TYPE_LAST_ITEM:
 //                ((TimeLineAdapter.LastItemHolder) holder).bind(items);
 //                break;
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), DiaryEdit.class);
+
+                intent.putExtra("month", item.month);
+                intent.putExtra("day", item.day);
+                intent.putExtra("timeOfDay", item.timeOfDay);
+                intent.putExtra("events", item.events);
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 //    private static class FirstItemHolder extends RecyclerView.ViewHolder {
 //        TextView month, day, timeOfDay, location;
