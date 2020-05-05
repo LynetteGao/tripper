@@ -62,33 +62,49 @@ public class OverviewDiaryFragment extends Fragment {
             day = sdf.format(item.day.date.getTime());
 
             if( segmentsAndEvents!=null& segmentsAndEvents.size()>=1) {
-                for (Event event : segmentsAndEvents.get(0).events) {
-                    location = event.name;
+                if(segmentsAndEvents.get(0).events.size() > 0){
+                    location = segmentsAndEvents.get(0).events.size() + " event(s)";
                     timeOfDay = "Morning";
-
                     test.add(new TimeLineItem(R.drawable.central_park, location, timeOfDay, month, day));
                 }
+
+//                for (Event event : segmentsAndEvents.get(0).events) {
+//                    location = event.name;
+//                    timeOfDay = "Morning";
+//
+//                    test.add(new TimeLineItem(R.drawable.central_park, location, timeOfDay, month, day));
+//                }
             }
             if( segmentsAndEvents!=null& segmentsAndEvents.size()>=2) {
-                for (Event event : segmentsAndEvents.get(1).events) {
-                    location = event.name;
+                if(segmentsAndEvents.get(1).events.size() > 0){
+                    location = segmentsAndEvents.get(1).events.size() + " event(s)";
                     timeOfDay = "Afternoon";
-
-                    test.add(new TimeLineItem(R.drawable.central_park, location, timeOfDay, month, day));
+                    test.add(new TimeLineItem(R.drawable.brooklyn_bridge, location, timeOfDay, month, day));
                 }
+//                for (Event event : segmentsAndEvents.get(1).events) {
+//                    location = event.name;
+//                    timeOfDay = "Afternoon";
+//
+//                    test.add(new TimeLineItem(R.drawable.central_park, location, timeOfDay, month, day));
+//                }
             }
             if(segmentsAndEvents!=null& segmentsAndEvents.size()>=3) {
-                for (Event event : segmentsAndEvents.get(2).events) {
-                    location = event.name;
-                    timeOfDay = "Afternoon";
-
-                    test.add(new TimeLineItem(R.drawable.central_park, location, timeOfDay, month, day));
+                if(segmentsAndEvents.get(2).events.size() > 0){
+                    location = segmentsAndEvents.get(2).events.size() + " event(s)";
+                    timeOfDay = "Evening";
+                    test.add(new TimeLineItem(R.drawable.chelsea_market, location, timeOfDay, month, day));
                 }
+//                for (Event event : segmentsAndEvents.get(2).events) {
+//                    location = event.name;
+//                    timeOfDay = "Evening";
+//
+//                    test.add(new TimeLineItem(R.drawable.central_park, location, timeOfDay, month, day));
+//                }
             }
         }
 
         for(TimeLineItem item: test){
-            Log.i("ITEMS: ", item.toString());
+//            Log.i("ITEMS: ", item.toString());
             rvList.add(item);
         }
 
