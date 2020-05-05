@@ -18,6 +18,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -72,10 +73,24 @@ public class CreateNewTrip extends AppCompatActivity {
 
         long tripId = getIntent().getLongExtra("tripId", -1);
 
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), getString(R.string.places_api_key));
+        }
+
+        PlacesClient placesClient = Places.createClient(this);
+
         if (tripId != -1) {
             tripToUpdate = tripViewModel.getTrip(tripId);
             txtHeader.setText("Update " + tripToUpdate.trip.name);
             btnCreateTrip.setText("Update Trip");
+            txtEditTripName.setText(tripToUpdate.trip.name);
+            startDate = tripToUpdate.trip.startDate;
+            endDate = tripToUpdate.trip.endDate;
+            txtEditStartDate.setText(startDate.get(Calendar.MONTH) + 1 + "/" + startDate.get(Calendar.DATE)
+                + "/" + startDate.get(Calendar.YEAR));
+
+            txtEditEndDate.setText(endDate.get(Calendar.MONTH) + 1 + "/" + endDate.get(Calendar.DATE)
+                + "/" + endDate.get(Calendar.YEAR));
         }
 
         txtEditStartDate.setOnClickListener(new View.OnClickListener() {
@@ -200,9 +215,7 @@ public class CreateNewTrip extends AppCompatActivity {
         });
 
 
-        if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), getString(R.string.places_api_key));
-        }
+
 
         autocompleteSupportFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
