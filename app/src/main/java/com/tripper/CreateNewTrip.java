@@ -25,6 +25,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.tripper.db.entities.Day;
 import com.tripper.db.entities.DaySegment;
 import com.tripper.db.entities.Trip;
+import com.tripper.db.relationships.TripWithDaysAndDaySegments;
 import com.tripper.viewmodels.CreateNewTripViewModel;
 
 import java.util.Arrays;
@@ -36,6 +37,7 @@ public class CreateNewTrip extends AppCompatActivity {
     private int mYear, mMonth, mDay;
     private Calendar startDate;
     private Calendar endDate;
+    private TextView txtHeader;
     private TextInputEditText txtEditStartDate;
     private TextInputEditText txtEditEndDate;
     private TextInputLayout txtInputStartDate;
@@ -46,6 +48,7 @@ public class CreateNewTrip extends AppCompatActivity {
     private CreateNewTripViewModel tripViewModel;
     private AutocompleteSupportFragment autocompleteSupportFragment;
     private Place tripPlace;
+    private TripWithDaysAndDaySegments tripToUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class CreateNewTrip extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_create_new_trip);
 
+        txtHeader = findViewById(R.id.lblNewTripHeader);
         txtEditStartDate = findViewById(R.id.txtEditStartDate);
         txtEditEndDate = findViewById(R.id.txtEditEndDate);
         txtInputStartDate = findViewById(R.id.txtInputStartDate);
@@ -62,6 +66,14 @@ public class CreateNewTrip extends AppCompatActivity {
         txtPlaceError = findViewById(R.id.txtPlaceError);
         Button btnCreateTrip = findViewById(R.id.btnCreateTrip);
         tripViewModel = new ViewModelProvider(this).get(CreateNewTripViewModel.class);
+
+        long tripId = getIntent().getLongExtra("tripId", -1);
+
+        if (tripId != -1) {
+            tripToUpdate = tripViewModel.getTrip(tripId);
+            txtHeader.setText("Update " + tripToUpdate.trip.name);
+            btnCreateTrip.setText("Update Trip");
+        }
 
         txtEditStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,35 +108,55 @@ public class CreateNewTrip extends AppCompatActivity {
                         return;
                     }
 
-                    Trip trip = new Trip();
-                    trip.name = txtEditTripName.getText().toString();
-                    trip.startDate = startDate;
-                    trip.endDate = endDate;
-                    trip.locationLat = Double.toString(tripPlace.getLatLng().latitude);
-                    trip.locationLon = Double.toString(tripPlace.getLatLng().longitude);
-                    trip.destination = tripPlace.getName();
-                    Long tripId = tripViewModel.insertTrip(trip);
+                    // create a new trip and all the days
+                    if (tripToUpdate == null) {
+                        Trip trip = new Trip();
+                        trip.name = txtEditTripName.getText().toString();
+                        trip.startDate = startDate;
+                        trip.endDate = endDate;
+                        trip.locationLat = Double.toString(tripPlace.getLatLng().latitude);
+                        trip.locationLon = Double.toString(tripPlace.getLatLng().longitude);
+                        trip.destination = tripPlace.getName();
+                        Long tripId = tripViewModel.insertTrip(trip);
 
-                    Calendar curDate = trip.startDate;
-                    while (curDate.getTimeInMillis() <= trip.endDate.getTimeInMillis()) {
-                        Day day = new Day();
-                        day.date = curDate;
-                        day.tripId = tripId;
-                        Long dayId = tripViewModel.insertDay(day);
+                        Calendar curDate = trip.startDate;
+                        while (curDate.getTimeInMillis() <= trip.endDate.getTimeInMillis()) {
+                            Day day = new Day();
+                            day.date = curDate;
+                            day.tripId = tripId;
+                            Long dayId = tripViewModel.insertDay(day);
 
-                        for (int i = 0; i < 3; i++) {
-                            DaySegment daySegment = new DaySegment();
-                            daySegment.dayId = dayId;
-                            daySegment.segment = i;
-                            tripViewModel.insertDaySegment(daySegment);
+                            for (int i = 0; i < 3; i++) {
+                                DaySegment daySegment = new DaySegment();
+                                daySegment.dayId = dayId;
+                                daySegment.segment = i;
+                                tripViewModel.insertDaySegment(daySegment);
+                            }
+                            curDate.add(Calendar.DATE, 1);
                         }
-                        curDate.add(Calendar.DATE, 1);
-                    }
 
-                    Intent intent = new Intent(getApplicationContext(), TagSuggestion.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("tripId", tripId);
-                    getApplicationContext().startActivity(intent);
+                        Intent intent = new Intent(getApplicationContext(), TagSuggestion.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("tripId", tripId);
+                        getApplicationContext().startActivity(intent);
+                    }
+                    else {
+                        Calendar oldStart = tripToUpdate.trip.startDate;
+                        Calendar oldEnd = tripToUpdate.trip.endDate;
+
+                        tripToUpdate.trip.name = txtEditTripName.getText().toString();
+                        tripToUpdate.trip.startDate = startDate;
+                        tripToUpdate.trip.endDate = endDate;
+                        tripToUpdate.trip.locationLat = Double.toString(tripPlace.getLatLng().latitude);
+                        tripToUpdate.trip.locationLon = Double.toString(tripPlace.getLatLng().longitude);
+                        tripToUpdate.trip.destination = tripPlace.getName();
+
+                        // check what days need to be added or deleted
+                        if (startDate.after(oldStart)) {
+
+                        }
+
+                    }
                 }
             }
         });
@@ -192,7 +224,8 @@ public class CreateNewTrip extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         editText.setText((month + 1) + "/" + dayOfMonth + "/" + year);
-                        calendar.set(year, month, dayOfMonth);
+                        calendar.set(year, month, dayOfMonth, 0, 0, 0);
+                        calendar.set(Calendar.MILLISECOND, 0);
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
