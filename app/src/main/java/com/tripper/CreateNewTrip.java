@@ -25,11 +25,14 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.tripper.db.entities.Day;
 import com.tripper.db.entities.DaySegment;
 import com.tripper.db.entities.Trip;
+import com.tripper.db.relationships.DaySegmentWithEvents;
+import com.tripper.db.relationships.DayWithSegmentsAndEvents;
 import com.tripper.db.relationships.TripWithDaysAndDaySegments;
 import com.tripper.viewmodels.CreateNewTripViewModel;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 public class CreateNewTrip extends AppCompatActivity {
@@ -150,11 +153,46 @@ public class CreateNewTrip extends AppCompatActivity {
                         tripToUpdate.trip.locationLat = Double.toString(tripPlace.getLatLng().latitude);
                         tripToUpdate.trip.locationLon = Double.toString(tripPlace.getLatLng().longitude);
                         tripToUpdate.trip.destination = tripPlace.getName();
+                        tripViewModel.updateTrip(tripToUpdate.trip);
 
                         // check what days need to be added or deleted
-                        if (startDate.after(oldStart)) {
+                        List<DayWithSegmentsAndEvents> days = tripToUpdate.days;
+                        Calendar curDate = startDate;
+                        int dayIndex = 0;
+                        while (curDate.getTimeInMillis() <= endDate.getTimeInMillis()) {
+                            if (dayIndex < days.size()) {
+                                days.get(dayIndex).day.date = curDate;
+                                tripViewModel.updateDay(days.get(dayIndex).day);
+                            }
+                            else {
+                                // need to insert a new day
+                                Log.d("update trip", "add new day");
+                                Day day = new Day();
+                                day.date = curDate;
+                                day.tripId = tripId;
+                                Long dayId = tripViewModel.insertDay(day);
 
+                                for (int i = 0; i < 3; i++) {
+                                    DaySegment daySegment = new DaySegment();
+                                    daySegment.dayId = dayId;
+                                    daySegment.segment = i;
+                                    tripViewModel.insertDaySegment(daySegment);
+                                }
+                            }
+
+                            dayIndex++;
+                            curDate.add(Calendar.DATE, 1);
                         }
+
+                        for (int i = dayIndex; i < days.size(); i++) {
+                            // there are leftover days, delete them
+                            Log.d("update trip", "delete old day");
+                            tripViewModel.deleteDay(days.get(i).day);
+                        }
+
+                        Intent intent = new Intent(getApplicationContext(), HomePage.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        getApplicationContext().startActivity(intent);
 
                     }
                 }

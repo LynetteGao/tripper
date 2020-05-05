@@ -104,6 +104,15 @@ public abstract class TripDao {
     @Update
     public abstract void updateTripTag(TripTagCrossRef tripTagCrossRef);
 
+    @Delete
+    public abstract void deleteEvents(List<Event> events);
+
+    @Delete
+    public abstract void deleteDaySegments(List<DaySegment> daySegments);
+
+    @Delete
+    public abstract void deleteDays(List<Day> days);
+
     // simple select queries
     @Query("select * from trip")
     public abstract List<Trip> getTrips();
