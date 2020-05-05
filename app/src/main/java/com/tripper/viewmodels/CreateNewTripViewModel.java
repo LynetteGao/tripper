@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import com.tripper.db.entities.Day;
 import com.tripper.db.entities.DaySegment;
 import com.tripper.db.entities.Trip;
+import com.tripper.db.relationships.DayWithSegmentsAndEvents;
+import com.tripper.db.relationships.TripWithDaysAndDaySegments;
 import com.tripper.repositories.TripRepository;
 
 public class CreateNewTripViewModel extends AndroidViewModel {
@@ -25,4 +27,19 @@ public class CreateNewTripViewModel extends AndroidViewModel {
 
     public void insertDaySegment(DaySegment daySegment) { tripRepository.insertDaySegment(daySegment); }
 
+    public TripWithDaysAndDaySegments getTrip(Long tripId) {
+        return tripRepository.getTripWithDaysAndSegmentsById(tripId);
+    }
+
+    public void updateTrip(Trip trip) {
+        tripRepository.updateTrip(trip);
+    }
+
+    public void updateDay(Day day) {
+        tripRepository.updateDay(day);
+    }
+
+    public void deleteDay(Day day) {
+        tripRepository.deleteDay(day);
+    }
 }
