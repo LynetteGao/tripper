@@ -9,6 +9,8 @@ import com.tripper.db.TripperDatabase;
 import com.tripper.db.dao.TripDao;
 import com.tripper.db.entities.Day;
 import com.tripper.db.entities.DaySegment;
+import com.tripper.db.entities.Diary;
+import com.tripper.db.entities.DiaryEntry;
 import com.tripper.db.entities.Event;
 import com.tripper.db.entities.Tag;
 import com.tripper.db.entities.Trip;
@@ -78,17 +80,8 @@ public class TripRepository {
            return tripDao.getTags();
     }
 
-    public long insertDay(Day day) {
-        Callable<Long> insertCallable = () -> tripDao.insertDay(day);
-        long ret = 0;
-        Future<Long> future = TripperDatabase.databaseWriteExecutor.submit(insertCallable);
-        try {
-            ret = future.get();
-        }
-        catch (InterruptedException | ExecutionException e1) {
-            e1.printStackTrace();
-        }
-        return ret;
+    public long insertDaySync(Day day) {
+        return insertLongCallable(() -> tripDao.insertDay(day));
     }
 
     public void insertDaySegment(DaySegment daySegment) {
@@ -105,6 +98,42 @@ public class TripRepository {
         TripperDatabase.databaseWriteExecutor.execute(() -> {
             tripDao.insertEvent(event);
         });
+    }
+
+    public long insertDiarySync(Diary diary) {
+        return insertLongCallable(() -> tripDao.insertDiary(diary));
+    }
+
+    public long insertDiaryEntrySync(DiaryEntry diaryEntry) {
+        return insertLongCallable(() -> tripDao.insertDiaryEntry(diaryEntry));
+    }
+
+    public void insertDiaryAsync(Diary diary) {
+        TripperDatabase.databaseWriteExecutor.execute(() -> {
+            tripDao.insertDiary(diary);
+        });
+    }
+
+    public void insertDiaryEntryAsync(DiaryEntry diaryEntry) {
+        TripperDatabase.databaseWriteExecutor.execute(() -> {
+            tripDao.insertDiaryEntry(diaryEntry);
+        });
+    }
+
+    public LiveData<List<DiaryEntry>> getDiaryEntriesById(long diaryId) {
+        return tripDao.getDiaryEntriesById(diaryId);
+    }
+
+    // helper method for inserting into database synchronously
+    private long insertLongCallable(Callable<Long> insertCallable) {
+        long ret = 0;
+        Future<Long> future = TripperDatabase.databaseWriteExecutor.submit(insertCallable);
+        try {
+            ret = future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return ret;
     }
 }
 

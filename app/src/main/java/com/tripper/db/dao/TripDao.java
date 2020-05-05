@@ -11,12 +11,15 @@ import androidx.room.Update;
 
 import com.tripper.db.entities.Day;
 import com.tripper.db.entities.DaySegment;
+import com.tripper.db.entities.Diary;
+import com.tripper.db.entities.DiaryEntry;
 import com.tripper.db.entities.Event;
 import com.tripper.db.entities.Tag;
 import com.tripper.db.entities.Trip;
 import com.tripper.db.entities.TripTagCrossRef;
 import com.tripper.db.relationships.DaySegmentWithEvents;
 import com.tripper.db.relationships.DayWithSegmentsAndEvents;
+import com.tripper.db.relationships.DiaryWithEntries;
 import com.tripper.db.relationships.TripWithDaysAndDaySegments;
 import com.tripper.db.relationships.TripWithTags;
 
@@ -72,6 +75,24 @@ public abstract class TripDao {
     public abstract void updateTag(Tag tag);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract long insertDiary(Diary diary);
+
+    @Delete
+    public abstract void deleteDiary(Diary diary);
+
+    @Update
+    public abstract void updateDiary(Diary diary);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract long insertDiaryEntry(DiaryEntry diaryEntry);
+
+    @Delete
+    public abstract void deleteDiaryEntry(DiaryEntry diaryEntry);
+
+    @Update
+    public abstract void updateDiaryEntry(DiaryEntry diaryEntry);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract List<Long> insertTags(List<Tag> tags);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -98,6 +119,12 @@ public abstract class TripDao {
 
     @Query("select * from tag")
     public abstract List<Tag> getTags();
+
+    @Query("select * from diary")
+    public abstract List<Diary> getDiaries();
+
+    @Query("select * from diaryentry")
+    public abstract List<DiaryEntry> getDiaryEntries();
 
     // more complex data access methods
     @Query("select * from trip order by start_date desc")
@@ -127,6 +154,8 @@ public abstract class TripDao {
     @Query("select * from tag")
     public abstract LiveData<List<Tag>> getLiveTags();
 
+
+
     // relationship methods
     @Transaction
     @Query("select * from trip")
@@ -154,5 +183,12 @@ public abstract class TripDao {
     @Transaction
     @Query("select * from trip where id = :tripId")
     public abstract TripWithTags getTripWithTags(long tripId);
+
+    @Transaction
+    @Query("select * from diary")
+    public abstract List<DiaryWithEntries> getDiariesWithEntries();
+
+    @Query("select * from diaryentry where diary_id = :diaryId")
+    public abstract LiveData<List<DiaryEntry>> getDiaryEntriesById(long diaryId);
 
 }
