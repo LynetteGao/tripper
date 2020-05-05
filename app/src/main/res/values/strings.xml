@@ -29,4 +29,5 @@
     <string name="month_holder">MONTH</string>
     <string name="day_holder">DAY</string>
     <string name="image_content_description">connecting icon</string>
+    <string name="diary_hint">Don\'t want to miss out important details of the day? Start your diary now!</string>
 </resources>
