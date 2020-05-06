@@ -16,10 +16,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tripper.db.entities.Day;
+import com.tripper.db.entities.Diary;
+import com.tripper.db.entities.DiaryEntry;
 import com.tripper.db.entities.Event;
 import com.tripper.db.relationships.DaySegmentWithEvents;
 import com.tripper.db.relationships.DayWithSegmentsAndEvents;
+import com.tripper.db.relationships.DiaryWithEntries;
 import com.tripper.db.relationships.TripWithDaysAndDaySegments;
+import com.tripper.viewmodels.DiaryEditViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,6 +39,7 @@ public class OverviewDiaryFragment extends Fragment {
     TimeLineAdapter timeLineAdapter;
     ArrayList<TimeLineItem> rvList = new ArrayList<>();
     TripOverviewViewModel overviewListViewModel;
+    DiaryEditViewModel diaryEditViewModel;
 
     @Nullable
     @Override
@@ -51,6 +56,7 @@ public class OverviewDiaryFragment extends Fragment {
         TripWithDaysAndDaySegments trip_with_days = overviewListViewModel.getTripWithDaysAndSegment(tripId);
         List<DayWithSegmentsAndEvents> items = trip_with_days.days;
         ArrayList<TimeLineItem> timeline = new ArrayList<TimeLineItem>();
+        diaryEditViewModel = new ViewModelProvider(this).get(DiaryEditViewModel.class);
 
         for (DayWithSegmentsAndEvents item : items) {
             String location, timeOfDay, month, day;
@@ -66,12 +72,31 @@ public class OverviewDiaryFragment extends Fragment {
                     location = segmentsAndEvents.get(0).events.size() + " event(s)";
                     timeOfDay = "Morning";
                     ArrayList<String> events = new ArrayList<String>();
+                    long diaryId;
+                    if(segmentsAndEvents.get(0).diaryWithEntries == null){
+
+                        Diary diary = new Diary();
+                        long segmentId = segmentsAndEvents.get(0).daySegment.id;
+                        diary.segmentId = segmentId;
+                        diaryEditViewModel.insertDiary(diary);
+
+                        DiaryEntry diaryEntry = new DiaryEntry();
+                        diaryEntry.diaryId = diaryEditViewModel.getDiaryById(segmentId).id;
+                        diaryEntry.diaryText = "none";
+                        diaryEditViewModel.insertDiaryEntry(diaryEntry);
+
+                        diaryId = diaryEntry.diaryId;
+                    }else{
+                        diaryId = segmentsAndEvents.get(0).diaryWithEntries.diary.id;
+                    }
+
+                    Log.i("DIARY-ID (1): ", String.valueOf(diaryId));
 
                     for (Event event : segmentsAndEvents.get(0).events) {
                         events.add(event.name);
                     }
 
-                    timeline.add(new TimeLineItem(R.drawable.central_park, location, timeOfDay, month, day, events));
+                    timeline.add(new TimeLineItem(R.drawable.central_park, location, timeOfDay, month, day, events, diaryId));
                 }
             }
             if (segmentsAndEvents != null && segmentsAndEvents.size() >= 2) {
@@ -79,12 +104,32 @@ public class OverviewDiaryFragment extends Fragment {
                     location = segmentsAndEvents.get(1).events.size() + " event(s)";
                     timeOfDay = "Afternoon";
                     ArrayList<String> events = new ArrayList<String>();
+                    long diaryId;
+
+                    if(segmentsAndEvents.get(1).diaryWithEntries == null){
+                        Diary diary = new Diary();
+                        long segmentId = segmentsAndEvents.get(1).daySegment.id;
+                        diary.segmentId = segmentId;
+                        diaryEditViewModel.insertDiary(diary);
+
+
+                        DiaryEntry diaryEntry = new DiaryEntry();
+                        diaryEntry.diaryId = diaryEditViewModel.getDiaryById(segmentId).id;
+                        diaryEntry.diaryText = "none";
+                        diaryEditViewModel.insertDiaryEntry(diaryEntry);
+
+                        diaryId = diaryEntry.diaryId;
+                    }else{
+                        diaryId = segmentsAndEvents.get(1).diaryWithEntries.diary.id;
+                    }
+
+                    Log.i("DIARY-ID (2): ", String.valueOf(diaryId));
 
                     for (Event event : segmentsAndEvents.get(1).events) {
                         events.add(event.name);
                     }
 
-                    timeline.add(new TimeLineItem(R.drawable.brooklyn_bridge, location, timeOfDay, month, day, events));
+                    timeline.add(new TimeLineItem(R.drawable.brooklyn_bridge, location, timeOfDay, month, day, events, diaryId));
                 }
             }
             if (segmentsAndEvents != null && segmentsAndEvents.size() >= 3) {
@@ -92,17 +137,40 @@ public class OverviewDiaryFragment extends Fragment {
                     location = segmentsAndEvents.get(2).events.size() + " event(s)";
                     timeOfDay = "Evening";
                     ArrayList<String> events = new ArrayList<String>();
+                    long diaryId;
+
+                    if(segmentsAndEvents.get(2).diaryWithEntries == null){
+                        Diary diary = new Diary();
+                        long segmentId = segmentsAndEvents.get(2).daySegment.id;
+                        diary.segmentId = segmentId;
+                        diaryEditViewModel.insertDiary(diary);
+
+                        DiaryEntry diaryEntry = new DiaryEntry();
+                        diaryEntry.diaryId = diaryEditViewModel.getDiaryById(segmentId).id;
+                        diaryEntry.diaryText = "none";
+                        diaryEditViewModel.insertDiaryEntry(diaryEntry);
+
+                        diaryId = diaryEntry.diaryId;
+                    }else{
+                        diaryId = segmentsAndEvents.get(2).diaryWithEntries.diary.id;
+                    }
+
+                    Log.i("DIARY-ID (3): ", String.valueOf(diaryId));
 
                     for (Event event : segmentsAndEvents.get(2).events) {
                         events.add(event.name);
                     }
 
-                    timeline.add(new TimeLineItem(R.drawable.theater_district, location, timeOfDay, month, day, events));
+                    timeline.add(new TimeLineItem(R.drawable.theater_district, location, timeOfDay, month, day, events, diaryId));
                 }
             }
         }
 
         rvList.addAll(timeline);
+
+//        for(TimeLineItem item: timeline){
+//            Log.d("INPUT-ID: ", String.valueOf(item.diaryId));
+//    }
 
 //        TimeLineItem test1 = new TimeLineItem(R.drawable.central_park,"Central Park", "Morning","JAN","1");
 //        rvList.add(test1);
@@ -125,7 +193,7 @@ public class OverviewDiaryFragment extends Fragment {
         rv = view.findViewById(R.id.my_recycler_view);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this.getActivity());
         rv.setLayoutManager(mLayoutManager);
-        timeLineAdapter = new TimeLineAdapter(this.getActivity(), rvList);
+        timeLineAdapter = new TimeLineAdapter(this.getActivity(), rvList, getArguments().getLong("tripId"));
         rv.setAdapter(timeLineAdapter);
     }
 }

@@ -120,8 +120,30 @@ public class TripRepository {
         });
     }
 
-    public LiveData<List<DiaryEntry>> getDiaryEntriesById(long diaryId) {
+    public Diary getDiaryById(long segmentId){
+        return tripDao.getDiaryById(segmentId);
+    }
+
+    public List<DiaryEntry> getDiaryEntriesById(long diaryId) {
         return tripDao.getDiaryEntriesById(diaryId);
+    }
+
+    public void insertDiary(Diary diary){
+        TripperDatabase.databaseWriteExecutor.execute(() -> {
+            tripDao.insertDiary(diary);
+        });
+    }
+
+    public void updateDiaryEntry(DiaryEntry diaryEntry) {
+        TripperDatabase.databaseWriteExecutor.execute(() -> {
+            tripDao.updateDiaryEntry(diaryEntry);
+        });
+    }
+
+    public void insertDiaryEntry(DiaryEntry diaryEntry) {
+        TripperDatabase.databaseWriteExecutor.execute(() -> {
+            tripDao.insertDiaryEntry(diaryEntry);
+        });
     }
 
     // helper method for inserting into database synchronously

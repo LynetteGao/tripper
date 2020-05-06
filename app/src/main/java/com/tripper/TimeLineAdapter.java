@@ -21,8 +21,10 @@ public class TimeLineAdapter extends RecyclerView.Adapter {
     private int middleItemCounter = 0;
 
     private ArrayList<TimeLineItem> mItemsList;
-    TimeLineAdapter(Context context, ArrayList<TimeLineItem> mItemsListData) {
+    private long tripId;
+    TimeLineAdapter(Context context, ArrayList<TimeLineItem> mItemsListData, long tripId) {
         mItemsList = mItemsListData;
+        this.tripId = tripId;
     }
     @Override
     public int getItemCount() {
@@ -99,6 +101,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter {
                 intent.putExtra("day", item.day);
                 intent.putExtra("timeOfDay", item.timeOfDay);
                 intent.putExtra("events", item.events);
+                intent.putExtra("diaryId", item.diaryId);
+                intent.putExtra("tripId", tripId);
                 view.getContext().startActivity(intent);
             }
         });

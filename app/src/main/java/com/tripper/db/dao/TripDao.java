@@ -185,10 +185,14 @@ public abstract class TripDao {
     public abstract TripWithTags getTripWithTags(long tripId);
 
     @Transaction
+    @Query("select * from diary where segment_id = :segmentId")
+    public abstract Diary getDiaryById(long segmentId);
+
+    @Transaction
     @Query("select * from diary")
     public abstract List<DiaryWithEntries> getDiariesWithEntries();
 
     @Query("select * from diaryentry where diary_id = :diaryId")
-    public abstract LiveData<List<DiaryEntry>> getDiaryEntriesById(long diaryId);
+    public abstract List<DiaryEntry> getDiaryEntriesById(long diaryId);
 
 }
