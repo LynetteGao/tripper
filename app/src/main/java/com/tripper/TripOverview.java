@@ -32,6 +32,10 @@ public class TripOverview extends AppCompatActivity{
         if (savedInstanceState == null) {
             bottomNav.setSelectedItemId(R.id.nav_map);
         }
+
+        if(getIntent().getIntExtra("fragment_id", 123) == 2){
+            bottomNav.setSelectedItemId(R.id.nav_diary);
+        }
     }
     //This method is to set up the bottom navigation function
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =

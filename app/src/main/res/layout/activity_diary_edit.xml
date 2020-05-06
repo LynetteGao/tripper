@@ -95,15 +95,31 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        android:lines="10"
+        android:lines="5"
         android:hint="@string/diary_hint"
         app:layout_constraintStart_toStartOf="@+id/location_snapshot"
         app:layout_constraintEnd_toEndOf="@+id/line_right"
         app:layout_constraintTop_toBottomOf="@id/events"
         app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:text="@string/diary_save"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/diary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/diary"
+        app:layout_constraintEnd_toEndOf="@+id/diary"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
