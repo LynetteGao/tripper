@@ -66,13 +66,16 @@ public class HomePageMapViewFragment extends Fragment {
                 if (!trips.isEmpty()) {
                     for (Trip trip : trips) {
                         // create a map marker for each trip
-                        // TODO: different colors for upcoming, current, and past trips
                         LatLng latLng = new LatLng(Double.parseDouble(trip.locationLat), Double.parseDouble(trip.locationLon));
                         gMap.addMarker(new MarkerOptions()
                             .position(latLng)
                             .title(trip.name))
                                 .setTag(trip.id); // put the tripId in the marker so we can send it in an intent later
                     }
+                    LatLng firstLatLng = new LatLng(Double.parseDouble(trips.get(0).locationLat),
+                            Double.parseDouble(trips.get(0).locationLon));
+
+                    gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng,1));
                 }
             }
         });
