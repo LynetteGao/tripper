@@ -157,5 +157,22 @@ public class TripRepository {
         }
         return ret;
     }
+
+    public void updateTrip(Trip trip) {
+        tripDao.updateTrip(trip);
+    }
+
+    public void updateDay(Day day) {
+        tripDao.updateDay(day);
+    }
+
+    public void deleteDay(Day day) {
+        TripperDatabase.databaseWriteExecutor.execute(() ->
+                tripDao.deleteDay(day));
+    }
+    public void deleteDays(List<Day> days) {
+        TripperDatabase.databaseWriteExecutor.execute(() ->
+                tripDao.deleteDays(days));
+    }
 }
 

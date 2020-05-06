@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.tripper.CreateNewTrip;
 import com.tripper.R;
 import com.tripper.TripOverview;
 import com.tripper.db.entities.Trip;
@@ -59,6 +60,9 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripLi
                         notifyDataSetChanged();
                         break;
                     case R.id.menuEditTrip:
+                        Intent intent = new Intent(context, CreateNewTrip.class);
+                        intent.putExtra("tripId", data.get(position).id);
+                        context.startActivity(intent);
                         break;
                     default:
                         return false;
